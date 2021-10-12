@@ -134,7 +134,7 @@ void TilemapToolScene::Update()
     for (int yFrame = 0; yFrame < TILE_COUNT; yFrame++) {
         for (int xFrame = 0; xFrame < TILE_COUNT; xFrame++) {
             if (PtInRect(&(tileInfo[yFrame][xFrame].selectRc), mouse)) {
-                if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_LBUTTON)) {
+                if (KeyManager::GetSingleton()->IsStayKeyDown(VK_LBUTTON)) {
                     for (int height = 0; height < selectedSampleTile.height; height+=2) {
                         if (yFrame + (height/2) >= TILE_COUNT) break;
                         for (int width = 0; width < selectedSampleTile.width; width+=2) {
