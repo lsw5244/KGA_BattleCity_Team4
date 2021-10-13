@@ -6,7 +6,6 @@
 #include "TilemapToolScene.h"
 #include "PixelCollisionScene.h"
 #include "AStarScene.h"
-#include	 "DebugScene.h"
 
 HRESULT MainGame::Init()
 {
@@ -20,11 +19,10 @@ HRESULT MainGame::Init()
 	SceneManager::GetSingleton()->AddScene("타일맵툴", new TilemapToolScene());
 	SceneManager::GetSingleton()->AddScene("픽셀테스트씬", new PixelCollisionScene());
 	SceneManager::GetSingleton()->AddScene("A*테스트씬", new AStarScene());
-	SceneManager::GetSingleton()->AddScene("디버그", new DebugScene());
 
 	SceneManager::GetSingleton()->AddLoadingScene("로딩씬", new LoadingScene());
 
-	SceneManager::GetSingleton()->ChangeScene("디버그");
+	SceneManager::GetSingleton()->ChangeScene("타일맵툴");
 
 	srand((unsigned int) time(nullptr));
 
