@@ -9,7 +9,7 @@ private:
 	MoveDir dir;
 	bool isAlive;
 
-	Image* boom_Effect;
+	Image* boomEffect;
 
 public:
 	virtual HRESULT Init();
@@ -17,6 +17,7 @@ public:
 	virtual void Render(HDC hdc);
 	virtual void Release();
 
-	void Fire();
+	void Fire(MoveDir dir);
+	void DestroyAmmo();
 };
 
