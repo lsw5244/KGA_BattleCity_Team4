@@ -1,199 +1,123 @@
 #include "Tank.h"
-#include "Image.h"
+#include "EnemyTank.h"
 
 HRESULT Tank::Init(TankType type)
 {
-	ImageManager::GetSingleton()->AddImage("Image/rocket.bmp", 52, 64, true, RGB(255, 0, 255));
-	img = ImageManager::GetSingleton()->FindImage("Image/rocket.bmp");
-	if (img == nullptr)
-	{
-		return E_FAIL;
-	}
+	enemyType = EnemyTankType::End;
 
-	this->type = type;
-
-	switch (type)
-	{
-	case TankType::Player:
-		pos.x = WIN_SIZE_X / 2.0f;
-		pos.y = WIN_SIZE_Y - 100.0f;
-
-		bodySize = 80;
-		moveSpeed = 3.0f;
-
-		barrelSize = 140.0f;
-		barrelAngle = 90.0f * (PI / 180.0f);
-		break;
-	case TankType::Enemy:
-		pos.x = WIN_SIZE_X / 2.0f;
-		pos.y = 100.0f;
-
-		bodySize = 100;
-		moveSpeed = 5.0f;
-
-		barrelSize = 140.0f;
-		barrelAngle = 270.0f * (PI / 180.0f);
-		break;
-	}
-	shape.left = pos.x - (bodySize / 2);
-	shape.top = pos.y - (bodySize / 2);
-	shape.right = shape.left + bodySize;
-	shape.bottom = shape.top + bodySize;
-
-	barrelEnd.x = pos.x + cos(barrelAngle) * barrelSize;
-	barrelEnd.y = pos.y - sin(barrelAngle) * barrelSize;
-
-	moveDir = MoveDir::Right;
-
-	isAlive = true;
-
-	ammoCount = 2;
-	ammoPack = new Ammo[ammoCount];
-	// 미사일 초기화
-	for (int i = 0; i < ammoCount; i++)
-	{
-		ammoPack[i].Init();
-	}
+	enemyMaxCount = 20;
 
 	return S_OK;
 }
 
 void Tank::Update()
 {
-	if (isAlive == false)	return;
-
-	// 위치에 따른 모양값 갱신
-	shape.left = pos.x - (bodySize / 2);
-	shape.top = pos.y - (bodySize / 2);
-	shape.right = shape.left + bodySize;
-	shape.bottom = shape.top + bodySize;
-
-	for (int i = 0; i < ammoCount; i++)
+	for (itEnemyTanks = vecEnemyTanks.begin(); itEnemyTanks != vecEnemyTanks.end(); itEnemyTanks++)
 	{
-		ammoPack[i].Update();
-	}
-
-	switch (type)
-	{
-	case TankType::Player:
-		ProcessInputKey();
-		break;
-	case TankType::Enemy:
-		AutoMove();
-		break;
+		(*itEnemyTanks)->Update();
 	}
 }
 
 void Tank::Render(HDC hdc)
 {
-	if (isAlive == false)	return;
-
-	// 몸통
-	Ellipse(hdc, shape.left, shape.top, shape.right, shape.bottom);
-
-	// 미사일
-	for (int i = 0; i < ammoCount; i++)
+	for (itEnemyTanks = vecEnemyTanks.begin(); itEnemyTanks != vecEnemyTanks.end(); itEnemyTanks++)
 	{
-		ammoPack[i].Render(hdc);
+		(*itEnemyTanks)->Render(hdc);
 	}
-
-	img->Render(hdc, pos.x, pos.y);
 }
 
 void Tank::Release()
 {
-	delete[] ammoPack;
+	for (itEnemyTanks = vecEnemyTanks.begin(); itEnemyTanks != vecEnemyTanks.end(); itEnemyTanks++)
+	{
+		SAFE_RELEASE((*itEnemyTanks));
+	}
+	vecEnemyTanks.clear();
 }
 
-void Tank::RotateBarrelAngle(float rotateAngle)
+void Tank::AddEnemy(int nCount, int fMCount, int qFCount, int bigCount, int iNCount, int iFMCount, int iQFCount, int iBigCount)
 {
-	barrelAngle += (rotateAngle * PI / 180.0f);
+	//nCount, fMCount, qFCount, bigCount, iNCount, iFMCount, iQFCount, iBigCount;
 
-	barrelEnd.x = pos.x + cos(barrelAngle) * barrelSize;
-	barrelEnd.y = pos.y - sin(barrelAngle) * barrelSize;
-}
+	vecEnemyTanks.reserve(enemyMaxCount);
 
-void Tank::Fire()
-{
-	for (int i = 0; i < ammoCount; i++)
+	for (int i = 0; 
+		i < nCount; 
+		i++)
 	{
-		// 전체 미사일을 순회하면서 발사 됐는지 안됐는지 판단
-		if (ammoPack[i].GetIsFire()/* && ammoPack[i].GetIsAlive()*/)
-			continue;
-
-		//ammoPack[i].SetIsAlive(true);
-		ammoPack[i].SetPos(pos);	// 미사일 위치 변경
-		ammoPack[i].SetIsFire(true);	// 미사일 상태 변경
-		ammoPack[i].SetMoveAngle(barrelAngle); // 미사일 각도 변경
-
-		break;
-	}
-}
-
-void Tank::Reload()
-{
-}
-
-void Tank::AutoMove()
-{
-	if (shape.right >= WIN_SIZE_X)
-	{
-		moveDir = MoveDir::Left;
-	}
-	else if (shape.left <= 0)
-	{
-		moveDir = MoveDir::Right;
+		vecEnemyTanks.push_back(new EnemyTank);
+		vecEnemyTanks[i]->SetEnemyTankType(EnemyTankType::Normal);
+		vecEnemyTanks[i]->Init();
 	}
 
-	switch (moveDir)
+	for (int i = nCount; 
+		i < nCount + fMCount; 
+		i++)
 	{
-	case MoveDir::Left:		pos.x -= moveSpeed; break;
-	case MoveDir::Right:	pos.x += moveSpeed; break;
-	}
-}
-
-void Tank::ProcessInputKey()
-{
-	// 키입력을 확인
-	if (Singleton<KeyManager>::GetSingleton()->IsOnceKeyDown(VK_SPACE))
-	{
-		Fire();
+		vecEnemyTanks.push_back(new EnemyTank);
+		vecEnemyTanks[i]->SetEnemyTankType(EnemyTankType::FastMove);
+		vecEnemyTanks[i]->Init();
 	}
 
-	if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_LEFT))
+	for (int i = nCount + fMCount; 
+		i < nCount + fMCount + qFCount;
+		i++)
 	{
-		Move(MoveDir::Left);
-	}
-	else if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_RIGHT))
-	{
-		Move(MoveDir::Right);
+		vecEnemyTanks.push_back(new EnemyTank);
+		vecEnemyTanks[i]->SetEnemyTankType(EnemyTankType::QuickFire);
+		vecEnemyTanks[i]->Init();
 	}
 
-	if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_UP))
+	for (int i = nCount + fMCount + qFCount;
+		i < nCount + fMCount + qFCount + bigCount; 
+		i++)
 	{
-		Move(MoveDir::Up);
+		vecEnemyTanks.push_back(new EnemyTank);
+		vecEnemyTanks[i]->SetEnemyTankType(EnemyTankType::Big);
+		vecEnemyTanks[i]->Init();
 	}
-	else if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_DOWN))
+
+	for (int i = nCount + fMCount + qFCount + bigCount;
+		i < nCount + fMCount + qFCount + bigCount + iNCount; 
+		i++)
 	{
-		Move(MoveDir::Down);
+		vecEnemyTanks.push_back(new EnemyTank);
+		vecEnemyTanks[i]->SetEnemyTankType(EnemyTankType::iNormal);
+		vecEnemyTanks[i]->Init();
 	}
-}
 
-void Tank::Move(MoveDir dir)
-{
-	switch (dir)
+	for (int i = nCount + fMCount + qFCount + bigCount + iNCount;
+		i < nCount + fMCount + qFCount + bigCount + iNCount + iFMCount; 
+		i++)
 	{
-	case MoveDir::Left: pos.x -= moveSpeed; break;
-	case MoveDir::Right: pos.x += moveSpeed; break;
-	case MoveDir::Up: pos.y -= moveSpeed; break;
-	case MoveDir::Down: pos.y += moveSpeed; break;
+		vecEnemyTanks.push_back(new EnemyTank);
+		vecEnemyTanks[i]->SetEnemyTankType(EnemyTankType::iFastMove);
+		vecEnemyTanks[i]->Init();
 	}
-}
 
-Tank::Tank()
-{
-}
+	for (int i = nCount + fMCount + qFCount + bigCount + iNCount + iFMCount; 
+		i < nCount + fMCount + qFCount + bigCount + iNCount + iFMCount + iQFCount;
+		i++)
+	{
+		vecEnemyTanks.push_back(new EnemyTank);
+		vecEnemyTanks[i]->SetEnemyTankType(EnemyTankType::iQuickFire);
+		vecEnemyTanks[i]->Init();
+	}
 
-Tank::~Tank()
-{
+	for (int i = nCount + fMCount + qFCount + bigCount + iNCount + iFMCount + iQFCount;
+		i < nCount + fMCount + qFCount + bigCount + iNCount + iFMCount + iQFCount + iBigCount;
+		i++)
+	{
+		vecEnemyTanks.push_back(new EnemyTank);
+		vecEnemyTanks[i]->SetEnemyTankType(EnemyTankType::iBig);
+		vecEnemyTanks[i]->Init();
+	}
+
+	for (int i = 0; i < nCount + fMCount + qFCount + bigCount + iNCount + iFMCount + iQFCount + iBigCount; i++)
+	{
+		POINTFLOAT enemyPos = { 50 + (60 * (i % 3)), 50 + (60 * (i / 3)) };
+		
+		vecEnemyTanks[i]->SetPos(enemyPos);
+	}
+
 }

@@ -8,7 +8,7 @@ class BattleScene : public GameEntity
 {
 private:
 	// 플레이어 로켓
-	Tank* rocket;
+	Tank* enemyTank;
 
 	// 적 UFO
 	EnemyManager* enemyMgr;

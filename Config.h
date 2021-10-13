@@ -30,6 +30,7 @@ using namespace std;
 
 enum MoveDir { Left, Right, Up, Down };
 enum class TankType { Player, Enemy };
+enum class EnemyTankType { Normal, FastMove, QuickFire, Big, iNormal, iFastMove, iQuickFire, iBig, End };
 
 typedef struct ArgumentFuncPtr
 {
