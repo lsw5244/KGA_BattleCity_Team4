@@ -22,7 +22,7 @@ HRESULT MainGame::Init()
 
 	SceneManager::GetSingleton()->AddLoadingScene("∑Œµ˘æ¿", new LoadingScene());
 
-	SceneManager::GetSingleton()->ChangeScene("≈∏¿œ∏ ≈¯");
+	SceneManager::GetSingleton()->ChangeScene("≈∏¿Ã∆≤æ¿");
 
 	srand((unsigned int) time(nullptr));
 
