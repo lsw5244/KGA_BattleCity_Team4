@@ -8,6 +8,7 @@ HRESULT TilemapToolScene::Init()
 
     sampleImage = ImageManager::GetSingleton()->AddImage("Image/SamlpTile.bmp",
         88, 88, SAMPLE_TILE_COUNT, SAMPLE_TILE_COUNT, true, RGB(255, 0, 255));
+    bin = ImageManager::GetSingleton()->AddImage("Image/bin.bmp", 200, 200);
     if (sampleImage == nullptr)
     {
         cout << "Image/SamlpTile1.bmp 로드 실패!!" << endl;
@@ -15,19 +16,26 @@ HRESULT TilemapToolScene::Init()
     }
 
     // 왼쪽 상단 메인 영역 초기화
-    for (int i = 0; i < TILE_COUNT; i++)    // y축
-    {
-        for (int j = 0; j < TILE_COUNT; j++)    // x축
-        {
-            SetRect(&(tileInfo[i][j].rc),
-                j * TILE_SIZE, 
-                i * TILE_SIZE,
-                j * TILE_SIZE + TILE_SIZE, 
-                i * TILE_SIZE + TILE_SIZE);
-
-            tileInfo[i][j].frameX = 5;
-            tileInfo[i][j].frameY = 0;
-            tileInfo[i][j].terrain = Terrain::Brick;
+    for (int i = 0; i < TILE_COUNT; i++) {    // y축
+        for (int j = 0; j < TILE_COUNT; j++) {    // x축 
+            SetRect(&(tileInfo[i][j].selectRc),
+                j * (TILE_SIZE * 2),
+                i * (TILE_SIZE * 2),
+                j * (TILE_SIZE * 2) + (TILE_SIZE * 2),
+                i * (TILE_SIZE * 2) + (TILE_SIZE * 2));
+            for (int k = 0; k < 2; k++) {
+                for (int l = 0; l < 2; l++) {
+                    SetRect(&(tileInfo[i][j].rc[k][l]),
+                        j * (TILE_SIZE * 2) + (l * (TILE_SIZE)),
+                        i * (TILE_SIZE * 2) + (k * (TILE_SIZE)),
+                        j * (TILE_SIZE * 2) + (l * (TILE_SIZE) + (TILE_SIZE)),
+                        i * (TILE_SIZE * 2) + (k * (TILE_SIZE) + (TILE_SIZE)));
+                    tileInfo[i][j].isDes[k][l] = true;
+                    tileInfo[i][j].frameX[l] = l;
+                    tileInfo[i][j].frameY[k] = k;
+                    tileInfo[i][j].terrain = Terrain::Brick;
+                }
+            }
         }
     }
 
@@ -53,6 +61,7 @@ HRESULT TilemapToolScene::Init()
     selectedSampleTile.width = 0;
     selectedSampleTile.height = 0;
     mouseCheck = false;
+    check = false;
     return S_OK;
 }
 
@@ -98,49 +107,59 @@ void TilemapToolScene::Update()
 
             selectedSampleTile.width = mousePos[0].x - mousePos[1].x;
             selectedSampleTile.height = mousePos[0].y - mousePos[1].y;
+
             if (selectedSampleTile.width < 0) {
                 selectedSampleTile.width *= -1;
                 selectedSampleTile.frameX = sampleTileInfo[mousePos[0].y][mousePos[0].x].frameX;
-            }
-            else {
+            } else {
                 selectedSampleTile.frameX = sampleTileInfo[mousePos[1].y][mousePos[1].x].frameX;
             }
+            if (selectedSampleTile.width % 2 == 0) selectedSampleTile.width++;
+            if (selectedSampleTile.frameX % 2)  selectedSampleTile.frameX--;
+
 
             if (selectedSampleTile.height < 0) {
                 selectedSampleTile.height *= -1;
                 selectedSampleTile.frameY = sampleTileInfo[mousePos[0].y][mousePos[0].x].frameY;
-            }
-            else {
+            } else {
                 selectedSampleTile.frameY = sampleTileInfo[mousePos[1].y][mousePos[1].x].frameY;
             }
+            if (selectedSampleTile.height % 2 == 0) selectedSampleTile.height++;
+            if (selectedSampleTile.frameY % 2) selectedSampleTile.frameY--;
+            cout << selectedSampleTile.height << " " << selectedSampleTile.width << endl;
 
         }
     }
-
     // 메인영역에서 선택된 샘플 정보로 수정
-    for (int i = 0; i < TILE_COUNT; i++) {
-        for (int j = 0; j < TILE_COUNT; j++) {
-            if (PtInRect(&(tileInfo[i][j].rc), mouse))
-            {
-                if (KeyManager::GetSingleton()->IsStayKeyDown(VK_LBUTTON))
-                {
-                    if (selectedSampleTile.width > 0 || selectedSampleTile.height > 0) {
-                        for (int k = 0; k < selectedSampleTile.height + 1; k++) {
-                            if (i + k >= TILE_COUNT) break;
-                            for (int l = 0; l < selectedSampleTile.width + 1; l++) {
-                                if (j + l >= TILE_COUNT) break;
-                                tileInfo[i + k][j + l].frameX = selectedSampleTile.frameX + l;
-                                tileInfo[i + k][j + l].frameY = selectedSampleTile.frameY + k;
+    for (int yFrame = 0; yFrame < TILE_COUNT; yFrame++) {
+        for (int xFrame = 0; xFrame < TILE_COUNT; xFrame++) {
+            if (PtInRect(&(tileInfo[yFrame][xFrame].selectRc), mouse)) {
+                if (KeyManager::GetSingleton()->IsStayKeyDown(VK_LBUTTON)) {
+                    for (int height = 0; height < selectedSampleTile.height; height+=2) {
+                        if (yFrame + (height/2) >= TILE_COUNT) break;
+                        for (int width = 0; width < selectedSampleTile.width; width+=2) {
+                            if (xFrame + (width/2) >= TILE_COUNT) break;
+                            for (int tileNumY = 0; tileNumY < 2; tileNumY++) {
+                                for (int tileNumX = 0; tileNumX < 2; tileNumX++) {
+                                    tileInfo[yFrame + (height / 2)][xFrame + (width / 2)].frameX[tileNumX] = selectedSampleTile.frameX + tileNumX + width;
+                                    tileInfo[yFrame + (height / 2)][xFrame + (width / 2)].frameY[tileNumY] = selectedSampleTile.frameY + tileNumY + height;
+                                }
                             }
                         }
-                    } else {
-                        tileInfo[i][j].frameX = selectedSampleTile.frameX;
-                        tileInfo[i][j].frameY = selectedSampleTile.frameY;
                     }
-                    break;
                 }
             }
         }
+    }
+
+    if (KeyManager::GetSingleton()->IsOnceKeyDown('P')) 
+    {
+        check = true;
+    }
+
+    if (KeyManager::GetSingleton()->IsOnceKeyUp('P'))
+    {
+        check = false;
     }
 
     if (KeyManager::GetSingleton()->IsOnceKeyUp('S'))
@@ -157,22 +176,28 @@ void TilemapToolScene::Update()
 void TilemapToolScene::Render(HDC hdc)
 {
     // 메인 영역
-    for (int i = 0; i < TILE_COUNT; i++)
-    {
-        for (int j = 0; j < TILE_COUNT; j++)
-        {
-            sampleImage->Render(hdc,
-                tileInfo[i][j].rc.left + TILE_SIZE / 2,
-                tileInfo[i][j].rc.top + TILE_SIZE / 2,
-                tileInfo[i][j].frameX,
-                tileInfo[i][j].frameY);
+    for (int i = 0; i < TILE_COUNT; i++) {
+        for (int j = 0; j < TILE_COUNT; j++) {
+            for (int tileNumY = 0; tileNumY < 2; tileNumY++) {
+                for (int tileNumX = 0; tileNumX < 2; tileNumX++) { 
+                    if (tileInfo[i][j].isDes[tileNumY][tileNumX]) {
+                        sampleImage->Render(hdc,
+                            tileInfo[i][j].rc[tileNumY][tileNumX].left + (TILE_SIZE / 2),
+                            tileInfo[i][j].rc[tileNumY][tileNumX].top + (TILE_SIZE / 2),
+                            tileInfo[i][j].frameX[tileNumX],
+                            tileInfo[i][j].frameY[tileNumY]);
+                        if (check) {
+                            Rectangle(hdc,
+                                tileInfo[i][j].rc[tileNumY][tileNumX].left,
+                                tileInfo[i][j].rc[tileNumY][tileNumX].top,
+                                tileInfo[i][j].rc[tileNumY][tileNumX].right,
+                                tileInfo[i][j].rc[tileNumY][tileNumX].bottom);
+                        }
+                    }
+                }
+            }
         }
     }
-
-    // 샘플 영역
-    sampleImage->Render(hdc, 
-        TILEMAPTOOL_SIZE_X - sampleImage->GetWidth() + sampleImage->GetWidth() / 2,
-        sampleImage->GetHeight() / 2);
 
     // 선택된 타일
     sampleImage->Render(
@@ -184,6 +209,12 @@ void TilemapToolScene::Render(HDC hdc)
         selectedSampleTile.width,
         selectedSampleTile.height,
         10.0f);
+
+    // 샘플 영역
+    sampleImage->Render(
+        hdc,
+        TILEMAPTOOL_SIZE_X - sampleImage->GetWidth() + sampleImage->GetWidth() / 2,
+        sampleImage->GetHeight() / 2);
 }
 
 void TilemapToolScene::Release()
