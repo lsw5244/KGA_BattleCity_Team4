@@ -8,6 +8,9 @@ class Ammo : public GameObject
 private:
 	MoveDir dir;
 	bool isAlive;
+	bool renderBoomEffect;
+
+	float sec;
 
 	Image* boomEffect;
 
