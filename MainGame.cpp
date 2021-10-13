@@ -55,6 +55,8 @@ void MainGame::Render(HDC hdc)
 {
 	HDC hBackBufferDC = backBuffer->GetMemDC();
 
+	PatBlt(hBackBufferDC, 0, 0, backBuffer->GetWidth(), backBuffer->GetHeight(), WHITENESS);
+
 	SceneManager::GetSingleton()->Render(hBackBufferDC);
 
 	//TimerManager::GetSingleton()->Render(hBackBufferDC);
