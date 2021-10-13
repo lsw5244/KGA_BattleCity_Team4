@@ -22,7 +22,7 @@ HRESULT MainGame::Init()
 
 	SceneManager::GetSingleton()->AddLoadingScene("·Îµù¾À", new LoadingScene());
 
-	SceneManager::GetSingleton()->ChangeScene("Å¸ÀÏ¸ÊÅø");
+	SceneManager::GetSingleton()->ChangeScene("ÀüÅõ¾À");
 
 	srand((unsigned int) time(nullptr));
 
@@ -34,10 +34,10 @@ HRESULT MainGame::Init()
 
 	// ¹é¹öÆÛ
 	backBuffer = new Image;
-	int maxSizeX = WIN_SIZE_X > TILEMAPTOOL_SIZE_X ? WIN_SIZE_X : TILEMAPTOOL_SIZE_X;
-	int maxSizeY = WIN_SIZE_Y > TILEMAPTOOL_SIZE_Y ? WIN_SIZE_Y : TILEMAPTOOL_SIZE_Y;
+	//int maxSizeX = WIN_SIZE_X > TILEMAPTOOL_SIZE_X ? WIN_SIZE_X : TILEMAPTOOL_SIZE_X;
+	//int maxSizeY = WIN_SIZE_Y > TILEMAPTOOL_SIZE_Y ? WIN_SIZE_Y : TILEMAPTOOL_SIZE_Y;
 
-	backBuffer->Init("Image/mapImage.bmp", maxSizeX, maxSizeY);
+	backBuffer->Init("Image/mapImage.bmp",800, 800);
 
 	return S_OK;
 }
@@ -54,6 +54,8 @@ void MainGame::Update()
 void MainGame::Render(HDC hdc)
 {
 	HDC hBackBufferDC = backBuffer->GetMemDC();
+
+	PatBlt(hBackBufferDC, 0, 0, backBuffer->GetWidth(), backBuffer->GetHeight(), BLACKNESS);
 
 	SceneManager::GetSingleton()->Render(hBackBufferDC);
 
