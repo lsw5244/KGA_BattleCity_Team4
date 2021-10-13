@@ -48,8 +48,8 @@ public:
 	virtual void Render(HDC hdc) override;
 	virtual void Release() override;
 
-	void Save(int saveIndex = 0);
-	void Load(int loadIndex = 0);
+	void Save();
+	void Load();
 
 };
 
