@@ -221,10 +221,14 @@ void TilemapToolScene::Release()
 {
 }
 
-void TilemapToolScene::Save(int saveIndex)
+void TilemapToolScene::Save()
 {
+    int saveIndex;
+    cout << "세이브할 맵의 번호를 입력하여 주십시오. : ";
+    cin >> saveIndex;
     string saveFileName = "Save/saveMapData_" + to_string(saveIndex);
     saveFileName += ".map";
+
 
     HANDLE hFile = CreateFile(saveFileName.c_str(),
         GENERIC_WRITE,          // 읽기, 쓰기
@@ -249,8 +253,11 @@ void TilemapToolScene::Save(int saveIndex)
     CloseHandle(hFile);
 }
 
-void TilemapToolScene::Load(int loadIndex)
+void TilemapToolScene::Load()
 {
+    int loadIndex;
+    cout << "로드할 맵의 번호를 입력하여 주십시오. : ";
+    cin >> loadIndex;
     string loadFileName = "Save/saveMapData_" + to_string(loadIndex);
     loadFileName += ".map";
 
