@@ -6,6 +6,7 @@
 #include "TilemapToolScene.h"
 #include "PixelCollisionScene.h"
 #include "AStarScene.h"
+#include	 "DebugScene.h"
 
 HRESULT MainGame::Init()
 {
@@ -19,10 +20,11 @@ HRESULT MainGame::Init()
 	SceneManager::GetSingleton()->AddScene("Å¸ÀÏ¸ÊÅø", new TilemapToolScene());
 	SceneManager::GetSingleton()->AddScene("ÇÈ¼¿Å×½ºÆ®¾À", new PixelCollisionScene());
 	SceneManager::GetSingleton()->AddScene("A*Å×½ºÆ®¾À", new AStarScene());
+	SceneManager::GetSingleton()->AddScene("µð¹ö±×", new DebugScene());
 
 	SceneManager::GetSingleton()->AddLoadingScene("·Îµù¾À", new LoadingScene());
 
-	SceneManager::GetSingleton()->ChangeScene("Å¸ÀÏ¸ÊÅø");
+	SceneManager::GetSingleton()->ChangeScene("µð¹ö±×");
 
 	srand((unsigned int) time(nullptr));
 
@@ -54,6 +56,8 @@ void MainGame::Update()
 void MainGame::Render(HDC hdc)
 {
 	HDC hBackBufferDC = backBuffer->GetMemDC();
+
+	PatBlt(hBackBufferDC, 0, 0, backBuffer->GetWidth(), backBuffer->GetHeight(), WHITENESS);
 
 	SceneManager::GetSingleton()->Render(hBackBufferDC);
 

@@ -17,7 +17,7 @@ public:
 	virtual void Render(HDC hdc);
 	virtual void Release();
 
-	void Fire(MoveDir dir);
+	void Fire(MoveDir dir, POINTFLOAT pos);
 	void DestroyAmmo();
 };
 
