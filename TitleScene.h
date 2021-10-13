@@ -8,13 +8,22 @@ class Image;
 class TitleScene : public GameEntity
 {
 private:
-	Image* backGround;
-
 	Button* btnGotoBattle;
 	Button* btnQuitProgram;
 
 	ButtonFunction* btnFunction;
 	LPARGUMENT_PTR arg;
+
+	Image* backGround;
+	Image* titleBackGround;
+	POINT titlePos;
+
+	Image* plyaerSelect;
+	POINT selectPos;
+	int selectFrame;
+	bool Player_1p;
+
+	float time;
 
 public:
 	virtual HRESULT Init() override;

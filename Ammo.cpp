@@ -1,196 +1,129 @@
+/*
+		사용하기
+		발사할 때 Fire()함수를 작동시키면 발사
+		총알이 충돌하면 DestroyAmmo()함수 작동시키기
+		
+		FIXME
+		1. 충돌 했을때의 조건 넣어주기
+*/
+
 #include "Ammo.h"
-#include "Tank.h"
 #include "Image.h"
-#include "CommonFunction.h"
 
 HRESULT Ammo::Init()
 {
-	//float x = 10.0f, y = 20.0f, h = 0.0f;
-	//h = (float)sqrtf((x * x) + (y * y));
+	ImageManager::GetSingleton()->AddImage("Image/Bullet/Missile_Down.bmp", 3, 4, true, RGB(255, 0, 255));
+	ImageManager::GetSingleton()->AddImage("Image/Bullet/Missile_Left.bmp", 4, 3, true, RGB(255, 0, 255));
+	img = ImageManager::GetSingleton()->AddImage("Image/Bullet/Missile_Right.bmp", 4, 3, true, RGB(255, 0, 255));
+	ImageManager::GetSingleton()->AddImage("Image/Bullet/Missile_Up.bmp", 3, 4, true, RGB(255, 0, 255));
 
+	boomEffect = ImageManager::GetSingleton()->AddImage("Image/Effect/Boom_Effect.bmp", 48, 16, 3, 1, true, RGB(255, 0, 255));
 
-	pos.x = 0.0f;
-	pos.y = 0.0f;
+	isAlive = false;
+	renderBoomEffect = false;
 
-	bodySize = 21;
+	sec = 0.0f;
 
-	shape.left = 0;
-	shape.top = 0;
-	shape.right = 0;
-	shape.bottom = 0;
+	pos = { TILEMAPTOOL_SIZE_X / 2, TILEMAPTOOL_SIZE_Y / 2 };
 
-	moveSpeed = 8.0f;		// 초당 15픽셀 이동
-	moveAngle = 0.0f;
-
-	target = nullptr;
-
-	isFire = false;
-	//isAlive = true;
-
-	ImageManager::GetSingleton()->AddImage("Image/bullet.bmp", bodySize, bodySize, true, RGB(255, 0, 255));
-	img = ImageManager::GetSingleton()->FindImage("Image/bullet.bmp");
-	if (img == nullptr)
-	{
-		return E_FAIL;
-	}
+	moveSpeed = 100.0f;
 
 	return S_OK;
 }
 
 void Ammo::Update()
 {
-	//if (isAlive == false)	return;
 
-	if (isFire)
+	if (isAlive == false)
 	{
-		// 타겟이 있을 때만 유도 공식이 적용된다.
-		if (target)
-		{
-			float targetAngle = atan2f(-(target->GetPos().y - pos.y),
-				(target->GetPos().x - pos.x));
-
-			cout << "1. TargetAngle : " << targetAngle << endl;
-			cout << "1. MoveAngle : " << moveAngle << endl << endl;
-
-			float tempAngle;
-			float ratio = 9.0f;
-			if (GetDistance(target->GetPos(), pos) < 230.0f)
-			{
-				ratio = 3.0f;
-			}
-			if ((targetAngle - moveAngle) > PI)
-			{
-				tempAngle = ((targetAngle - PI2) - moveAngle) / ratio;
-				cout << "2_1. tempAngle : " << tempAngle << endl;
-			}
-			else if ((targetAngle - moveAngle) < -PI)
-			{
-				tempAngle = ((targetAngle + PI2) - moveAngle) / ratio;
-				cout << "2_2. tempAngle : " << tempAngle << endl;
-			}
-			else
-			{
-				tempAngle = (targetAngle - moveAngle) / ratio;
-				cout << "2_0. tempAngle : " << tempAngle << endl;
-			}
-
-			moveAngle += tempAngle;
-			if (moveAngle > PI2)
-			{
-				moveAngle -= PI2;
-			}
-			else if (moveAngle < -PI2)
-			{
-				moveAngle += PI2;
-			}
-
-			cout << "2. TargetAngle : " << targetAngle << endl;
-			cout << "2. MoveAngle : " << moveAngle << endl << endl;
-
-
-			//RotateToTarget(target->GetPos());
-		}
-
-		pos.x += cos(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();		// 프레임당 이동거리 -> 시간 당 이동거리
-		pos.y -= sin(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
-
-		shape.left = pos.x - (bodySize / 2.0f);
-		shape.top = pos.y - (bodySize / 2.0f);
-		shape.right = pos.x + (bodySize / 2.0f);
-		shape.bottom = pos.y + (bodySize / 2.0f);
-
-		// 타겟과의 충돌확인
-		if (CheckCollision())
-		{
-			isFire = false;
-			target->SetIsAlive(false);
-		}
-
-		// 화면을 벗어났는지 확인
-		if (shape.left > WIN_SIZE_X || shape.right < 0 ||
-			shape.top > WIN_SIZE_Y || shape.bottom < 0)
-		{
-			isFire = false;
-		}
-	}
-}
-
-void Ammo::RotateToTarget(POINTFLOAT targetPos)
-{
-	if (!isFire) return;
-
-	float toTargetAngle = moveAngle -
-		atan2(-(targetPos.y - pos.y), targetPos.x - pos.x);
-
-	if (toTargetAngle > PI)
-	{
-		toTargetAngle = -(PI * 2 - toTargetAngle);
-	}
-	else if (toTargetAngle < -PI)
-	{
-		toTargetAngle = PI * 2 + toTargetAngle;
+		return;
 	}
 
-	if (toTargetAngle > 0)
+	switch (dir)
 	{
-		moveAngle -= DEGREE_TO_RADIAN(5.0f);
+	case Left:
+		pos.x -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();;
+		break;
+	case Right:
+		pos.x += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();;
+		break;
+	case Up:
+		pos.y -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
+		break;
+	case Down:
+		pos.y += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();;
+		break;
 	}
-	else
-	{
-		moveAngle += DEGREE_TO_RADIAN(5.0f);
-	}
-}
 
-void Ammo::SetIsFire(bool fire)
-{
-	this->isFire = fire;
+	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_SPACE))
+	{
+		DestroyAmmo();
+	}
 }
 
 void Ammo::Render(HDC hdc)
 {
-	//if (isAlive == false)	return;
-
-	if (isFire)
+	if (renderBoomEffect == true)
 	{
-		img->Render(hdc, pos.x, pos.y);
-		//Ellipse(hdc, shape.left, shape.top, shape.right, shape.bottom);
+		boomEffect->Render(hdc, pos.x, pos.y, boomEffect->GetCurrFrameX(), boomEffect->GetCurrFrameY());
+		sec += TimerManager::GetSingleton()->GetDeltaTime();
+		if (sec > 0.05f)
+		{
+			sec = 0.0f;
+			boomEffect->SetCurrFrameX((boomEffect->GetCurrFrameX()) + 1);
+			if (boomEffect->GetCurrFrameX() > 3)
+			{
+				renderBoomEffect = false;
+				boomEffect->SetCurrFrameX(0);
+			}
+		}
 	}
+
+	if (isAlive == false)
+	{
+		return;
+	}
+	img->Render(hdc, pos.x, pos.y);
+
 }
 
 void Ammo::Release()
 {
 }
 
-bool Ammo::CheckCollision()
+void Ammo::Fire(MoveDir dir, POINTFLOAT pos)
 {
-	// 어떻게 미사일과 적 탱크가 충돌했는지 판단할까?
+	isAlive = true;
+	this->pos = pos;
+	switch (dir)
+	{
+	case Left:
+		img = ImageManager::GetSingleton()->FindImage("Image/Bullet/Missile_Left.bmp");
+		this->dir = dir;
+		break;
+	case Right:
+		img = ImageManager::GetSingleton()->FindImage("Image/Bullet/Missile_Right.bmp");
+		this->dir = dir;
+		break;
+	case Up:
+		img = ImageManager::GetSingleton()->FindImage("Image/Bullet/Missile_Up.bmp");
+		this->dir = dir;
+		break;
+	case Down:
+		img = ImageManager::GetSingleton()->FindImage("Image/Bullet/Missile_Down.bmp");
+		this->dir = dir;
+		break;
+	}
 
-	if (!target)	return false;
+	//this->pos = pos;
 
-	// 두 원의 좌표로 거리 계산
-	POINTFLOAT ammoPos = pos;
-	POINTFLOAT targetPos = target->GetPos();
-
-	float distance = sqrtf((ammoPos.x - targetPos.x) * (ammoPos.x - targetPos.x)
-		+ (ammoPos.y - targetPos.y) * (ammoPos.y - targetPos.y));
-
-	// 반지름의 합 계산
-	float ammoRadius = bodySize / 2.0f;
-	float targetRadius = target->GetBodySize() / 2.0f;
-
-	float sum = ammoRadius + targetRadius;
-
-	// 비교 (반지름의 합이 더 크면 충돌)
-	if (distance < sum)
-		return true;
-
-	return false;
 }
 
-Ammo::Ammo()
+void Ammo::DestroyAmmo()
 {
+	isAlive = false;
+
+
+	renderBoomEffect = true;
 }
 
-Ammo::~Ammo()
-{
-}

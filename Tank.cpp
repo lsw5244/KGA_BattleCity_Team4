@@ -1,7 +1,7 @@
 #include "Tank.h"
 #include "EnemyTank.h"
 
-HRESULT Tank::Init()
+HRESULT Tank::Init(TankType type)
 {
 	enemyType = EnemyTankType::End;
 
