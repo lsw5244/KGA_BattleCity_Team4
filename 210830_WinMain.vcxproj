@@ -140,13 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Ammo.cpp" />
-    <ClCompile Include="AmmoManager.cpp" />
-    <ClCompile Include="AStarScene.cpp" />
     <ClCompile Include="BattleScene.cpp" />
-    <ClCompile Include="Button.cpp" />
-    <ClCompile Include="ButtonFunction.cpp" />
-    <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="EnemyTank.cpp" />
     <ClCompile Include="GameEntity.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -156,7 +150,6 @@
     <ClCompile Include="LoadingScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
-    <ClCompile Include="PixelCollisionScene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Tank.cpp" />
     <ClCompile Include="TilemapToolScene.cpp" />
@@ -167,14 +160,9 @@
   <ItemGroup>
     <ClInclude Include="Ammo.h" />
     <ClInclude Include="AmmoManager.h" />
-    <ClInclude Include="AStarScene.h" />
     <ClInclude Include="BattleScene.h" />
-    <ClInclude Include="Button.h" />
-    <ClInclude Include="ButtonFunction.h" />
     <ClInclude Include="CommonFunction.h" />
     <ClInclude Include="Config.h" />
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="EnemyTank.h" />
     <ClInclude Include="GameEntity.h" />
     <ClInclude Include="GameObject.h" />
@@ -183,7 +171,6 @@
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="LoadingScene.h" />
     <ClInclude Include="MainGame.h" />
-    <ClInclude Include="PixelCollisionScene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Tank.h" />
