@@ -19,7 +19,8 @@ HRESULT Ammo::Init()
 
 	boomEffect = ImageManager::GetSingleton()->AddImage("Image/Effect/Boom_Effect.bmp", 48, 16, 3, 1, true, RGB(255, 0, 255));
 
-	isAlive = false;
+	isAlive = true;
+	dir = MoveDir::Right;
 	renderBoomEffect = false;
 
 	sec = 0.0f;
