@@ -60,16 +60,7 @@
     <ClCompile Include="Image.cpp">
       <Filter>2D Framework</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>MainGame\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyManager.cpp">
-      <Filter>MainGame\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="Ammo.cpp">
-      <Filter>MainGame\Ammo</Filter>
-    </ClCompile>
-    <ClCompile Include="AmmoManager.cpp">
       <Filter>MainGame\Ammo</Filter>
     </ClCompile>
     <ClCompile Include="ImageManager.cpp">
@@ -90,19 +81,7 @@
     <ClCompile Include="LoadingScene.cpp">
       <Filter>MainGame\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>2D Framework\UI_Button</Filter>
-    </ClCompile>
-    <ClCompile Include="ButtonFunction.cpp">
-      <Filter>2D Framework\UI_Button</Filter>
-    </ClCompile>
     <ClCompile Include="TilemapToolScene.cpp">
-      <Filter>MainGame\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="PixelCollisionScene.cpp">
-      <Filter>MainGame\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="AStarScene.cpp">
       <Filter>MainGame\Scene</Filter>
     </ClCompile>
   </ItemGroup>
@@ -134,16 +113,7 @@
     <ClInclude Include="Image.h">
       <Filter>2D Framework</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>MainGame\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyManager.h">
-      <Filter>MainGame\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="Ammo.h">
-      <Filter>MainGame\Ammo</Filter>
-    </ClInclude>
-    <ClInclude Include="AmmoManager.h">
       <Filter>MainGame\Ammo</Filter>
     </ClInclude>
     <ClInclude Include="ImageManager.h">
@@ -164,19 +134,7 @@
     <ClInclude Include="LoadingScene.h">
       <Filter>MainGame\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Button.h">
-      <Filter>2D Framework\UI_Button</Filter>
-    </ClInclude>
-    <ClInclude Include="ButtonFunction.h">
-      <Filter>2D Framework\UI_Button</Filter>
-    </ClInclude>
     <ClInclude Include="TilemapToolScene.h">
-      <Filter>MainGame\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="PixelCollisionScene.h">
-      <Filter>MainGame\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="AStarScene.h">
       <Filter>MainGame\Scene</Filter>
     </ClInclude>
   </ItemGroup>
