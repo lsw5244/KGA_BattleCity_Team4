@@ -1,6 +1,8 @@
 #pragma once
 #include "GameEntity.h"
 #include "Config.h"
+
+
 class Tank;
 class Image;
 class BattleScene : public GameEntity
@@ -15,6 +17,8 @@ private:
 	Image* battleBackGround;
 	// 배경 이미지
 	Image* backGround;
+
+	
 
 	TILE_INFO tileInfo[TILE_COUNT][TILE_COUNT];
 

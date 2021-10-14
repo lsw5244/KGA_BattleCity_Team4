@@ -139,7 +139,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\새 폴더\KGA_BattleCity_Team4\PlayerTank.cpp" />
     <ClCompile Include="Ammo.cpp" />
+    <ClCompile Include="AmmoDebugScene.cpp" />
     <ClCompile Include="BattleScene.cpp" />
     <ClCompile Include="GameEntity.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -156,7 +158,9 @@
     <ClCompile Include="TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\새 폴더\KGA_BattleCity_Team4\PlayerTank.h" />
     <ClInclude Include="Ammo.h" />
+    <ClInclude Include="AmmoDebugScene.h" />
     <ClInclude Include="BattleScene.h" />
     <ClInclude Include="CommonFunction.h" />
     <ClInclude Include="Config.h" />

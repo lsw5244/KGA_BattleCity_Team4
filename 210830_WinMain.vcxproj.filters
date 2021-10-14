@@ -37,6 +37,9 @@
     <Filter Include="2D Framework\UI_Button">
       <UniqueIdentifier>{3a31a1c9-af35-4d40-b4a2-67c20de4abcd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\PlayerTank">
+      <UniqueIdentifier>{f9425597-7ba6-45da-95d2-aecbe01a3b0b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -83,6 +86,12 @@
     </ClCompile>
     <ClCompile Include="TilemapToolScene.cpp">
       <Filter>MainGame\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="AmmoDebugScene.cpp">
+      <Filter>MainGame\Ammo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\새 폴더\KGA_BattleCity_Team4\PlayerTank.cpp">
+      <Filter>MainGame\PlayerTank</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -136,6 +145,12 @@
     </ClInclude>
     <ClInclude Include="TilemapToolScene.h">
       <Filter>MainGame\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="AmmoDebugScene.h">
+      <Filter>MainGame\Ammo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\새 폴더\KGA_BattleCity_Team4\PlayerTank.h">
+      <Filter>MainGame\PlayerTank</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

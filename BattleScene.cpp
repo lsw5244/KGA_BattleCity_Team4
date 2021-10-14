@@ -2,6 +2,8 @@
 #include "Image.h"
 #include "Tank.h"
 #include "CommonFunction.h"
+
+
 #define POS 8
 
 HRESULT BattleScene::Init()
@@ -15,7 +17,8 @@ HRESULT BattleScene::Init()
     Debug = false;
     Load();
     return S_OK;
-
+    
+   
 }
 
 void BattleScene::Update()
@@ -23,6 +26,8 @@ void BattleScene::Update()
     if (KeyManager::GetSingleton()->IsOnceKeyDown('P')) Debug = true;
 
     if (KeyManager::GetSingleton()->IsOnceKeyUp('P')) Debug = false;
+
+    
 
 }
 
