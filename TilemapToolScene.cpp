@@ -110,17 +110,17 @@ HRESULT TilemapToolScene::Init()
     for (int i = 0; i < TILE_COUNT; i++) {    // yÃà
         for (int j = 0; j < TILE_COUNT; j++) {    // xÃà 
             SetRect(&(tileInfo[i][j].selectRc),
-                j * (TILE_SIZE * 2),
-                i * (TILE_SIZE * 2),
-                j * (TILE_SIZE * 2) + (TILE_SIZE * 2),
-                i * (TILE_SIZE * 2) + (TILE_SIZE * 2));
+                j * (TILE_SIZE * 2) + (POS * 2),
+                i * (TILE_SIZE * 2) + POS,
+                j * (TILE_SIZE * 2) + (TILE_SIZE * 2) + (POS * 2),
+                i * (TILE_SIZE * 2) + (TILE_SIZE * 2) + POS);
             for (int k = 0; k < 2; k++) {
                 for (int l = 0; l < 2; l++) {
                     SetRect(&(tileInfo[i][j].rc[k][l]),
-                        j * (TILE_SIZE * 2) + (l * (TILE_SIZE)),
-                        i * (TILE_SIZE * 2) + (k * (TILE_SIZE)),
-                        j * (TILE_SIZE * 2) + (l * (TILE_SIZE)+(TILE_SIZE)),
-                        i * (TILE_SIZE * 2) + (k * (TILE_SIZE)+(TILE_SIZE)));
+                       (j * TILE_SIZE * 2) + (l * (TILE_SIZE)) + (16),
+                       (i * TILE_SIZE * 2) + (k * (TILE_SIZE)) + 8,
+                       (j * TILE_SIZE * 2) + (l * (TILE_SIZE)+(TILE_SIZE)) + (16),
+                       (i * TILE_SIZE * 2) + (k * (TILE_SIZE)+(TILE_SIZE)) + 8) ;
                     tileInfo[i][j].isDes[k][l] = true;
                     tileInfo[i][j].frameX[l] = l;
                     tileInfo[i][j].frameY[k] = k;
@@ -250,16 +250,6 @@ void TilemapToolScene::Update()
         }
     }
 
-    if (KeyManager::GetSingleton()->IsOnceKeyDown('P'))
-    {
-        check = true;
-    }
-
-    if (KeyManager::GetSingleton()->IsOnceKeyUp('P'))
-    {
-        check = false;
-    }
-
     if (KeyManager::GetSingleton()->IsOnceKeyUp('S'))
     {
         Save();
@@ -284,7 +274,14 @@ void TilemapToolScene::Render(HDC hdc)
                             tileInfo[i][j].rc[tileNumY][tileNumX].top + (TILE_SIZE / 2),
                             tileInfo[i][j].frameX[tileNumX],
                             tileInfo[i][j].frameY[tileNumY]);
-                        if (check) {
+                        if (KeyManager::GetSingleton()->IsStayKeyDown('O')) {
+                            Rectangle(hdc,
+                                tileInfo[i][j].selectRc.left,
+                                tileInfo[i][j].selectRc.top,
+                                tileInfo[i][j].selectRc.right,
+                                tileInfo[i][j].selectRc.bottom);
+                        }
+                        if (KeyManager::GetSingleton()->IsStayKeyDown('P')) {
                             if (tileInfo[i][j].terrain == Terrain::Brick) {
                                 pen = (HPEN)CreateSolidBrush(RGB(185, 122, 87));
                             }

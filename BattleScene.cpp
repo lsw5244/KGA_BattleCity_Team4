@@ -12,7 +12,6 @@ HRESULT BattleScene::Init()
         88, 88, SAMPLE_TILE_COUNT, SAMPLE_TILE_COUNT, true, RGB(255, 0, 255));
 
     battleBackGround = ImageManager::GetSingleton()->AddImage("Image/background.bmp", WIN_SIZE_X, WIN_SIZE_Y);
-    Debug = false;
     Load();
     return S_OK;
 
@@ -20,9 +19,6 @@ HRESULT BattleScene::Init()
 
 void BattleScene::Update()
 {
-    if (KeyManager::GetSingleton()->IsOnceKeyDown('P')) Debug = true;
-
-    if (KeyManager::GetSingleton()->IsOnceKeyUp('P')) Debug = false;
 
 }
 
@@ -36,11 +32,11 @@ void BattleScene::Render(HDC hdc)
                 for (int tileNumX = 0; tileNumX < 2; tileNumX++) {
                     if (tileInfo[i][j].isDes[tileNumY][tileNumX]) {
                         sampleImage->Render(hdc,
-                            tileInfo[i][j].rc[tileNumY][tileNumX].left + (TILE_SIZE / 2) + (POS * 2),
-                            tileInfo[i][j].rc[tileNumY][tileNumX].top + (TILE_SIZE / 2) + POS,
+                            tileInfo[i][j].rc[tileNumY][tileNumX].left + (TILE_SIZE / 2),
+                            tileInfo[i][j].rc[tileNumY][tileNumX].top + (TILE_SIZE / 2),
                             tileInfo[i][j].frameX[tileNumX],
                             tileInfo[i][j].frameY[tileNumY]);
-                        if (Debug) {
+                        if (KeyManager::GetSingleton()->IsStayKeyDown('P')) {
                             if (tileInfo[i][j].terrain == Terrain::Brick) {
                                 pen = (HPEN)CreateSolidBrush(RGB(185, 122, 87));
                             }
@@ -60,15 +56,15 @@ void BattleScene::Render(HDC hdc)
                                 pen = (HPEN)CreateSolidBrush(RGB(200, 191, 231));
                             }
                             else if (tileInfo[i][j].terrain == Terrain::Empty) {
-                                pen = (HPEN)CreateSolidBrush(RGB(0, 0, 0));
+                                pen = (HPEN)CreateSolidBrush(RGB(30, 30, 30));
                             }
                             if (tileInfo[i][j].isDes[tileNumY][tileNumX] == false) pen = (HPEN)CreateSolidBrush(RGB(0, 0, 0));
                             oPen = (HPEN)SelectObject(hdc, pen);
                             Rectangle(hdc,
-                                tileInfo[i][j].rc[tileNumY][tileNumX].left + (POS * 2),
-                                tileInfo[i][j].rc[tileNumY][tileNumX].top + POS ,
-                                tileInfo[i][j].rc[tileNumY][tileNumX].right + (POS * 2),
-                                tileInfo[i][j].rc[tileNumY][tileNumX].bottom + POS);
+                                tileInfo[i][j].rc[tileNumY][tileNumX].left,
+                                tileInfo[i][j].rc[tileNumY][tileNumX].top ,
+                                tileInfo[i][j].rc[tileNumY][tileNumX].right,
+                                tileInfo[i][j].rc[tileNumY][tileNumX].bottom );
                             SelectObject(hdc, oPen);
                             DeleteObject(pen);
                         }

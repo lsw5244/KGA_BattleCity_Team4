@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Ammo.cpp" />
+    <ClCompile Include="AmmoDebugScene.cpp" />
     <ClCompile Include="BattleScene.cpp" />
     <ClCompile Include="GameEntity.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -157,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ammo.h" />
+    <ClInclude Include="AmmoDebugScene.h" />
     <ClInclude Include="BattleScene.h" />
     <ClInclude Include="CommonFunction.h" />
     <ClInclude Include="Config.h" />
