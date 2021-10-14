@@ -13,7 +13,7 @@ HRESULT MainGame::Init()
 	SceneManager::GetSingleton()->Init();
 
 	SceneManager::GetSingleton()->AddScene("TitleScene", new TitleScene());
-	//SceneManager::GetSingleton()->AddScene("BattleScene", new BattleScene());
+	SceneManager::GetSingleton()->AddScene("BattleScene", new BattleScene());
 	SceneManager::GetSingleton()->AddScene("TilemapToolScene", new TilemapToolScene());
 
 	SceneManager::GetSingleton()->AddLoadingScene("LoadingScene", new LoadingScene());
