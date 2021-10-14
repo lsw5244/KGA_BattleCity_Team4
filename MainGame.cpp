@@ -4,8 +4,6 @@
 #include "BattleScene.h"
 #include "LoadingScene.h"
 #include "TilemapToolScene.h"
-#include "PixelCollisionScene.h"
-#include "AStarScene.h"
 
 HRESULT MainGame::Init()
 {
@@ -14,15 +12,13 @@ HRESULT MainGame::Init()
 	TimerManager::GetSingleton()->Init();
 	SceneManager::GetSingleton()->Init();
 
-	SceneManager::GetSingleton()->AddScene("타이틀씬", new TitleScene());
-	SceneManager::GetSingleton()->AddScene("전투씬", new BattleScene());
-	SceneManager::GetSingleton()->AddScene("타일맵툴", new TilemapToolScene());
-	SceneManager::GetSingleton()->AddScene("픽셀테스트씬", new PixelCollisionScene());
-	SceneManager::GetSingleton()->AddScene("A*테스트씬", new AStarScene());
+	SceneManager::GetSingleton()->AddScene("TitleScene", new TitleScene());
+	//SceneManager::GetSingleton()->AddScene("BattleScene", new BattleScene());
+	SceneManager::GetSingleton()->AddScene("TilemapToolScene", new TilemapToolScene());
 
-	SceneManager::GetSingleton()->AddLoadingScene("로딩씬", new LoadingScene());
+	SceneManager::GetSingleton()->AddLoadingScene("LoadingScene", new LoadingScene());
 
-	SceneManager::GetSingleton()->ChangeScene("전투씬");
+	SceneManager::GetSingleton()->ChangeScene("TitleScene");
 
 	srand((unsigned int) time(nullptr));
 

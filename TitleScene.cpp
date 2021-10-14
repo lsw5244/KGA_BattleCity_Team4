@@ -1,8 +1,6 @@
 #include "TitleScene.h"
 #include "Config.h"
 #include "Image.h"
-#include "Button.h"
-#include "ButtonFunction.h"
 HRESULT TitleScene::Init()
 {
 	// 타이틀씬에서 사용할 UI 이미지도 로드해놓자.
