@@ -361,12 +361,12 @@ void TilemapToolScene::Save()
         NULL);
 
     // 쓰기
-    DWORD byteSize = sizeof(tagTile) * TILE_COUNT * TILE_COUNT;
+    DWORD byteSize = sizeof(TILE_INFO) * TILE_COUNT * TILE_COUNT;
 
     DWORD writtenByte;
     if (WriteFile(hFile,    // 파일 핸들
         tileInfo,       // 메모리 시작주소
-        sizeof(tagTile) * TILE_COUNT * TILE_COUNT,  // 메모리 크기
+        sizeof(TILE_INFO) * TILE_COUNT * TILE_COUNT,  // 메모리 크기
         &writtenByte,   // 실제 쓰여진 파일 용량
         NULL) == false)          // ???
     {
@@ -393,7 +393,7 @@ void TilemapToolScene::Load()
 
     // 읽기
     DWORD readByte;
-    if (ReadFile(hFile, tileInfo, sizeof(tagTile) * TILE_COUNT * TILE_COUNT,
+    if (ReadFile(hFile, tileInfo, sizeof(TILE_INFO) * TILE_COUNT * TILE_COUNT,
         &readByte, NULL) == false)
     {
         MessageBox(g_hWnd, "맵 데이터 로드에 실패했습니다.", "에러", MB_OK);

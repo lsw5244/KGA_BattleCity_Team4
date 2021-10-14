@@ -43,6 +43,25 @@ typedef struct ArgumentFuncPtr
 #include "KeyManager.h"
 #include "SceneManager.h"
 
+#define TILE_SIZE	(8 / 2)
+#define TILE_COUNT	(26)
+#define SAMPLE_TILE_COUNT	(11*2)
+enum class Terrain {
+	Brick, IronBrick, Water, Forest, Soild, Empty,
+	Base, BaseDes,
+	End
+};
+
+typedef struct tagTile
+{
+	Terrain terrain;
+	RECT selectRc;
+	RECT rc[2][2];
+	int frameX[2];
+	int frameY[2];
+	bool isDes[2][2];
+} TILE_INFO;
+
 extern HWND g_hWnd;
 extern HINSTANCE g_hInstance;
 extern POINT g_ptMouse;
