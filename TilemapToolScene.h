@@ -2,7 +2,11 @@
 #include "Config.h"
 #include "GameEntity.h"
 
-enum class Terrain { Brick, IronBrick, Water, End };
+enum class Terrain {
+	Brick, IronBrick, Water, Forest, Soild, Empty,
+	Base, BaseDes,
+	End
+};
 
 #define TILE_SIZE	(8 / 2)
 #define TILE_COUNT	(26)
@@ -23,13 +27,14 @@ typedef struct tagTile
 	int frameX[2];
 	int frameY[2];
 	bool isDes[2][2];
-
 } TILE_INFO;
 
 class Image;
 class TilemapToolScene : public GameEntity
 {
 private:
+	HPEN pen, oPen;
+
 	SAMPLE_TILE_INFO sampleTileInfo[SAMPLE_TILE_COUNT][SAMPLE_TILE_COUNT];
 	TILE_INFO tileInfo[TILE_COUNT][TILE_COUNT];
 	Image* sampleImage;
@@ -41,6 +46,8 @@ private:
 	POINT mousePos[2];
 	POINTFLOAT view;
 	POINT mouse;
+
+	void SetTerrain(TILE_INFO* tileInfo, int x, int y);
 
 public:
 	virtual HRESULT Init() override;
