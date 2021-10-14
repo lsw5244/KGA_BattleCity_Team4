@@ -9,6 +9,7 @@ private:
 	MoveDir dir;
 	bool isAlive;
 	bool renderBoomEffect;
+	bool showCollider;
 
 	float sec;
 

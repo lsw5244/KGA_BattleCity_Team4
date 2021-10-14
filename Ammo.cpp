@@ -22,6 +22,7 @@ HRESULT Ammo::Init()
 	isAlive = false;
 	//dir = MoveDir::Right;
 	renderBoomEffect = false;
+	showCollider = false;
 
 	sec = 0.0f;
 
@@ -52,7 +53,12 @@ void Ammo::Update()
 	shape.top = pos.y - bodySize / 2;
 	shape.bottom = shape.top + bodySize;
 
-	cout << "Left: " << shape.left << "\tRight : " << shape.right << "\tTop : " << shape.top << "\tBottom : " << shape.bottom << endl;
+	//cout << "Left: " << shape.left << "\tRight : " << shape.right << "\tTop : " << shape.top << "\tBottom : " << shape.bottom << endl;
+
+	if (KeyManager::GetSingleton()->IsOnceKeyDown('P'))
+	{
+		showCollider = showCollider ? false : true;
+	}
 
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT))
 	{
@@ -121,12 +127,13 @@ void Ammo::Render(HDC hdc)
 	{
 		return;
 	}
-
-	Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
 	
 	img->Render(hdc, pos.x, pos.y);
-	//FillRect(hdc, &shape, (HBRUSH)RGB(255, 255, 255));
 
+	if (showCollider == true)
+	{
+		Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
+	}
 }
 
 void Ammo::Release()
