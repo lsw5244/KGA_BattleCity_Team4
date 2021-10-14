@@ -2,11 +2,13 @@
 #include "Config.h"
 #include "GameEntity.h"
 
+
 //enum class Terrain {
 //	Brick, IronBrick, Water, Forest, Soild, Empty,
 //	Base, BaseDes,
 //	End
 //};
+
 
 
 //#define TILE_COUNT	(26)
@@ -16,6 +18,7 @@ typedef struct tagSampleTile
 	int frameX, frameY;
 	int width, height;
 } SAMPLE_TILE_INFO;
+
 //
 //typedef struct tagTile
 //{
@@ -26,6 +29,7 @@ typedef struct tagSampleTile
 //	int frameY[2];
 //	bool isDes[2][2];
 //} TILE_INFO;
+
 
 class Image;
 class TilemapToolScene : public GameEntity
