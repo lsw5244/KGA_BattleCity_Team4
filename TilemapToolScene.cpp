@@ -2,6 +2,97 @@
 #include "Image.h"
 #include "CommonFunction.h"
 
+void TilemapToolScene::SetTerrain(TILE_INFO* tileInfo, int x, int y)
+{
+    if (x == 0 && y == 0 ||
+        x == 0 && y == 2 ||
+        x == 2 && y == 0 ||
+        x == 2 && y == 2 ||
+        x == 6 && y == 0 ||
+        x == 6 && y == 2 ||
+        x == 8 && y == 2 ||
+        x == 10 && y == 2 ||
+        x == 12 && y == 2 ||
+        x == 16 && y == 0 ||
+        x == 18 && y == 0) tileInfo->terrain = Terrain::Brick;
+
+    else if (x == 2 && y == 16 ||
+        x == 4 && y == 16 ||
+        x == 6 && y == 16 ||
+        x == 8 && y == 16) {
+        tileInfo->terrain = Terrain::Brick;
+        if (x == 2) {
+            tileInfo->isDes[0][0] = false;
+            tileInfo->isDes[1][0] = false;
+        }
+        if (x == 4) {
+            tileInfo->isDes[0][0] = false;
+            tileInfo->isDes[0][1] = false;
+        }
+        if (x == 6) {
+            tileInfo->isDes[0][1] = false;
+            tileInfo->isDes[1][1] = false;
+        }
+        if (x == 8) {
+            tileInfo->isDes[1][0] = false;
+            tileInfo->isDes[1][1] = false;
+        }
+    }
+
+    else if (x == 0 && y == 4 ||
+        x == 0 && y == 6 ||
+        x == 0 && y == 18 ||
+        x == 2 && y == 4 ||
+        x == 2 && y == 6 ||
+        x == 6 && y == 4 ||
+        x == 6 && y == 6 ||
+        x == 8 && y == 6 ||
+        x == 10 && y == 6 ||
+        x == 12 && y == 6 ||
+        x == 12 && y == 4 ||
+        x == 16 && y == 4 ||
+        x == 18 && y == 4) tileInfo->terrain = Terrain::IronBrick;
+
+    else if (x == 0 && y == 8 ||
+        x == 0 && y == 10 ||
+        x == 0 && y == 12 ||
+        x == 0 && y == 14 ||
+        x == 2 && y == 8 ||
+        x == 2 && y == 10 ||
+        x == 2 && y == 12 ||
+        x == 2 && y == 14 ||
+        x == 4 && y == 12 ||
+        x == 4 && y == 14 ||
+        x == 6 && y == 12 ||
+        x == 6 && y == 14 ||
+        x == 2 && y == 20 ||
+        x == 4 && y == 20 ||
+        x == 6 && y == 20) tileInfo->terrain = Terrain::Water;
+
+    else if (x == 4 && y == 8 ||
+        x == 6 && y == 8 ||
+        x == 4 && y == 10 ||
+        x == 6 && y == 10 ||
+        x == 2 && y == 18) tileInfo->terrain = Terrain::Forest;
+
+    else if (x == 8 && y == 8 ||
+        x == 10 && y == 8 ||
+        x == 8 && y == 10 ||
+        x == 10 && y == 10 ||
+        x == 4 && y == 18) tileInfo->terrain = Terrain::Soild;
+
+    else if (x == 12 && y == 8 ||
+        x == 14 && y == 8 ||
+        x == 12 && y == 10 ||
+        x == 14 && y == 10) tileInfo->terrain = Terrain::Base;
+
+    else if (x == 18 && y == 8 ||
+        x == 16 && y == 10 ||
+        x == 18 && y == 10 ||
+        x == 20 && y == 16) tileInfo->terrain = Terrain::BaseDes;
+    else tileInfo->terrain = Terrain::Empty;
+}
+
 HRESULT TilemapToolScene::Init()
 {
     SetWindowSize(20, 20, TILEMAPTOOL_SIZE_X, TILEMAPTOOL_SIZE_Y);
@@ -28,8 +119,8 @@ HRESULT TilemapToolScene::Init()
                     SetRect(&(tileInfo[i][j].rc[k][l]),
                         j * (TILE_SIZE * 2) + (l * (TILE_SIZE)),
                         i * (TILE_SIZE * 2) + (k * (TILE_SIZE)),
-                        j * (TILE_SIZE * 2) + (l * (TILE_SIZE) + (TILE_SIZE)),
-                        i * (TILE_SIZE * 2) + (k * (TILE_SIZE) + (TILE_SIZE)));
+                        j * (TILE_SIZE * 2) + (l * (TILE_SIZE)+(TILE_SIZE)),
+                        i * (TILE_SIZE * 2) + (k * (TILE_SIZE)+(TILE_SIZE)));
                     tileInfo[i][j].isDes[k][l] = true;
                     tileInfo[i][j].frameX[l] = l;
                     tileInfo[i][j].frameY[k] = k;
@@ -111,7 +202,8 @@ void TilemapToolScene::Update()
             if (selectedSampleTile.width < 0) {
                 selectedSampleTile.width *= -1;
                 selectedSampleTile.frameX = sampleTileInfo[mousePos[0].y][mousePos[0].x].frameX;
-            } else {
+            }
+            else {
                 selectedSampleTile.frameX = sampleTileInfo[mousePos[1].y][mousePos[1].x].frameX;
             }
             if (selectedSampleTile.width % 2 == 0) selectedSampleTile.width++;
@@ -121,28 +213,34 @@ void TilemapToolScene::Update()
             if (selectedSampleTile.height < 0) {
                 selectedSampleTile.height *= -1;
                 selectedSampleTile.frameY = sampleTileInfo[mousePos[0].y][mousePos[0].x].frameY;
-            } else {
+            }
+            else {
                 selectedSampleTile.frameY = sampleTileInfo[mousePos[1].y][mousePos[1].x].frameY;
             }
             if (selectedSampleTile.height % 2 == 0) selectedSampleTile.height++;
             if (selectedSampleTile.frameY % 2) selectedSampleTile.frameY--;
-            cout << selectedSampleTile.height << " " << selectedSampleTile.width << endl;
+            cout << selectedSampleTile.frameX << " " << selectedSampleTile.frameY << endl;
 
         }
     }
+
     // 메인영역에서 선택된 샘플 정보로 수정
     for (int yFrame = 0; yFrame < TILE_COUNT; yFrame++) {
         for (int xFrame = 0; xFrame < TILE_COUNT; xFrame++) {
             if (PtInRect(&(tileInfo[yFrame][xFrame].selectRc), mouse)) {
                 if (KeyManager::GetSingleton()->IsStayKeyDown(VK_LBUTTON)) {
-                    for (int height = 0; height < selectedSampleTile.height; height+=2) {
-                        if (yFrame + (height/2) >= TILE_COUNT) break;
-                        for (int width = 0; width < selectedSampleTile.width; width+=2) {
-                            if (xFrame + (width/2) >= TILE_COUNT) break;
+                    for (int height = 0; height < selectedSampleTile.height; height += 2) {
+                        if (yFrame + (height / 2) >= TILE_COUNT) break;
+                        for (int width = 0; width < selectedSampleTile.width; width += 2) {
+                            if (xFrame + (width / 2) >= TILE_COUNT) break;
                             for (int tileNumY = 0; tileNumY < 2; tileNumY++) {
                                 for (int tileNumX = 0; tileNumX < 2; tileNumX++) {
                                     tileInfo[yFrame + (height / 2)][xFrame + (width / 2)].frameX[tileNumX] = selectedSampleTile.frameX + tileNumX + width;
                                     tileInfo[yFrame + (height / 2)][xFrame + (width / 2)].frameY[tileNumY] = selectedSampleTile.frameY + tileNumY + height;
+                                    SetTerrain(
+                                        &tileInfo[yFrame + (height / 2)][xFrame + (width / 2)],
+                                        selectedSampleTile.frameX + width,
+                                        selectedSampleTile.frameY + height);
                                 }
                             }
                         }
@@ -152,7 +250,7 @@ void TilemapToolScene::Update()
         }
     }
 
-    if (KeyManager::GetSingleton()->IsOnceKeyDown('P')) 
+    if (KeyManager::GetSingleton()->IsOnceKeyDown('P'))
     {
         check = true;
     }
@@ -179,7 +277,7 @@ void TilemapToolScene::Render(HDC hdc)
     for (int i = 0; i < TILE_COUNT; i++) {
         for (int j = 0; j < TILE_COUNT; j++) {
             for (int tileNumY = 0; tileNumY < 2; tileNumY++) {
-                for (int tileNumX = 0; tileNumX < 2; tileNumX++) { 
+                for (int tileNumX = 0; tileNumX < 2; tileNumX++) {
                     if (tileInfo[i][j].isDes[tileNumY][tileNumX]) {
                         sampleImage->Render(hdc,
                             tileInfo[i][j].rc[tileNumY][tileNumX].left + (TILE_SIZE / 2),
@@ -187,11 +285,36 @@ void TilemapToolScene::Render(HDC hdc)
                             tileInfo[i][j].frameX[tileNumX],
                             tileInfo[i][j].frameY[tileNumY]);
                         if (check) {
+                            if (tileInfo[i][j].terrain == Terrain::Brick) {
+                                pen = (HPEN)CreateSolidBrush(RGB(185, 122, 87));
+                            }
+                            else if (tileInfo[i][j].terrain == Terrain::IronBrick) {
+                                pen = (HPEN)CreateSolidBrush(RGB(195, 195, 195));
+                            }
+                            else if (tileInfo[i][j].terrain == Terrain::Water) {
+                                pen = (HPEN)CreateSolidBrush(RGB(0, 162, 232));
+                            }
+                            else if (tileInfo[i][j].terrain == Terrain::Forest) {
+                                pen = (HPEN)CreateSolidBrush(RGB(34, 177, 76));
+                            }
+                            else if (tileInfo[i][j].terrain == Terrain::Soild) {
+                                pen = (HPEN)CreateSolidBrush(RGB(127, 127, 127));
+                            }
+                            else if (tileInfo[i][j].terrain == Terrain::Base) {
+                                pen = (HPEN)CreateSolidBrush(RGB(200, 191, 231));
+                            }
+                            else if (tileInfo[i][j].terrain == Terrain::Empty) {
+                                pen = (HPEN)CreateSolidBrush(RGB(0, 0, 0));
+                            }
+                            if (tileInfo[i][j].isDes[tileNumY][tileNumX] == false) pen = (HPEN)CreateSolidBrush(RGB(0, 0, 0));
+                            oPen = (HPEN)SelectObject(hdc, pen);
                             Rectangle(hdc,
                                 tileInfo[i][j].rc[tileNumY][tileNumX].left,
                                 tileInfo[i][j].rc[tileNumY][tileNumX].top,
                                 tileInfo[i][j].rc[tileNumY][tileNumX].right,
                                 tileInfo[i][j].rc[tileNumY][tileNumX].bottom);
+                            SelectObject(hdc, oPen);
+                            DeleteObject(pen);
                         }
                     }
                 }
@@ -238,12 +361,12 @@ void TilemapToolScene::Save()
         NULL);
 
     // 쓰기
-    DWORD byteSize = sizeof(tagTile) * TILE_COUNT * TILE_COUNT;
+    DWORD byteSize = sizeof(TILE_INFO) * TILE_COUNT * TILE_COUNT;
 
     DWORD writtenByte;
     if (WriteFile(hFile,    // 파일 핸들
         tileInfo,       // 메모리 시작주소
-        sizeof(tagTile) * TILE_COUNT * TILE_COUNT,  // 메모리 크기
+        sizeof(TILE_INFO) * TILE_COUNT * TILE_COUNT,  // 메모리 크기
         &writtenByte,   // 실제 쓰여진 파일 용량
         NULL) == false)          // ???
     {
@@ -270,7 +393,7 @@ void TilemapToolScene::Load()
 
     // 읽기
     DWORD readByte;
-    if (ReadFile(hFile, tileInfo, sizeof(tagTile) * TILE_COUNT * TILE_COUNT,
+    if (ReadFile(hFile, tileInfo, sizeof(TILE_INFO) * TILE_COUNT * TILE_COUNT,
         &readByte, NULL) == false)
     {
         MessageBox(g_hWnd, "맵 데이터 로드에 실패했습니다.", "에러", MB_OK);
