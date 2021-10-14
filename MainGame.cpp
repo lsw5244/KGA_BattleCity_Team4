@@ -4,6 +4,7 @@
 #include "BattleScene.h"
 #include "LoadingScene.h"
 #include "TilemapToolScene.h"
+#include "AmmoDebugScene.h"
 
 HRESULT MainGame::Init()
 {
@@ -15,6 +16,7 @@ HRESULT MainGame::Init()
 	SceneManager::GetSingleton()->AddScene("TitleScene", new TitleScene());
 	SceneManager::GetSingleton()->AddScene("BattleScene", new BattleScene());
 	SceneManager::GetSingleton()->AddScene("TilemapToolScene", new TilemapToolScene());
+	SceneManager::GetSingleton()->AddScene("AmmoDebugScene", new AmmoDebugScene());
 
 	SceneManager::GetSingleton()->AddLoadingScene("LoadingScene", new LoadingScene());
 
@@ -51,7 +53,7 @@ void MainGame::Render(HDC hdc)
 {
 	HDC hBackBufferDC = backBuffer->GetMemDC();
 
-	PatBlt(hBackBufferDC, 0, 0, backBuffer->GetWidth(), backBuffer->GetHeight(), BLACKNESS);
+	PatBlt(hBackBufferDC, 0, 0, backBuffer->GetWidth(), backBuffer->GetHeight(), WHITENESS);
 
 	SceneManager::GetSingleton()->Render(hBackBufferDC);
 
