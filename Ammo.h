@@ -12,6 +12,10 @@ private:
 
 	float sec;
 
+	bool isFire;
+
+	float moveAngle;
+
 	Image* boomEffect;
 
 public:
@@ -19,6 +23,11 @@ public:
 	virtual void Update();
 	virtual void Render(HDC hdc);
 	virtual void Release();
+
+	inline void SetIsFire(bool fire) { this->isFire = fire; };
+	inline bool GetIsFire() { return this->isFire; }
+
+	inline void SetMoveAngle(float angle) { this->moveAngle = angle; }
 
 	void Fire(MoveDir dir, POINTFLOAT pos);
 	void DestroyAmmo();

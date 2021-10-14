@@ -2,7 +2,7 @@
 #include "Config.h"
 #include "GameEntity.h"
 
-enum class Terrain { Brick, IronBrick, Water, End };
+enum class Terrain { Brick, IronBrick, Water, Forest, Soild, Empty, End };
 
 #define TILE_SIZE	(8 / 2)
 #define TILE_COUNT	(26)
@@ -41,6 +41,8 @@ private:
 	POINT mousePos[2];
 	POINTFLOAT view;
 	POINT mouse;
+	
+	void SetTerrain(TILE_INFO* tileInfo, int x, int y);
 
 public:
 	virtual HRESULT Init() override;

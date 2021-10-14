@@ -1,0 +1,10 @@
+﻿  EnemyTank.cpp
+C:\Users\KGA_0435\Desktop\battle\KGA_BattleCity_Team4\EnemyTank.cpp(147,42): warning C4244: '인수': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\KGA_0435\Desktop\battle\KGA_BattleCity_Team4\EnemyTank.cpp(147,35): warning C4244: '인수': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Tank.cpp
+C:\Users\KGA_0435\Desktop\battle\KGA_BattleCity_Team4\Tank.cpp(118,30): warning C4838: 'int'에서 'FLOAT'(으)로의 변환에는 축소 변환이 필요합니다.
+C:\Users\KGA_0435\Desktop\battle\KGA_BattleCity_Team4\Tank.cpp(118,30): warning C4244: '초기화 중': 'int'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\KGA_0435\Desktop\battle\KGA_BattleCity_Team4\Tank.cpp(118,51): warning C4838: 'int'에서 'FLOAT'(으)로의 변환에는 축소 변환이 필요합니다.
+C:\Users\KGA_0435\Desktop\battle\KGA_BattleCity_Team4\Tank.cpp(118,51): warning C4244: '초기화 중': 'int'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  코드를 생성하고 있습니다...
+  210830_WinMain.vcxproj -> C:\Users\KGA_0435\Desktop\battle\KGA_BattleCity_Team4\x64\Debug\210830_WinMain.exe

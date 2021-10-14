@@ -91,6 +91,8 @@ void Ammo::Release()
 {
 }
 
+
+
 void Ammo::Fire(MoveDir dir, POINTFLOAT pos)
 {
 	isAlive = true;

@@ -2,6 +2,11 @@
 #include "Image.h"
 #include "CommonFunction.h"
 
+void TilemapToolScene::SetTerrain(TILE_INFO* tileInfo, int x, int y)
+{
+    tileInfo->terrain = Terrain::Brick;
+}
+
 HRESULT TilemapToolScene::Init()
 {
     SetWindowSize(20, 20, TILEMAPTOOL_SIZE_X, TILEMAPTOOL_SIZE_Y);
@@ -130,6 +135,7 @@ void TilemapToolScene::Update()
 
         }
     }
+
     // 메인영역에서 선택된 샘플 정보로 수정
     for (int yFrame = 0; yFrame < TILE_COUNT; yFrame++) {
         for (int xFrame = 0; xFrame < TILE_COUNT; xFrame++) {
@@ -143,6 +149,10 @@ void TilemapToolScene::Update()
                                 for (int tileNumX = 0; tileNumX < 2; tileNumX++) {
                                     tileInfo[yFrame + (height / 2)][xFrame + (width / 2)].frameX[tileNumX] = selectedSampleTile.frameX + tileNumX + width;
                                     tileInfo[yFrame + (height / 2)][xFrame + (width / 2)].frameY[tileNumY] = selectedSampleTile.frameY + tileNumY + height;
+                                    SetTerrain(
+                                        &tileInfo[yFrame][xFrame],
+                                        selectedSampleTile.frameX + tileNumX + width, 
+                                        selectedSampleTile.frameY + tileNumY + height);
                                 }
                             }
                         }
