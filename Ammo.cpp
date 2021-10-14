@@ -19,8 +19,8 @@ HRESULT Ammo::Init()
 
 	boomEffect = ImageManager::GetSingleton()->AddImage("Image/Effect/Boom_Effect.bmp", 48, 16, 3, 1, true, RGB(255, 0, 255));
 
-	isAlive = true;
-	dir = MoveDir::Right;
+	isAlive = false;
+	//dir = MoveDir::Right;
 	renderBoomEffect = false;
 
 	sec = 0.0f;
@@ -29,11 +29,48 @@ HRESULT Ammo::Init()
 
 	moveSpeed = 100.0f;
 
+	bodySize = 4;
+
+	//shape.left = pos.x - img->GetFrameWidth() / 2;
+	//shape.right = shape.left + img->GetFrameWidth();
+	//shape.top = pos.y - img->GetFrameHeight() / 2;
+	//shape.bottom = shape.top + img->GetFrameHeight();
+
+	shape.left = pos.x - bodySize / 2;
+	shape.right = shape.left + bodySize;
+	shape.top = pos.y - bodySize / 2;
+	shape.bottom = shape.top + bodySize;
+
+
 	return S_OK;
 }
 
 void Ammo::Update()
 {
+	shape.left = pos.x - bodySize / 2;
+	shape.right = shape.left + bodySize;
+	shape.top = pos.y - bodySize / 2;
+	shape.bottom = shape.top + bodySize;
+
+	cout << "Left: " << shape.left << "\tRight : " << shape.right << "\tTop : " << shape.top << "\tBottom : " << shape.bottom << endl;
+
+	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT))
+	{
+		Fire(MoveDir::Right, { TILEMAPTOOL_SIZE_X / 2, TILEMAPTOOL_SIZE_Y / 2 });
+	}
+	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT))
+	{
+		Fire(MoveDir::Left, { TILEMAPTOOL_SIZE_X / 2, TILEMAPTOOL_SIZE_Y / 2 });
+	}
+	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_UP))
+	{
+		Fire(MoveDir::Up, { TILEMAPTOOL_SIZE_X / 2, TILEMAPTOOL_SIZE_Y / 2 });
+	}
+	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_DOWN))
+	{
+		Fire(MoveDir::Down, { TILEMAPTOOL_SIZE_X / 2, TILEMAPTOOL_SIZE_Y / 2 });
+	}
+
 
 	if (isAlive == false)
 	{
@@ -84,7 +121,11 @@ void Ammo::Render(HDC hdc)
 	{
 		return;
 	}
+
+	Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
+	
 	img->Render(hdc, pos.x, pos.y);
+	//FillRect(hdc, &shape, (HBRUSH)RGB(255, 255, 255));
 
 }
 
