@@ -19,7 +19,6 @@ private:
 	TILE_INFO tileInfo[TILE_COUNT][TILE_COUNT];
 
 	HPEN pen, oPen;
-	bool Debug;
 
 public:
 	HRESULT Init();

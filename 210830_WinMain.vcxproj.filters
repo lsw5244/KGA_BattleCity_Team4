@@ -84,6 +84,9 @@
     <ClCompile Include="TilemapToolScene.cpp">
       <Filter>MainGame\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="AmmoDebugScene.cpp">
+      <Filter>MainGame\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h">
@@ -135,6 +138,9 @@
       <Filter>MainGame\Scene</Filter>
     </ClInclude>
     <ClInclude Include="TilemapToolScene.h">
+      <Filter>MainGame\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="AmmoDebugScene.h">
       <Filter>MainGame\Scene</Filter>
     </ClInclude>
   </ItemGroup>
