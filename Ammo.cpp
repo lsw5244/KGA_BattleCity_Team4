@@ -57,24 +57,6 @@ void Ammo::Update()
 		showCollider = showCollider ? false : true;
 	}
 
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT))
-	{
-		Fire(MoveDir::Right, pos);
-	}
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT))
-	{
-		Fire(MoveDir::Left, pos);
-	}
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_UP))
-	{
-		Fire(MoveDir::Up, pos);
-	}
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_DOWN))
-	{
-		Fire(MoveDir::Down, pos);
-	}
-
-
 	if (isAlive == false)
 	{
 		return;
@@ -94,11 +76,6 @@ void Ammo::Update()
 	case Down:
 		pos.y += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();;
 		break;
-	}
-
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_SPACE))
-	{
-		DestroyAmmo();
 	}
 }
 
