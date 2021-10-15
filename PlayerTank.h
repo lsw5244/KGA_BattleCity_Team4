@@ -16,6 +16,7 @@ private:
 
 	int CurrFrame(Image playerTank, int elapsedCount, int setCurr);
 	void CollisionAndMove(MoveDir movedir);
+	void PosReset(MoveDir movedir);
 
 
 public:
