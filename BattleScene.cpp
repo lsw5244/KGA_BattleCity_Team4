@@ -1,8 +1,8 @@
 #include "BattleScene.h"
 #include "Image.h"
+#include "PlayerTank.h"
 #include "Tank.h"
 #include "CommonFunction.h"
-
 
 #define POS 8
 
@@ -16,24 +16,30 @@ HRESULT BattleScene::Init()
 
     battleBackGround = ImageManager::GetSingleton()->AddImage("Image/background.bmp", WIN_SIZE_X, WIN_SIZE_Y);
     Load();
+
+    playerTank = new PlayerTank;
+    playerTank->Init();
+    playerTank->SetTileInfo(tileInfo);
+
     return S_OK;
-    
-   
 }
 
 void BattleScene::Update()
 {
-
-    
-
+    playerTank->Update();
 }
 
 void BattleScene::Render(HDC hdc)
 {
     battleBackGround->Render(hdc, battleBackGround->GetWidth() / 2, battleBackGround->GetHeight() / 2);
-
     for (int i = 0; i < TILE_COUNT; i++) {
         for (int j = 0; j < TILE_COUNT; j++) {
+
+            if (tileInfo[i][j].isDes[0][0] == false &&
+                tileInfo[i][j].isDes[0][1] == false &&
+                tileInfo[i][j].isDes[1][0] == false &&
+                tileInfo[i][j].isDes[1][1] == false)
+                tileInfo[i][j].terrain = Terrain::Empty;
             for (int tileNumY = 0; tileNumY < 2; tileNumY++) {
                 for (int tileNumX = 0; tileNumX < 2; tileNumX++) {
                     if (tileInfo[i][j].isDes[tileNumY][tileNumX]) {
@@ -42,7 +48,14 @@ void BattleScene::Render(HDC hdc)
                             tileInfo[i][j].rc[tileNumY][tileNumX].top + (TILE_SIZE / 2),
                             tileInfo[i][j].frameX[tileNumX],
                             tileInfo[i][j].frameY[tileNumY]);
-                        if (KeyManager::GetSingleton()->IsStayKeyDown('P')) {
+                        if (KeyManager::GetSingleton()->IsStayKeyDown('0')) {
+                            Rectangle(hdc,
+                                tileInfo[i][j].selectRc.left,
+                                tileInfo[i][j].selectRc.top,
+                                tileInfo[i][j].selectRc.right,
+                                tileInfo[i][j].selectRc.bottom);
+                        }
+                        if (KeyManager::GetSingleton()->IsStayKeyDown('9')) {
                             if (tileInfo[i][j].terrain == Terrain::Brick) {
                                 pen = (HPEN)CreateSolidBrush(RGB(185, 122, 87));
                             }
@@ -79,6 +92,10 @@ void BattleScene::Render(HDC hdc)
             }
         }
     }
+
+    
+    
+    playerTank->Render(hdc);
 }
 
 void BattleScene::Release()

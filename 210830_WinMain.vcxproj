@@ -142,6 +142,7 @@
     <ClCompile Include="Ammo.cpp" />
     <ClCompile Include="AmmoDebugScene.cpp" />
     <ClCompile Include="BattleScene.cpp" />
+    <ClCompile Include="EnemyTank.cpp" />
     <ClCompile Include="GameEntity.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Image.cpp" />
@@ -152,6 +153,7 @@
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="PlayerTank.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="Tank.cpp" />
     <ClCompile Include="TilemapToolScene.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TimerManager.cpp" />
@@ -163,6 +165,7 @@
     <ClInclude Include="BattleScene.h" />
     <ClInclude Include="CommonFunction.h" />
     <ClInclude Include="Config.h" />
+    <ClInclude Include="EnemyTank.h" />
     <ClInclude Include="GameEntity.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Image.h" />
@@ -173,6 +176,7 @@
     <ClInclude Include="PlayerTank.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="Tank.h" />
     <ClInclude Include="TilemapToolScene.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TimerManager.h" />

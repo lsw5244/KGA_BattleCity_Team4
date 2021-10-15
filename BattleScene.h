@@ -2,14 +2,16 @@
 #include "GameEntity.h"
 #include "Config.h"
 
-
 class Tank;
 class Image;
+class PlayerTank;
 class BattleScene : public GameEntity
 {
 private:
 	// 플레이어 로켓
 	Tank* enemyTank;
+
+	PlayerTank* playerTank;
 
 	// 타일 샘플정보
 	Image* sampleImage;
