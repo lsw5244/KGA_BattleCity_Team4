@@ -2,6 +2,8 @@
 #include "Image.h"
 #include "Tank.h"
 #include "CommonFunction.h"
+
+
 #define POS 8
 
 HRESULT BattleScene::Init()
@@ -14,11 +16,14 @@ HRESULT BattleScene::Init()
     battleBackGround = ImageManager::GetSingleton()->AddImage("Image/background.bmp", WIN_SIZE_X, WIN_SIZE_Y);
     Load();
     return S_OK;
-
+    
+   
 }
 
 void BattleScene::Update()
 {
+
+    
 
 }
 
