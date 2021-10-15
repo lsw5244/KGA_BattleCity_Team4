@@ -139,7 +139,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\새 폴더\KGA_BattleCity_Team4\PlayerTank.cpp" />
     <ClCompile Include="Ammo.cpp" />
     <ClCompile Include="AmmoDebugScene.cpp" />
     <ClCompile Include="BattleScene.cpp" />
@@ -151,6 +150,7 @@
     <ClCompile Include="LoadingScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
+    <ClCompile Include="PlayerTank.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="TilemapToolScene.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -158,7 +158,6 @@
     <ClCompile Include="TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\새 폴더\KGA_BattleCity_Team4\PlayerTank.h" />
     <ClInclude Include="Ammo.h" />
     <ClInclude Include="AmmoDebugScene.h" />
     <ClInclude Include="BattleScene.h" />
@@ -171,6 +170,7 @@
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="LoadingScene.h" />
     <ClInclude Include="MainGame.h" />
+    <ClInclude Include="PlayerTank.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="TilemapToolScene.h" />

@@ -20,7 +20,7 @@ HRESULT MainGame::Init()
 
 	SceneManager::GetSingleton()->AddLoadingScene("LoadingScene", new LoadingScene());
 
-	SceneManager::GetSingleton()->ChangeScene("BattleScene");
+	SceneManager::GetSingleton()->ChangeScene("TilemapToolScene");
 
 	srand((unsigned int) time(nullptr));
 

@@ -90,7 +90,7 @@
     <ClCompile Include="AmmoDebugScene.cpp">
       <Filter>MainGame\Ammo</Filter>
     </ClCompile>
-    <ClCompile Include="..\새 폴더\KGA_BattleCity_Team4\PlayerTank.cpp">
+    <ClCompile Include="PlayerTank.cpp">
       <Filter>MainGame\PlayerTank</Filter>
     </ClCompile>
   </ItemGroup>
@@ -149,7 +149,7 @@
     <ClInclude Include="AmmoDebugScene.h">
       <Filter>MainGame\Ammo</Filter>
     </ClInclude>
-    <ClInclude Include="..\새 폴더\KGA_BattleCity_Team4\PlayerTank.h">
+    <ClInclude Include="PlayerTank.h">
       <Filter>MainGame\PlayerTank</Filter>
     </ClInclude>
   </ItemGroup>
