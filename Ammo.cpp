@@ -62,19 +62,19 @@ void Ammo::Update()
 
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT))
 	{
-		Fire(MoveDir::Right, { TILEMAPTOOL_SIZE_X / 2, TILEMAPTOOL_SIZE_Y / 2 });
+		Fire(MoveDir::Right, pos);
 	}
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT))
 	{
-		Fire(MoveDir::Left, { TILEMAPTOOL_SIZE_X / 2, TILEMAPTOOL_SIZE_Y / 2 });
+		Fire(MoveDir::Left, pos);
 	}
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_UP))
 	{
-		Fire(MoveDir::Up, { TILEMAPTOOL_SIZE_X / 2, TILEMAPTOOL_SIZE_Y / 2 });
+		Fire(MoveDir::Up, pos);
 	}
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_DOWN))
 	{
-		Fire(MoveDir::Down, { TILEMAPTOOL_SIZE_X / 2, TILEMAPTOOL_SIZE_Y / 2 });
+		Fire(MoveDir::Down, pos);
 	}
 
 

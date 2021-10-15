@@ -15,6 +15,8 @@ private:
 
 	Image* boomEffect;
 
+	TILE_INFO* tileInfo;
+
 public:
 	virtual HRESULT Init();
 	virtual void Update();
@@ -23,5 +25,7 @@ public:
 
 	void Fire(MoveDir dir, POINTFLOAT pos);
 	void DestroyAmmo();
+
+	void SetTileInfo(TILE_INFO info) { this->tileInfo = &info; }
 };
 
