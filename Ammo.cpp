@@ -1,10 +1,12 @@
 /*
 		사용하기
+		사용 할 총알에 tileInfo넣어주기
 		발사할 때 Fire()함수를 작동시키면 발사
 		총알이 충돌하면 DestroyAmmo()함수 작동시키기
 		
+
 		FIXME
-		1. 충돌 했을때의 조건 넣어주기
+		1. 부수지 못하는 벽돌, 탱크랑 출돌했을 때 추가하기
 */
 
 #include "Ammo.h"
@@ -32,11 +34,6 @@ HRESULT Ammo::Init()
 
 	bodySize = 4;
 
-	//shape.left = pos.x - img->GetFrameWidth() / 2;
-	//shape.right = shape.left + img->GetFrameWidth();
-	//shape.top = pos.y - img->GetFrameHeight() / 2;
-	//shape.bottom = shape.top + img->GetFrameHeight();
-
 	shape.left = pos.x - bodySize / 2;
 	shape.right = shape.left + bodySize;
 	shape.top = pos.y - bodySize / 2;
@@ -49,17 +46,11 @@ HRESULT Ammo::Init()
 void Ammo::Update()
 {
 	AmmoHitCheck();
-	
-
-
-
 
 	shape.left = pos.x - bodySize / 2;
 	shape.right = shape.left + bodySize;
 	shape.top = pos.y - bodySize / 2;
 	shape.bottom = shape.top + bodySize;
-
-	//cout << "Left: " << shape.left << "\tRight : " << shape.right << "\tTop : " << shape.top << "\tBottom : " << shape.bottom << endl;
 
 	if (KeyManager::GetSingleton()->IsOnceKeyDown('P'))
 	{
@@ -194,6 +185,8 @@ void Ammo::AmmoHitCheck()
 				if (tileInfo[i][j].terrain == Terrain::Brick)
 				{
 					DestroyWall(i, j);
+
+					return;
 				}
 			}
 		}
