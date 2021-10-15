@@ -93,6 +93,12 @@
     <ClCompile Include="PlayerTank.cpp">
       <Filter>MainGame\PlayerTank</Filter>
     </ClCompile>
+    <ClCompile Include="Tank.cpp">
+      <Filter>MainGame\PlayerTank</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyTank.cpp">
+      <Filter>MainGame\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h">
@@ -151,6 +157,12 @@
     </ClInclude>
     <ClInclude Include="PlayerTank.h">
       <Filter>MainGame\PlayerTank</Filter>
+    </ClInclude>
+    <ClInclude Include="Tank.h">
+      <Filter>MainGame\PlayerTank</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyTank.h">
+      <Filter>MainGame\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
