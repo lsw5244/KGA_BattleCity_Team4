@@ -15,7 +15,7 @@ private:
 
 	Image* boomEffect;
 
-	TILE_INFO* tileInfo;
+	TILE_INFO(*tileInfo)[TILE_COUNT];
 
 public:
 	virtual HRESULT Init();
@@ -26,6 +26,9 @@ public:
 	void Fire(MoveDir dir, POINTFLOAT pos);
 	void DestroyAmmo();
 
-	void SetTileInfo(TILE_INFO info) { this->tileInfo = &info; }
+	void SetTileInfo(TILE_INFO(*info)[TILE_COUNT]) { this->tileInfo = info; }
+
+	void AmmoHitCheck();
+	void DestroyWall(int i, int j);
 };
 
