@@ -1,10 +1,12 @@
 /*
 		사용하기
+		사용 할 총알에 tileInfo넣어주기
 		발사할 때 Fire()함수를 작동시키면 발사
 		총알이 충돌하면 DestroyAmmo()함수 작동시키기
 		
+
 		FIXME
-		1. 충돌 했을때의 조건 넣어주기
+		1. 부수지 못하는 벽돌, 탱크랑 출돌했을 때 추가하기
 */
 
 #include "Ammo.h"
@@ -32,11 +34,6 @@ HRESULT Ammo::Init()
 
 	bodySize = 4;
 
-	//shape.left = pos.x - img->GetFrameWidth() / 2;
-	//shape.right = shape.left + img->GetFrameWidth();
-	//shape.top = pos.y - img->GetFrameHeight() / 2;
-	//shape.bottom = shape.top + img->GetFrameHeight();
-
 	shape.left = pos.x - bodySize / 2;
 	shape.right = shape.left + bodySize;
 	shape.top = pos.y - bodySize / 2;
@@ -48,35 +45,17 @@ HRESULT Ammo::Init()
 
 void Ammo::Update()
 {
+	AmmoHitCheck();
+
 	shape.left = pos.x - bodySize / 2;
 	shape.right = shape.left + bodySize;
 	shape.top = pos.y - bodySize / 2;
 	shape.bottom = shape.top + bodySize;
 
-	//cout << "Left: " << shape.left << "\tRight : " << shape.right << "\tTop : " << shape.top << "\tBottom : " << shape.bottom << endl;
-
 	if (KeyManager::GetSingleton()->IsOnceKeyDown('P'))
 	{
 		showCollider = showCollider ? false : true;
 	}
-
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT))
-	{
-		Fire(MoveDir::Right, { TILEMAPTOOL_SIZE_X / 2, TILEMAPTOOL_SIZE_Y / 2 });
-	}
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT))
-	{
-		Fire(MoveDir::Left, { TILEMAPTOOL_SIZE_X / 2, TILEMAPTOOL_SIZE_Y / 2 });
-	}
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_UP))
-	{
-		Fire(MoveDir::Up, { TILEMAPTOOL_SIZE_X / 2, TILEMAPTOOL_SIZE_Y / 2 });
-	}
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_DOWN))
-	{
-		Fire(MoveDir::Down, { TILEMAPTOOL_SIZE_X / 2, TILEMAPTOOL_SIZE_Y / 2 });
-	}
-
 
 	if (isAlive == false)
 	{
@@ -98,11 +77,6 @@ void Ammo::Update()
 		pos.y += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();;
 		break;
 	}
-
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_SPACE))
-	{
-		DestroyAmmo();
-	}
 }
 
 void Ammo::Render(HDC hdc)
@@ -118,6 +92,7 @@ void Ammo::Render(HDC hdc)
 			if (boomEffect->GetCurrFrameX() > 3)
 			{
 				renderBoomEffect = false;
+				pos = { WIN_SIZE_X / 2, WIN_SIZE_Y / 2 };
 				boomEffect->SetCurrFrameX(0);
 			}
 		}
@@ -174,5 +149,87 @@ void Ammo::DestroyAmmo()
 
 
 	renderBoomEffect = true;
+}
+
+void Ammo::AmmoHitCheck()
+{
+	for (int i = 0; i < TILE_COUNT; i++)
+	{
+		for (int j = 0; j < TILE_COUNT; j++)
+		{
+			if (PtInRect(&tileInfo[i][j].selectRc, { (int)pos.x, (int)pos.y }))
+			{
+				if (tileInfo[i][j].terrain == Terrain::Brick)
+				{
+					DestroyWall(i, j);
+
+					return;
+				}
+			}
+		}
+	}
+}
+
+void Ammo::DestroyWall(int i, int j)
+{
+	if (isAlive == false)	return;
+
+	DestroyAmmo();
+
+	switch (dir)
+	{
+	case MoveDir::Down:
+		if (tileInfo[i][j].isDes[0][0] == false && tileInfo[i][j].isDes[0][1] == false)
+		{
+			tileInfo[i][j].isDes[1][0] = false;
+			tileInfo[i][j].isDes[1][1] = false;
+		}
+		else
+		{
+			tileInfo[i][j].isDes[0][0] = false;
+			tileInfo[i][j].isDes[0][1] = false;
+		}
+		break;
+
+	case MoveDir::Up:
+		if (tileInfo[i][j].isDes[1][0] == false && tileInfo[i][j].isDes[1][1] == false)
+		{
+			tileInfo[i][j].isDes[0][0] = false;
+			tileInfo[i][j].isDes[0][1] = false;
+		}
+		else
+		{
+			tileInfo[i][j].isDes[1][0] = false;
+			tileInfo[i][j].isDes[1][1] = false;
+		}
+		break;
+
+	case MoveDir::Left:
+		if (tileInfo[i][j].isDes[0][1] == false && tileInfo[i][j].isDes[1][1] == false)
+		{
+			tileInfo[i][j].isDes[0][0] = false;
+			tileInfo[i][j].isDes[1][0] = false;
+		}
+		else
+		{
+			tileInfo[i][j].isDes[0][1] = false;
+			tileInfo[i][j].isDes[1][1] = false;
+		}
+		break;
+
+	case MoveDir::Right:
+		if (tileInfo[i][j].isDes[0][0] == false && tileInfo[i][j].isDes[1][0] == false)
+		{
+			tileInfo[i][j].isDes[0][1] = false;
+			tileInfo[i][j].isDes[1][1] = false;
+		}
+		else
+		{
+			tileInfo[i][j].isDes[0][0] = false;
+			tileInfo[i][j].isDes[1][0] = false;
+		}			
+		break;
+	}
+
 }
 
