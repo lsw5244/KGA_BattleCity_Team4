@@ -8,7 +8,7 @@
 
 HRESULT BattleScene::Init()
 {
-    SetWindowSize(20, 20, WIN_SIZE_X, WIN_SIZE_Y);
+    SetWindowSize(300, 20, WIN_SIZE_X*4, WIN_SIZE_Y*4);
     windowX = WIN_SIZE_X;
     windowY = WIN_SIZE_Y;
     sampleImage = ImageManager::GetSingleton()->AddImage("Image/SamlpTile.bmp",
@@ -93,8 +93,6 @@ void BattleScene::Render(HDC hdc)
         }
     }
 
-    
-    
     playerTank->Render(hdc);
 }
 

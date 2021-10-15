@@ -11,9 +11,13 @@ private:
 	bool isFire;
 	float time;
 
-	RECT bufferRc;
-	POINTFLOAT bufferPos;
+
 	TILE_INFO(*tileInfo)[TILE_COUNT];
+
+	int CurrFrame(Image playerTank, int elapsedCount, int setCurr);
+	void CollisionAndMove(MoveDir movedir);
+
+
 public:
 
 	virtual HRESULT Init() override;
