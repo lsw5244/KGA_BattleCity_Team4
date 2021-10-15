@@ -9,7 +9,8 @@
 HRESULT BattleScene::Init()
 {
     SetWindowSize(20, 20, WIN_SIZE_X, WIN_SIZE_Y);
-
+    windowX = WIN_SIZE_X;
+    windowY = WIN_SIZE_Y;
     sampleImage = ImageManager::GetSingleton()->AddImage("Image/SamlpTile.bmp",
         88, 88, SAMPLE_TILE_COUNT, SAMPLE_TILE_COUNT, true, RGB(255, 0, 255));
 
