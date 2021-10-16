@@ -4,21 +4,27 @@
 #include "Ammo.h"
 
 class EnemyTank;
+class Image;
 class Tank : public GameObject
 {
 protected:
 	int hp;
 	MoveDir moveDir;
 
+	Image* spawnEffect;
+
 	vector<EnemyTank*> vecEnemyTanks;
 	vector<EnemyTank*>::iterator itEnemyTanks;
 
 	EnemyTankType enemyType;
 
-	int enemyMaxCount;
-	//enum class EnemyTankType { Normal, FastMove, QuickFire, Big, iNormal, iFastMove, iQuickFire, iBig, End };
+	int enemyMaxCount, addEnemyCount, destEnemyCount;
 
-	int nCount, fMCount, qFCount, bigCount, iNCount, iFMCount, iQFCount, iBigCount;
+	int onMapEnemyCount;
+
+	float spawnTimer;
+
+	bool spawnTank;
 
 public:
 	virtual HRESULT Init() override;
@@ -26,6 +32,6 @@ public:
 	virtual void Render(HDC hdc) override;
 	virtual void Release() override;
 
-	void AddEnemy(int nCount = 0, int fMCount = 0, int qFCount = 0, int bigCount = 0, int iNCount = 0, int iFMCount = 0, int iQFCount = 0, int iBigCount = 0);
+	void AddEnemy(EnemyTankType enemyType, int addEnemyNum);
 };
 

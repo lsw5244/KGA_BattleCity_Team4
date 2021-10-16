@@ -1,17 +1,67 @@
 #include "Tank.h"
 #include "EnemyTank.h"
+#include "Image.h"
 
 HRESULT Tank::Init()
 {
+	//spawnEffect->Init("Image/Effect/Spawn_Effect.BMP", 64, 16, 4, 1, true, RGB(255, 0, 255));
+
 	enemyType = EnemyTankType::End;
 
 	enemyMaxCount = 20;
+
+	addEnemyCount = 0;
+
+	destEnemyCount = 0;
+
+	vecEnemyTanks.reserve(enemyMaxCount);
+
+	bodySize = 16;
+
+	onMapEnemyCount = 0;
+
+	spawnTimer = 0.0f;
+
+	spawnTank = true;
 
 	return S_OK;
 }
 
 void Tank::Update()
 {
+	//	spawnTimer += 1.0f * TimerManager::GetSingleton()->GetDeltaTime();
+
+	//if (onMapEnemyCount == 4)
+	//{
+	//	spawnTank = false;
+	//	spawnTimer = 3.0f;
+	//}
+
+	//if (onMapEnemyCount < 4 && spawnTimer == 3.0f)
+	//{
+	//	for (int i = 0; i < 5; i++)
+	//	{
+	//		switch (spawnEffect->GetCurrFrameX())
+	//		{
+	//		case 0:
+	//			for (int i = 0; i < 4; i++)
+	//			{
+	//				spawnEffect->SetCurrFrameX(i);
+	//			}
+	//			break;
+	//		case 3:
+	//			for (int i = 3; i >= 0; i--)
+	//			{
+	//				spawnEffect->SetCurrFrameX(i);
+	//			}
+	//			break;
+	//		}
+	//	}
+	//	spawnTimer = 0.0f;
+	//	onMapEnemyCount++;
+	//}
+
+
 	for (itEnemyTanks = vecEnemyTanks.begin(); itEnemyTanks != vecEnemyTanks.end(); itEnemyTanks++)
 	{
 		(*itEnemyTanks)->Update();
@@ -20,6 +70,7 @@ void Tank::Update()
 
 void Tank::Render(HDC hdc)
 {
+
 	for (itEnemyTanks = vecEnemyTanks.begin(); itEnemyTanks != vecEnemyTanks.end(); itEnemyTanks++)
 	{
 		(*itEnemyTanks)->Render(hdc);
@@ -35,89 +86,18 @@ void Tank::Release()
 	vecEnemyTanks.clear();
 }
 
-void Tank::AddEnemy(int nCount, int fMCount, int qFCount, int bigCount, int iNCount, int iFMCount, int iQFCount, int iBigCount)
+void Tank::AddEnemy(EnemyTankType enemyType, int addEnemyNum)
 {
-	//nCount, fMCount, qFCount, bigCount, iNCount, iFMCount, iQFCount, iBigCount;
+	destEnemyCount += addEnemyNum;
 
-	vecEnemyTanks.reserve(enemyMaxCount);
-
-	for (int i = 0; 
-		i < nCount; 
-		i++)
+	for (addEnemyCount; addEnemyCount < destEnemyCount; addEnemyCount++)
 	{
 		vecEnemyTanks.push_back(new EnemyTank);
-		vecEnemyTanks[i]->SetEnemyTankType(EnemyTankType::Normal);
-		vecEnemyTanks[i]->Init();
-	}
+		vecEnemyTanks[addEnemyCount]->SetEnemyTankType(enemyType);
+		vecEnemyTanks[addEnemyCount]->Init();
 
-	for (int i = nCount; 
-		i < nCount + fMCount; 
-		i++)
-	{
-		vecEnemyTanks.push_back(new EnemyTank);
-		vecEnemyTanks[i]->SetEnemyTankType(EnemyTankType::FastMove);
-		vecEnemyTanks[i]->Init();
-	}
-
-	for (int i = nCount + fMCount; 
-		i < nCount + fMCount + qFCount;
-		i++)
-	{
-		vecEnemyTanks.push_back(new EnemyTank);
-		vecEnemyTanks[i]->SetEnemyTankType(EnemyTankType::QuickFire);
-		vecEnemyTanks[i]->Init();
-	}
-
-	for (int i = nCount + fMCount + qFCount;
-		i < nCount + fMCount + qFCount + bigCount; 
-		i++)
-	{
-		vecEnemyTanks.push_back(new EnemyTank);
-		vecEnemyTanks[i]->SetEnemyTankType(EnemyTankType::Big);
-		vecEnemyTanks[i]->Init();
-	}
-
-	for (int i = nCount + fMCount + qFCount + bigCount;
-		i < nCount + fMCount + qFCount + bigCount + iNCount; 
-		i++)
-	{
-		vecEnemyTanks.push_back(new EnemyTank);
-		vecEnemyTanks[i]->SetEnemyTankType(EnemyTankType::iNormal);
-		vecEnemyTanks[i]->Init();
-	}
-
-	for (int i = nCount + fMCount + qFCount + bigCount + iNCount;
-		i < nCount + fMCount + qFCount + bigCount + iNCount + iFMCount; 
-		i++)
-	{
-		vecEnemyTanks.push_back(new EnemyTank);
-		vecEnemyTanks[i]->SetEnemyTankType(EnemyTankType::iFastMove);
-		vecEnemyTanks[i]->Init();
-	}
-
-	for (int i = nCount + fMCount + qFCount + bigCount + iNCount + iFMCount; 
-		i < nCount + fMCount + qFCount + bigCount + iNCount + iFMCount + iQFCount;
-		i++)
-	{
-		vecEnemyTanks.push_back(new EnemyTank);
-		vecEnemyTanks[i]->SetEnemyTankType(EnemyTankType::iQuickFire);
-		vecEnemyTanks[i]->Init();
-	}
-
-	for (int i = nCount + fMCount + qFCount + bigCount + iNCount + iFMCount + iQFCount;
-		i < nCount + fMCount + qFCount + bigCount + iNCount + iFMCount + iQFCount + iBigCount;
-		i++)
-	{
-		vecEnemyTanks.push_back(new EnemyTank);
-		vecEnemyTanks[i]->SetEnemyTankType(EnemyTankType::iBig);
-		vecEnemyTanks[i]->Init();
-	}
-
-	for (int i = 0; i < nCount + fMCount + qFCount + bigCount + iNCount + iFMCount + iQFCount + iBigCount; i++)
-	{
-		POINTFLOAT enemyPos = { 50 + (60 * (i % 3)), 50 + (60 * (i / 3)) };
-		
-		vecEnemyTanks[i]->SetPos(enemyPos);
+		POINTFLOAT enemyPos = { ENEMY_SPAWN_POSX + ((bodySize * 6) * (addEnemyCount % 3)), ENEMY_SPAWN_POSY };//ENEMY_SPAWN_POSX
+		vecEnemyTanks[addEnemyCount]->SetPos(enemyPos);
 	}
 
 }

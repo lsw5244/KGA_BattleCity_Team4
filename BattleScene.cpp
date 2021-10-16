@@ -21,11 +21,33 @@ HRESULT BattleScene::Init()
     playerTank->Init();
     playerTank->SetTileInfo(tileInfo);
 
+    SetWindowSize(20, 20, WIN_SIZE_X, WIN_SIZE_Y);
+
+    sampleImage = ImageManager::GetSingleton()->AddImage("Image/SamlpTile.bmp",
+        88, 88, SAMPLE_TILE_COUNT, SAMPLE_TILE_COUNT, true, RGB(255, 0, 255));
+
+    battleBackGround = ImageManager::GetSingleton()->AddImage("Image/background.bmp", WIN_SIZE_X, WIN_SIZE_Y);
+    Load();
+
+    enemyTank = new Tank;
+    enemyTank->Init();
+
+    addEnemy = true;
+
     return S_OK;
 }
 
 void BattleScene::Update()
 {
+    if (addEnemy)
+    {
+        enemyTank->AddEnemy(EnemyTankType::iNormal, 1);
+        enemyTank->AddEnemy(EnemyTankType::iFastMove, 2);
+        addEnemy = false;
+    }
+
+    enemyTank->Update();
+
     playerTank->Update();
 }
 
@@ -93,7 +115,7 @@ void BattleScene::Render(HDC hdc)
         }
     }
 
-    
+    enemyTank->Render(hdc);
     
     playerTank->Render(hdc);
 }
