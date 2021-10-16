@@ -21,13 +21,6 @@ HRESULT BattleScene::Init()
     playerTank->Init();
     playerTank->SetTileInfo(tileInfo);
 
-    SetWindowSize(20, 20, WIN_SIZE_X, WIN_SIZE_Y);
-
-    sampleImage = ImageManager::GetSingleton()->AddImage("Image/SamlpTile.bmp",
-        88, 88, SAMPLE_TILE_COUNT, SAMPLE_TILE_COUNT, true, RGB(255, 0, 255));
-
-    battleBackGround = ImageManager::GetSingleton()->AddImage("Image/background.bmp", WIN_SIZE_X, WIN_SIZE_Y);
-    Load();
 
     enemyTank = new Tank;
     enemyTank->Init();

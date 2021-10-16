@@ -20,7 +20,7 @@ private:
 	// 배경 이미지
 	Image* backGround;
 
-	
+	bool addEnemy;
 
 	TILE_INFO tileInfo[TILE_COUNT][TILE_COUNT];
 
