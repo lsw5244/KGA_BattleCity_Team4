@@ -21,11 +21,33 @@ HRESULT BattleScene::Init()
     playerTank->Init();
     playerTank->SetTileInfo(tileInfo);
 
+    SetWindowSize(20, 20, WIN_SIZE_X, WIN_SIZE_Y);
+
+    sampleImage = ImageManager::GetSingleton()->AddImage("Image/SamlpTile.bmp",
+        88, 88, SAMPLE_TILE_COUNT, SAMPLE_TILE_COUNT, true, RGB(255, 0, 255));
+
+    battleBackGround = ImageManager::GetSingleton()->AddImage("Image/background.bmp", WIN_SIZE_X, WIN_SIZE_Y);
+    Load();
+
+    enemyTank = new Tank;
+    enemyTank->Init();
+
+    addEnemy = true;
+
     return S_OK;
 }
 
 void BattleScene::Update()
 {
+    if (addEnemy)
+    {
+        enemyTank->AddEnemy(EnemyTankType::iNormal, 1);
+        enemyTank->AddEnemy(EnemyTankType::iFastMove, 2);
+        addEnemy = false;
+    }
+
+    enemyTank->Update();
+
     playerTank->Update();
 }
 
@@ -93,6 +115,8 @@ void BattleScene::Render(HDC hdc)
         }
     }
 
+
+    enemyTank->Render(hdc);
     playerTank->Render(hdc);
 }
 
@@ -104,24 +128,24 @@ void BattleScene::Load()
 {
     {
         int loadIndex = 1;
-        //cout << "·ÎµåÇÒ ¸ÊÀÇ ¹øÈ£¸¦ ÀÔ·ÂÇÏ¿© ÁÖ½Ê½Ã¿À. : ";
+        //cout << "ë¡œë“œí•  ë§µì˜ ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì—¬ ì£¼ì‹­ì‹œì˜¤. : ";
         //cin >> loadIndex;
         string loadFileName = "Save/saveMapData_" + to_string(loadIndex);
         loadFileName += ".map";
 
         HANDLE hFile = CreateFile(loadFileName.c_str(),
-            GENERIC_READ,           // ÀĞ±â, ¾²±â
-            0, NULL,                // °øÀ¯, º¸¾È ¸ğµå
-            OPEN_EXISTING,          // ÆÄÀÏ ¸¸µé°Å³ª ÀĞÀ» ¶§ ¿É¼Ç
-            FILE_ATTRIBUTE_NORMAL,  // ÆÄÀÏ ¼Ó¼º(ÀĞ±â Àü¿ë, ¼û±è µîµî)
+            GENERIC_READ,           // ì½ê¸°, ì“°ê¸°
+            0, NULL,                // ê³µìœ , ë³´ì•ˆ ëª¨ë“œ
+            OPEN_EXISTING,          // íŒŒì¼ ë§Œë“¤ê±°ë‚˜ ì½ì„ ë•Œ ì˜µì…˜
+            FILE_ATTRIBUTE_NORMAL,  // íŒŒì¼ ì†ì„±(ì½ê¸° ì „ìš©, ìˆ¨ê¹€ ë“±ë“±)
             NULL);
 
-        // ÀĞ±â
+        // ì½ê¸°
         DWORD readByte;
         if (ReadFile(hFile, tileInfo, sizeof(TILE_INFO) * TILE_COUNT * TILE_COUNT,
             &readByte, NULL) == false)
         {
-            MessageBox(g_hWnd, "¸Ê µ¥ÀÌÅÍ ·Îµå¿¡ ½ÇÆĞÇß½À´Ï´Ù.", "¿¡·¯", MB_OK);
+            MessageBox(g_hWnd, "ë§µ ë°ì´í„° ë¡œë“œì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.", "ì—ëŸ¬", MB_OK);
         }
 
         CloseHandle(hFile);

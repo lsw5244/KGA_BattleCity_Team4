@@ -20,6 +20,9 @@ using namespace std;
 #define PIXELMAP_SIZE_X	800
 #define PIXELMAP_SIZE_Y	600
 
+#define ENEMY_SPAWN_POSX	24
+#define ENEMY_SPAWN_POSY	16
+
 #define PI 3.14159265357989
 #define PI2 (3.14159265357989 * 2)
 

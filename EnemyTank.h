@@ -9,7 +9,7 @@ private:
 
 	EnemyTankType enemyTankType;
 
-	int elapsedCount;
+	int elapsedCount, elapsedCount2;
 
 	bool haveItem;
 
@@ -22,6 +22,6 @@ public:
 	void Move(MoveDir dir);
 
 	inline void SetMoveDir(MoveDir moveDir) { this->moveDir = moveDir; }
-	inline void SetEnemyTankType(EnemyTankType enemyTankType) {	this->enemyTankType = enemyTankType; }
+	inline void SetEnemyTankType(EnemyTankType enemyTankType) { this->enemyTankType = enemyTankType; }
 };
 
