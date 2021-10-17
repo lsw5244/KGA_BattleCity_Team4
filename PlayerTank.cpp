@@ -107,7 +107,7 @@ HRESULT PlayerTank::Init()
 
     moveSpeed = 50;
 
-    return E_NOTIMPL;
+    return S_OK;
 }
 
 void PlayerTank::Update()

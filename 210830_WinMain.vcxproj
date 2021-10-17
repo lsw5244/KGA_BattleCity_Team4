@@ -142,7 +142,12 @@
     <ClCompile Include="Ammo.cpp" />
     <ClCompile Include="AmmoDebugScene.cpp" />
     <ClCompile Include="BattleScene.cpp" />
+    <ClCompile Include="BigEnemyTank.cpp" />
     <ClCompile Include="EnemyTank.cpp" />
+    <ClCompile Include="EnemyTankFactory.cpp" />
+    <ClCompile Include="EnemyTanks.cpp" />
+    <ClCompile Include="FastMoveEnemyTank.cpp" />
+    <ClCompile Include="FastShootEnemyTank.cpp" />
     <ClCompile Include="GameEntity.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Image.cpp" />
@@ -151,6 +156,7 @@
     <ClCompile Include="LoadingScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
+    <ClCompile Include="NormalEnemyTank.cpp" />
     <ClCompile Include="PlayerTank.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Tank.cpp" />
@@ -163,9 +169,14 @@
     <ClInclude Include="Ammo.h" />
     <ClInclude Include="AmmoDebugScene.h" />
     <ClInclude Include="BattleScene.h" />
+    <ClInclude Include="BigEnemyTank.h" />
     <ClInclude Include="CommonFunction.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="EnemyTank.h" />
+    <ClInclude Include="EnemyTankFactory.h" />
+    <ClInclude Include="EnemyTanks.h" />
+    <ClInclude Include="FastMoveEnemyTank.h" />
+    <ClInclude Include="FastShootEnemyTank.h" />
     <ClInclude Include="GameEntity.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Image.h" />
@@ -173,6 +184,7 @@
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="LoadingScene.h" />
     <ClInclude Include="MainGame.h" />
+    <ClInclude Include="NormalEnemyTank.h" />
     <ClInclude Include="PlayerTank.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Singleton.h" />

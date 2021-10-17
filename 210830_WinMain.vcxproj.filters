@@ -40,6 +40,12 @@
     <Filter Include="MainGame\PlayerTank">
       <UniqueIdentifier>{f9425597-7ba6-45da-95d2-aecbe01a3b0b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Enemy\EnemyFactoyy">
+      <UniqueIdentifier>{783fd0f2-e83c-4ddc-8f25-a0368a958a8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Enemy\EnemyTank">
+      <UniqueIdentifier>{f3cf7ea1-bf40-43b4-bc79-51612ead3264}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -96,8 +102,26 @@
     <ClCompile Include="Tank.cpp">
       <Filter>MainGame\PlayerTank</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyTank.cpp">
+    <ClCompile Include="BigEnemyTank.cpp">
       <Filter>MainGame\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="FastShootEnemyTank.cpp">
+      <Filter>MainGame\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="NormalEnemyTank.cpp">
+      <Filter>MainGame\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyTankFactory.cpp">
+      <Filter>MainGame\Enemy\EnemyFactoyy</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyTank.cpp">
+      <Filter>MainGame\Enemy\EnemyTank</Filter>
+    </ClCompile>
+    <ClCompile Include="FastMoveEnemyTank.cpp">
+      <Filter>MainGame\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyTanks.cpp">
+      <Filter>MainGame\Enemy\EnemyFactoyy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -161,8 +185,26 @@
     <ClInclude Include="Tank.h">
       <Filter>MainGame\PlayerTank</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyTank.h">
+    <ClInclude Include="NormalEnemyTank.h">
       <Filter>MainGame\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="FastShootEnemyTank.h">
+      <Filter>MainGame\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="BigEnemyTank.h">
+      <Filter>MainGame\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyTankFactory.h">
+      <Filter>MainGame\Enemy\EnemyFactoyy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyTank.h">
+      <Filter>MainGame\Enemy\EnemyTank</Filter>
+    </ClInclude>
+    <ClInclude Include="FastMoveEnemyTank.h">
+      <Filter>MainGame\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyTanks.h">
+      <Filter>MainGame\Enemy\EnemyFactoyy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

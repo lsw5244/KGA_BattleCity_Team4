@@ -30,13 +30,13 @@ HRESULT Tank::Init()
 void Tank::Update()
 {
 	//	spawnTimer += 1.0f * TimerManager::GetSingleton()->GetDeltaTime();
-
+	//
 	//if (onMapEnemyCount == 4)
 	//{
 	//	spawnTank = false;
 	//	spawnTimer = 3.0f;
 	//}
-
+	//
 	//if (onMapEnemyCount < 4 && spawnTimer == 3.0f)
 	//{
 	//	for (int i = 0; i < 5; i++)
