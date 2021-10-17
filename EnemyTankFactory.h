@@ -7,11 +7,12 @@ class EnemyTanks;
 class EnemyTankFactory :  public vector<EnemyTanks*>
 {
 private:
+protected:
 	virtual EnemyTanks* CreateEnemyTank() = 0;
 
 public:
 	vector<EnemyTanks*> vecEnemyTank;
-	void NewEnemyTank();
+	void NewEnemyTank(TILE_INFO(*tileInfo)[TILE_COUNT]);
 
 	virtual HRESULT Init() = 0;
 	virtual void Update() = 0;

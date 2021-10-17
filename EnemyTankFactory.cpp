@@ -5,11 +5,12 @@
 #include "FastShootEnemyTank.h"
 #include "BigEnemyTank.h"
 
-void EnemyTankFactory::NewEnemyTank()
+void EnemyTankFactory::NewEnemyTank(TILE_INFO(*tileInfo)[TILE_COUNT])
 {
 	EnemyTanks* enemyTank = CreateEnemyTank();
 	vecEnemyTank.push_back(enemyTank);
 	vecEnemyTank.back()->Init();
+	vecEnemyTank.back()->SetTileInfo(tileInfo);
 }
 
 EnemyTankFactory::~EnemyTankFactory()

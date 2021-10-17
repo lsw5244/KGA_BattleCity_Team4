@@ -68,7 +68,6 @@ void PlayerTank::CollisionAndMove(MoveDir movedir)
         shape = bufferRc;
         pos = bufferPos;
     }
-
 }
 
 void PlayerTank::PosReset(MoveDir movedir)
@@ -96,6 +95,10 @@ void PlayerTank::PosReset(MoveDir movedir)
             pos.x += 16;
         }
     }
+    shape.left = pos.x - 8;
+    shape.top = pos.y - 8;
+    shape.right = pos.x + 8;
+    shape.bottom = pos.y + 8;
 }
 
 HRESULT PlayerTank::Init()
@@ -106,16 +109,16 @@ HRESULT PlayerTank::Init()
     pos.y = WIN_SIZE_Y - 16;
 
     moveSpeed = 50;
-
+    shape.left = pos.x - 8;
+    shape.top = pos.y - 8;
+    shape.right = pos.x + 8;
+    shape.bottom = pos.y + 8;
     return S_OK;
 }
 
 void PlayerTank::Update()
 {
-    shape.left = pos.x - 8;
-    shape.top = pos.y - 8;
-    shape.right = pos.x + 8;
-    shape.bottom = pos.y + 8;
+
     RECT rc;
 
     time += TimerManager::GetSingleton()->GetDeltaTime();

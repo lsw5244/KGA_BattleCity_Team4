@@ -6,8 +6,14 @@
 class EnemyTanks : public GameObject
 {
 private:
+protected:
+	void CollisionAndMove(MoveDir movedir);
+	void PosReset(MoveDir movedir);
+	TILE_INFO(*tileInfo)[TILE_COUNT];
 
+	MoveDir movedir;
 public:
+	inline void SetTileInfo(TILE_INFO(*tileInfo)[TILE_COUNT]) { this->tileInfo = tileInfo; }
 
 	virtual HRESULT Init() = 0;
 	virtual void Update() = 0;

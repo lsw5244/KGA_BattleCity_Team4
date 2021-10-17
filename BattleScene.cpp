@@ -37,11 +37,11 @@ HRESULT BattleScene::Init()
     enemyTankFactory[1] = new FastShootTankFactory;
     enemyTankFactory[2] = new FastMoveTankFactory;
     enemyTankFactory[3] = new BigTankFactory;
-
-    enemyTankFactory[0]->NewEnemyTank();
-    enemyTankFactory[1]->NewEnemyTank();
-    enemyTankFactory[2]->NewEnemyTank();
-    enemyTankFactory[3]->NewEnemyTank();
+    
+    enemyTankFactory[0]->NewEnemyTank(tileInfo);
+    enemyTankFactory[1]->NewEnemyTank(tileInfo);
+    enemyTankFactory[2]->NewEnemyTank(tileInfo);
+    enemyTankFactory[3]->NewEnemyTank(tileInfo);
 
     //enemyTank = new Tank;
     //enemyTank->Init();
