@@ -64,16 +64,16 @@ void Ammo::Update()
 
 	switch (dir)
 	{
-	case Left:
+	case MoveDir::Left:
 		pos.x -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();;
 		break;
-	case Right:
+	case MoveDir::Right:
 		pos.x += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();;
 		break;
-	case Up:
+	case MoveDir::Up:
 		pos.y -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 		break;
-	case Down:
+	case MoveDir::Down:
 		pos.y += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();;
 		break;
 	}
@@ -121,19 +121,19 @@ void Ammo::Fire(MoveDir dir, POINTFLOAT pos)
 	this->pos = pos;
 	switch (dir)
 	{
-	case Left:
+	case MoveDir::Left:
 		img = ImageManager::GetSingleton()->FindImage("Image/Bullet/Missile_Left.bmp");
 		this->dir = dir;
 		break;
-	case Right:
+	case MoveDir::Right:
 		img = ImageManager::GetSingleton()->FindImage("Image/Bullet/Missile_Right.bmp");
 		this->dir = dir;
 		break;
-	case Up:
+	case MoveDir::Up:
 		img = ImageManager::GetSingleton()->FindImage("Image/Bullet/Missile_Up.bmp");
 		this->dir = dir;
 		break;
-	case Down:
+	case MoveDir::Down:
 		img = ImageManager::GetSingleton()->FindImage("Image/Bullet/Missile_Down.bmp");
 		this->dir = dir;
 		break;

@@ -25,13 +25,14 @@ using namespace std;
 
 #define PI 3.14159265357989
 #define PI2 (3.14159265357989 * 2)
-
 #define DEGREE_TO_RADIAN(x)		(x * PI / 180.0f)
 
 #define SAFE_RELEASE(p)	{ if (p) { p->Release(); delete p; p = nullptr; } }
 #define SAFE_DELETE(p)	{ if (p) { delete p; p = nullptr; } }
 
-enum MoveDir { Left, Right, Up, Down };
+#define TANK_COLLIDER_DEBUG '8'
+
+enum class MoveDir { Left, Right, Up, Down };
 enum class TankType { Player, Enemy };
 enum class EnemyTankType { Normal, FastMove, QuickFire, Big, iNormal, iFastMove, iQuickFire, iBig, End };
 

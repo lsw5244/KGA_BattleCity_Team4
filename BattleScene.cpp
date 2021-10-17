@@ -142,6 +142,10 @@ void BattleScene::Render(HDC hdc)
 
 void BattleScene::Release()
 {
+    for (int i = 0; i < 4; i++) {
+        enemyTankFactory[i]->Release();
+    }
+
 }
 
 void BattleScene::Load()

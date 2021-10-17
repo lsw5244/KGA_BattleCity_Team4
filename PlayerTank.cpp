@@ -149,7 +149,7 @@ void PlayerTank::Update()
 void PlayerTank::Render(HDC hdc)
 {
 
-    if (KeyManager::GetSingleton()->IsStayKeyDown('8')) {
+    if (KeyManager::GetSingleton()->IsStayKeyDown(TANK_COLLIDER_DEBUG)) {
         Rectangle(hdc,
             shape.left,
             shape.top,

@@ -9,6 +9,7 @@ void EnemyTankFactory::NewEnemyTank(TILE_INFO(*tileInfo)[TILE_COUNT])
 {
 	EnemyTanks* enemyTank = CreateEnemyTank();
 	vecEnemyTank.push_back(enemyTank);
+	vecEnemyTank.back()->TankInit();
 	vecEnemyTank.back()->Init();
 	vecEnemyTank.back()->SetTileInfo(tileInfo);
 }
