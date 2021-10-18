@@ -4,7 +4,7 @@
 #include <vector>
 using namespace std;
 class EnemyTanks;
-class EnemyTankFactory :  public vector<EnemyTanks*>
+class EnemyTankFactory
 {
 private:
 protected:

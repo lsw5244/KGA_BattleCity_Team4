@@ -118,7 +118,6 @@ HRESULT PlayerTank::Init()
 
 void PlayerTank::Update()
 {
-
     RECT rc;
 
     time += TimerManager::GetSingleton()->GetDeltaTime();

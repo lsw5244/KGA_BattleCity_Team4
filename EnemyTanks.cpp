@@ -85,6 +85,52 @@ void EnemyTanks::PosReset(MoveDir movedir)
     shape.bottom = pos.y + 8;
 }
 
+void EnemyTanks::TankUpdate()
+{
+    time += TimerManager::GetSingleton()->GetDeltaTime();
+    if (time >= 0.3f) {
+        tuple<MoveDir, bool> result = AutoMove(movedir, pos);
+        if (get<0>(result) == movedir && get<1>(result)) {
+            time = 0;
+        }
+        else if (get<0>(result) != movedir && !get<1>(result)) {
+            movedir = get<0>(result);
+            time = 0;
+        }
+    }
+
+    switch (movedir) {
+    case MoveDir::Up:
+        PosReset(MoveDir::Up);
+        CollisionAndMove(MoveDir::Up);
+        elapsedWay = 0;
+        elapsedCount++;
+        elapsedCount = CurrFrame(*img, &elapsedCount, 1);
+        break;
+    case MoveDir::Down:
+        PosReset(MoveDir::Down);
+        CollisionAndMove(MoveDir::Down);
+        elapsedWay = 4;
+        elapsedCount++;
+        elapsedCount = CurrFrame(*img, &elapsedCount, 5);
+        break;
+    case MoveDir::Right:
+        PosReset(MoveDir::Right);
+        CollisionAndMove(MoveDir::Right);
+        elapsedWay = 6;
+        elapsedCount++;
+        elapsedCount = CurrFrame(*img, &elapsedCount, 3);
+        break;
+    case MoveDir::Left:
+        PosReset(MoveDir::Left);
+        CollisionAndMove(MoveDir::Left);
+        elapsedWay = 2;
+        elapsedCount++;
+        elapsedCount = CurrFrame(*img, &elapsedCount, 7);
+        break;
+    }
+}
+
 int EnemyTanks::CurrFrame(Image enemyTank, int* elapsedCount, int setCurr)
 {
     if (*elapsedCount == 2)
@@ -102,31 +148,62 @@ int EnemyTanks::CurrFrame(Image enemyTank, int* elapsedCount, int setCurr)
     return *elapsedCount;
 }
 
-MoveDir EnemyTanks::AutoMove(MoveDir moveDir, POINTFLOAT pos)
+tuple<MoveDir, bool> EnemyTanks::AutoMove(MoveDir moveDir, POINTFLOAT pos)
 {
-    int randomValue = rand();
+    int randomValue = rand() % 3;
     RECT rc;
     RECT bufferRc1 = shape;
     RECT bufferRc2 = shape;
+    RECT bufferRc3 = shape;
     POINTFLOAT bufferPos1 = pos;
     POINTFLOAT bufferPos2 = pos;
+    POINTFLOAT bufferPos3 = pos;
     bool check1 = true;
     bool check2 = true;
+    bool check3 = true;
 
     if (moveDir == MoveDir::Up || moveDir == MoveDir::Down) {
+        if (moveDir == MoveDir::Up) {
+            bufferPos3.y -= 1;
+            bufferRc3.top = bufferPos3.y - 9;
+            bufferRc3.left = bufferPos3.x - 7;
+            bufferRc3.bottom = bufferPos3.y + 9;
+            bufferRc3.right = bufferPos3.x + 7;
+        }
+        if (moveDir == MoveDir::Down) {
+            bufferPos3.y += 1;
+            bufferRc3.top = bufferPos3.y - 9;
+            bufferRc3.left = bufferPos3.x - 7;
+            bufferRc3.bottom = bufferPos3.y + 9;
+            bufferRc3.right = bufferPos3.x + 7;
+        }
         bufferPos1.x -= 1;
         bufferPos2.x += 1;
         bufferRc1.top = bufferPos1.y - 7;
-        bufferRc1.left = (bufferPos1.x - 1) - 8;
+        bufferRc1.left = bufferPos1.x - 9;
         bufferRc1.bottom = bufferPos1.y + 7;
-        bufferRc1.right = (bufferPos1.x - 1) + 8;
+        bufferRc1.right = bufferPos1.x + 9;
 
         bufferRc2.top = bufferPos2.y - 7;
-        bufferRc2.left = (bufferPos2.x + 1) - 8;
+        bufferRc2.left = bufferPos2.x - 9;
         bufferRc2.bottom = bufferPos2.y + 7;
-        bufferRc2.right = (bufferPos2.x + 1) + 8;
+        bufferRc2.right = bufferPos2.x + 9;
     }
     else if (moveDir == MoveDir::Right || moveDir == MoveDir::Left) {
+        if (moveDir == MoveDir::Left) {
+            bufferPos3.x -= 1;
+            bufferRc3.top = bufferPos3.y - 7;
+            bufferRc3.left = bufferPos3.x - 9;
+            bufferRc3.bottom = bufferPos3.y + 7;
+            bufferRc3.right = bufferPos3.x + 9;
+        }
+        if (moveDir == MoveDir::Right) {
+            bufferPos3.x += 1;
+            bufferRc3.top = bufferPos3.y - 7;
+            bufferRc3.left = bufferPos3.x - 9;
+            bufferRc3.bottom = bufferPos3.y + 7;
+            bufferRc3.right = bufferPos3.x + 9;
+        }
         bufferPos1.y -= 1;
         bufferPos2.y += 1;
         bufferRc1.top = (bufferPos1.y - 1) - 8;
@@ -148,6 +225,9 @@ MoveDir EnemyTanks::AutoMove(MoveDir moveDir, POINTFLOAT pos)
             if (!(tileInfo[i][j].terrain == Terrain::Empty) && IntersectRect(&rc, &bufferRc2, &tileInfo[i][j].selectRc)) {
                 check2 = false;
             }
+            if (!(tileInfo[i][j].terrain == Terrain::Empty) && IntersectRect(&rc, &bufferRc3, &tileInfo[i][j].selectRc)) {
+                check3 = false;
+            }
         }
     }
     if (moveDir == MoveDir::Left || moveDir == MoveDir::Right) {
@@ -158,39 +238,52 @@ MoveDir EnemyTanks::AutoMove(MoveDir moveDir, POINTFLOAT pos)
         if (bufferPos2.x >= 208 + 9) check2 = false;
     }
 
-
-    cout << check1 << " " << check2 << endl;
     if (check1 || check2) {
         if (moveDir == MoveDir::Up || moveDir == MoveDir::Down) {
-            if (check1 && check2) {
-                if (randomValue % 2) {
-                    return  MoveDir::Right;
-                }
-                else {
-                    return MoveDir::Left;
-                }
+            if (randomValue == 2 && check3) {
+                return tuple<MoveDir, bool>(moveDir, true);
             }
-            else {
-                if (check1) return MoveDir::Left;
-                if (check2) return MoveDir::Right;
+
+            if (check1 && check2) {
+                if (randomValue == 0) {
+                    return  tuple<MoveDir, bool>(MoveDir::Right, false);
+                }
+                else if (randomValue == 1) {
+                    return tuple<MoveDir, bool>(MoveDir::Left, false);
+                }
+            } else {
+                if (check1) return tuple<MoveDir, bool>(MoveDir::Left, false);
+                if (check2) return tuple<MoveDir, bool>(MoveDir::Right, false);
+            }
+        } else if (moveDir == MoveDir::Right || moveDir == MoveDir::Left) {
+            if (randomValue == 2 && check3) {
+                return tuple<MoveDir, bool>(moveDir, true);
+            }
+
+            if (check1 && check2) {
+                if (randomValue == 0) {
+                    return tuple<MoveDir, bool>(MoveDir::Up, false);
+                }
+                else if (randomValue == 1) {
+                    return tuple<MoveDir, bool>(MoveDir::Down, false);
+                }
+            } else {
+                if (check1) return tuple<MoveDir, bool>(MoveDir::Up, false);
+                if (check2) return tuple<MoveDir, bool>(MoveDir::Down, false);
             }
         }
-        else if (moveDir == MoveDir::Right || moveDir == MoveDir::Left) {
-            if (check1 && check2) {
-                if (randomValue % 2) {
-                    return MoveDir::Up;
-                }
-                else {
-                    return MoveDir::Down;
-                }
-            }
-            else {
-                if (check1) return MoveDir::Up;
-                if (check2) return MoveDir::Down;
-            }
+    } else {
+        if (!check3) {
+            if (moveDir == MoveDir::Up) return tuple<MoveDir, bool>(MoveDir::Down, false);
+            if (moveDir == MoveDir::Down) return tuple<MoveDir, bool>(MoveDir::Up, false);
+        }
+
+        if (!check3) {
+            if (moveDir == MoveDir::Right) return tuple<MoveDir, bool>(MoveDir::Left, false);
+            if (moveDir == MoveDir::Left) return tuple<MoveDir, bool>(MoveDir::Right, false);
         }
     }
-    return moveDir;
+    return tuple<MoveDir, bool>(moveDir, false);
 }
 
 HRESULT EnemyTanks::TankInit()
@@ -201,9 +294,9 @@ HRESULT EnemyTanks::TankInit()
     shape.bottom = pos.y + 8;
     movedir = MoveDir::Down;
     elapsedCount = 0;
+    elapsedWay = 0;
     return S_OK;
 }
-
 
 EnemyTanks::~EnemyTanks()
 {
