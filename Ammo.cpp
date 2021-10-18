@@ -39,6 +39,9 @@ HRESULT Ammo::Init()
 	shape.bottom = shape.top + bodySize;
 
 
+	hitTile1 = nullptr;
+	hitTile2 = nullptr;
+
 	return S_OK;
 }
 
@@ -50,27 +53,6 @@ void Ammo::Update()
 	shape.right = shape.left + bodySize;
 	shape.top = pos.y - bodySize / 2;
 	shape.bottom = shape.top + bodySize;
-
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT))
-	{
-		Fire(MoveDir::Right, pos);
-	}
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT))
-	{
-		Fire(MoveDir::Left, pos);
-	}
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_UP))
-	{
-		Fire(MoveDir::Up, pos);
-	}
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_DOWN))
-	{
-		Fire(MoveDir::Down, pos);
-	}
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_SPACE))
-	{
-		DestroyAmmo();
-	}
 
 	if (KeyManager::GetSingleton()->IsOnceKeyDown('P'))
 	{
@@ -112,7 +94,7 @@ void Ammo::Render(HDC hdc)
 			if (boomEffect->GetCurrFrameX() > 3)
 			{
 				renderBoomEffect = false;
-				pos = { WIN_SIZE_X / 2, WIN_SIZE_Y / 2 };
+				pos = { TILEMAPTOOL_SIZE_X / 2, TILEMAPTOOL_SIZE_Y / 2 };
 				boomEffect->SetCurrFrameX(0);
 			}
 		}
@@ -167,7 +149,6 @@ void Ammo::DestroyAmmo()
 {
 	isAlive = false;
 
-
 	renderBoomEffect = true;
 }
 
@@ -182,8 +163,25 @@ void Ammo::AmmoHitCheck()
 			{
 				if (tileInfo[i][j].terrain == Terrain::Brick)
 				{
-					DestroyWall(i, j);
+					// 오른쪽, 아래쪽 확인하기
+					hitTile1 = &tileInfo[i][j];
+					if (CollisionEnter(tileInfo[i + 1][j].selectRc ,shape) &&
+						tileInfo[i + 1][j].terrain == Terrain::Brick)
+					{
+						hitTile2 = &tileInfo[i + 1][j];
+						DestroyWall(hitTile1, hitTile2);
+					}
+					else if (CollisionEnter(tileInfo[i][j + 1].selectRc, shape) && 
+						tileInfo[i][j + 1].terrain == Terrain::Brick)
+					{
+						hitTile2 = &tileInfo[i][j + 1];
+						DestroyWall(hitTile1, hitTile2);
 
+					}
+					else
+					{
+						DestroyWall(hitTile1);
+					}
 					return;
 				}
 			}
@@ -252,6 +250,168 @@ void Ammo::DestroyWall(int i, int j)
 		break;
 	}
 
+	hitTile1 = nullptr;
+	hitTile2 = nullptr;
+
+}
+
+void Ammo::DestroyWall(TILE_INFO* tileInfo)
+{
+	//tileInfo->isDes[0][0] = false;
+	if (isAlive == false)	return;
+
+	DestroyAmmo();
+
+	switch (dir)
+	{
+	case MoveDir::Down:
+		if (tileInfo->isDes[0][0] == false && tileInfo->isDes[0][1] == false)
+		{
+			tileInfo->isDes[1][0] = false;
+			tileInfo->isDes[1][1] = false;
+		}
+		else
+		{
+			tileInfo->isDes[0][0] = false;
+			tileInfo->isDes[0][1] = false;
+		}
+		break;
+
+	case MoveDir::Up:
+		if (tileInfo->isDes[1][0] == false && tileInfo->isDes[1][1] == false)
+		{
+			tileInfo->isDes[0][0] = false;
+			tileInfo->isDes[0][1] = false;
+		}
+		else
+		{
+			tileInfo->isDes[1][0] = false;
+			tileInfo->isDes[1][1] = false;
+		}
+		break;
+
+	case MoveDir::Left:
+		if (tileInfo->isDes[0][1] == false && tileInfo->isDes[1][1] == false)
+		{
+			tileInfo->isDes[0][0] = false;
+			tileInfo->isDes[1][0] = false;
+		}
+		else
+		{
+			tileInfo->isDes[0][1] = false;
+			tileInfo->isDes[1][1] = false;
+		}
+		break;
+
+	case MoveDir::Right:
+		if (tileInfo->isDes[0][0] == false && tileInfo->isDes[1][0] == false)
+		{
+			tileInfo->isDes[0][1] = false;
+			tileInfo->isDes[1][1] = false;
+		}
+		else
+		{
+			tileInfo->isDes[0][0] = false;
+			tileInfo->isDes[1][0] = false;
+		}
+		break;
+	}
+
+	hitTile1 = nullptr;
+	hitTile2 = nullptr;
+}
+
+void Ammo::DestroyWall(TILE_INFO* tileInfo1, TILE_INFO* tileinfo2)
+{
+	if (isAlive == false)	return;
+
+	DestroyAmmo();
+
+	switch (dir)
+	{
+	case MoveDir::Down:
+		if (tileInfo1->isDes[0][0] == false &&
+			tileInfo1->isDes[0][1] == false &&
+			tileinfo2->isDes[0][0] == false &&
+			tileinfo2->isDes[0][1] == false)
+		{
+			tileInfo1->isDes[1][0] = false;
+			tileInfo1->isDes[1][1] = false;
+			tileinfo2->isDes[1][0] = false;
+			tileinfo2->isDes[1][1] = false;
+		}
+		else
+		{
+			tileInfo1->isDes[0][0] = false;
+			tileInfo1->isDes[0][1] = false;
+			tileinfo2->isDes[0][0] = false;
+			tileinfo2->isDes[0][1] = false;
+		}
+		break;
+
+	case MoveDir::Up:
+		if (tileInfo1->isDes[1][0] == false &&
+			tileInfo1->isDes[1][1] == false &&
+			tileinfo2->isDes[1][0] == false &&
+			tileinfo2->isDes[1][1] == false)
+		{
+			tileInfo1->isDes[0][0] = false;
+			tileInfo1->isDes[0][1] = false;
+			tileinfo2->isDes[0][0] = false;
+			tileinfo2->isDes[0][1] = false;
+		}
+		else
+		{
+			tileInfo1->isDes[1][0] = false;
+			tileInfo1->isDes[1][1] = false;
+			tileinfo2->isDes[1][0] = false;
+			tileinfo2->isDes[1][1] = false;
+		}
+		break;
+
+	case MoveDir::Left:
+		if (tileInfo1->isDes[0][1] == false &&
+			tileInfo1->isDes[1][1] == false &&
+			tileinfo2->isDes[0][1] == false &&
+			tileinfo2->isDes[1][1] == false)
+		{
+			tileInfo1->isDes[0][0] = false;
+			tileInfo1->isDes[1][0] = false;
+			tileinfo2->isDes[0][0] = false;
+			tileinfo2->isDes[1][0] = false;
+		}
+		else
+		{
+			tileInfo1->isDes[0][1] = false;
+			tileInfo1->isDes[1][1] = false;
+			tileinfo2->isDes[0][1] = false;
+			tileinfo2->isDes[1][1] = false;
+		}
+		break;
+
+	case MoveDir::Right:
+		if (tileInfo1->isDes[0][0] == false &&
+			tileInfo1->isDes[1][0] == false &&
+			tileinfo2->isDes[0][0] == false &&
+			tileinfo2->isDes[1][0] == false)
+		{
+			tileInfo1->isDes[1][0] = false;
+			tileInfo1->isDes[1][1] = false;
+			tileinfo2->isDes[1][0] = false;
+			tileinfo2->isDes[1][1] = false;
+		}
+		else
+		{
+			tileInfo1->isDes[0][0] = false;
+			tileInfo1->isDes[1][0] = false;
+			tileinfo2->isDes[0][0] = false;
+			tileinfo2->isDes[1][0] = false;
+		}
+		break;
+	}
+
+	hitTile1 = nullptr;
+	hitTile2 = nullptr;
 }
 
 bool Ammo::CollisionEnter(RECT rc1, RECT rc2)
