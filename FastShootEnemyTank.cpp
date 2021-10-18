@@ -2,6 +2,8 @@
 
 HRESULT FastShootEnemyTank::Init()
 {
+	ImageManager::GetSingleton()->AddImage("Image/Effect/Spawn_Effect.bmp", 64, 16, 4, 1, true, RGB(255, 0, 255));
+	spawnEffect = ImageManager::GetSingleton()->FindImage("Image/Effect/Spawn_Effect.bmp");
 	img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy.bmp");
 	pos.x = 48+8;
 	pos.y = 16;
@@ -12,8 +14,11 @@ HRESULT FastShootEnemyTank::Init()
 
 void FastShootEnemyTank::Update()
 {
-	TankUpdate();
-
+	SpawnEffect();
+	if (SpawnEffect() == false)
+	{
+		TankUpdate();
+	}
 }
 
 void FastShootEnemyTank::Render(HDC hdc)
@@ -25,7 +30,14 @@ void FastShootEnemyTank::Render(HDC hdc)
 			shape.right,
 			shape.bottom);
 	}
-	img->Render(hdc, pos.x, pos.y, elapsedCount+ elapsedWay, 2);
+	if (SpawnEffect() == false)
+	{
+		img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, 2);
+	}
+	else
+	{
+		spawnEffect->Render(hdc, pos.x, pos.y, spawnEffect->GetCurrFrameX(), 0);
+	}
 
 }
 
