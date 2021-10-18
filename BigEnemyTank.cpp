@@ -2,7 +2,6 @@
 HRESULT BigEnemyTank::Init()
 {
 	img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy.bmp");
-	pos.x = 64+8;
 	pos.y = 16;
 
 	moveSpeed = 50;

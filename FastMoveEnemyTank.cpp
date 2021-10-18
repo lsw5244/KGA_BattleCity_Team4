@@ -3,7 +3,6 @@
 HRESULT FastMoveEnemyTank::Init()
 {
 	img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy.bmp");
-	pos.x = 32+8;
 	pos.y = 16;
 
 	moveSpeed = 50;
@@ -14,7 +13,6 @@ HRESULT FastMoveEnemyTank::Init()
 void FastMoveEnemyTank::Update()
 {
 	TankUpdate();
-
 }
 
 void FastMoveEnemyTank::Render(HDC hdc)

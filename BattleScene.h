@@ -13,6 +13,7 @@ private:
 	Tank* enemyTank;
 	EnemyTankFactory* enemyTankFactory[4];
 	PlayerTank* playerTank;
+	PlayerTank* playerTank1[10];
 
 	// 타일 샘플정보
 	Image* sampleImage;

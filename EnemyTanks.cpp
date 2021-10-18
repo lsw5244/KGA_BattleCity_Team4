@@ -30,6 +30,9 @@ void EnemyTanks::CollisionAndMove(MoveDir movedir)
             if (!(tileInfo[i][j].terrain == Terrain::Empty) && IntersectRect(&rc, &shape, &tileInfo[i][j].selectRc)) {
                 check = true;
             }
+            if (!(tileInfo[i][j].terrain == Terrain::Empty) && IntersectRect(&rc, playerRect, &tileInfo[i][j].selectRc)) {
+                check = true;
+            }
         }
     }
 
@@ -286,7 +289,13 @@ tuple<MoveDir, bool> EnemyTanks::AutoMove(MoveDir moveDir, POINTFLOAT pos)
     return tuple<MoveDir, bool>(moveDir, false);
 }
 
-HRESULT EnemyTanks::TankInit()
+void EnemyTanks::SetPlyaerRect(PlayerTank playerTank)
+{
+    RECT* rc = playerTank.GetRect();
+    this->playerRect = playerTank.GetRect();
+}
+
+HRESULT EnemyTanks::TankInit(int posX)
 {
     shape.left = pos.x - 8;
     shape.top = pos.y - 8;
@@ -295,6 +304,13 @@ HRESULT EnemyTanks::TankInit()
     movedir = MoveDir::Down;
     elapsedCount = 0;
     elapsedWay = 0;
+    if (posX == 1) {
+        pos.x = 16 + (8);
+    } else if (posX== 2){
+        pos.x = 16 + (8 + 96);
+    } else {
+        pos.x = 16 + (8 + 192);
+    }
     return S_OK;
 }
 

@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include <vector>
 using namespace std;
+class PlayerTank;
 class EnemyTanks;
 class EnemyTankFactory
 {
@@ -12,7 +13,7 @@ protected:
 
 public:
 	vector<EnemyTanks*> vecEnemyTank;
-	void NewEnemyTank(TILE_INFO(*tileInfo)[TILE_COUNT]);
+	void NewEnemyTank(TILE_INFO(*tileInfo)[TILE_COUNT], PlayerTank playerTank, int posX);
 
 	virtual HRESULT Init() = 0;
 	virtual void Update() = 0;

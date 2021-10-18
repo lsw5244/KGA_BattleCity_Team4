@@ -1,6 +1,7 @@
 #include "PlayerTank.h"
 #include "Image.h"
 #include "Config.h"
+#include "EnemyTanks.h"
 
 int PlayerTank::CurrFrame(Image playerTank, int elapsedCount, int setCurr)
 {
@@ -48,6 +49,15 @@ void PlayerTank::CollisionAndMove(MoveDir movedir)
         for (int j = 0; j < TILE_COUNT; j++) {
             if (!(tileInfo[i][j].terrain == Terrain::Empty) && IntersectRect(&rc, &shape, &tileInfo[i][j].selectRc)) {
                 check = true;
+            }
+            for (int i = 0; i < 4; i++) {
+                for (vector<EnemyTanks*>::iterator it = vecEnemyTank[i].begin();
+                    it != vecEnemyTank[i].end();
+                    it++)
+                {
+                    RECT enemyRect = (*it)->GetRect();
+                    if(IntersectRect(&rc, &shape, &enemyRect)) check = true;
+                }
             }
         }
     }

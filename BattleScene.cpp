@@ -32,19 +32,18 @@ HRESULT BattleScene::Init()
     playerTank = new PlayerTank;
     playerTank->Init();
     playerTank->SetTileInfo(tileInfo);
-
     enemyTankFactory[0] = new NormalTankFactory;
     enemyTankFactory[1] = new FastShootTankFactory;
     enemyTankFactory[2] = new FastMoveTankFactory;
     enemyTankFactory[3] = new BigTankFactory;
     
-    enemyTankFactory[0]->NewEnemyTank(tileInfo);
-    enemyTankFactory[1]->NewEnemyTank(tileInfo);
-    enemyTankFactory[2]->NewEnemyTank(tileInfo);
-    enemyTankFactory[3]->NewEnemyTank(tileInfo);
+    enemyTankFactory[0]->NewEnemyTank(tileInfo, *playerTank, 1);
+    enemyTankFactory[1]->NewEnemyTank(tileInfo, *playerTank, 2);
+    enemyTankFactory[2]->NewEnemyTank(tileInfo, *playerTank, 3);
+    enemyTankFactory[3]->NewEnemyTank(tileInfo, *playerTank, 1);
 
-    //enemyTank = new Tank;
-    //enemyTank->Init();
+
+    for (int i = 0; i < 4; i++)playerTank->SetVecEnemyTank(enemyTankFactory[i]->vecEnemyTank, i);
 
     addEnemy = true;
 
@@ -56,14 +55,6 @@ void BattleScene::Update()
     for (int i = 0; i < 4; i++) {
         enemyTankFactory[i]->Update();
     }
-
-    //if (addEnemy)
-    //{
-    //    enemyTank->AddEnemy(EnemyTankType::iNormal, 1);
-    //    enemyTank->AddEnemy(EnemyTankType::iFastMove, 2);
-    //    addEnemy = false;
-    //}
-    //enemyTank->Update();
 
     playerTank->Update();
 }
@@ -136,7 +127,6 @@ void BattleScene::Render(HDC hdc)
         enemyTankFactory[i]->Render(hdc);
     }
 
-    //enemyTank->Render(hdc);
     playerTank->Render(hdc);
 }
 
@@ -151,8 +141,6 @@ void BattleScene::Load()
 {
     {
         int loadIndex = 1;
-        //cout << "로드할 맵의 번호를 입력하여 주십시오. : ";
-        //cin >> loadIndex;
         string loadFileName = "Save/saveMapData_" + to_string(loadIndex);
         loadFileName += ".map";
 

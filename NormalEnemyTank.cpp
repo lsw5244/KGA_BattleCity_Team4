@@ -3,7 +3,6 @@
 HRESULT NormalEnemyTank::Init()
 {
 	img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy.bmp");
-	pos.x = 16+8;
 	pos.y = 16;
 	moveSpeed = 50;
 	return S_OK;
@@ -12,7 +11,6 @@ HRESULT NormalEnemyTank::Init()
 void NormalEnemyTank::Update()
 {
 	TankUpdate();
-
 }
 
 void NormalEnemyTank::Render(HDC hdc)

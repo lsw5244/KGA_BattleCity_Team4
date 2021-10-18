@@ -1,10 +1,12 @@
 #pragma once
 #include "Tank.h"
 
+class EnemyTanks;
 class Image;
 class PlayerTank : public  Tank
 {
 private:
+	vector<EnemyTanks*> vecEnemyTank[4];
 	Image* playerTank;
 	int Level;
 	int elapsedCount;
@@ -26,6 +28,8 @@ public:
 	virtual void Render(HDC hdc) override;
 	virtual void Release() override;
 
+	inline void SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank, int num) { this->vecEnemyTank[num] = vecEnemyTank; }
 	inline void SetTileInfo(TILE_INFO(*tileInfo)[TILE_COUNT]) { this->tileInfo = tileInfo; }
+	inline RECT* GetRect() { return &shape; }
 };
 
