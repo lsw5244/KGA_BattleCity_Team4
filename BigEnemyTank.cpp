@@ -1,6 +1,7 @@
 #include "BigEnemyTank.h"
 HRESULT BigEnemyTank::Init()
 {
+
 	img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy.bmp");
 	pos.x = 64+8;
 	pos.y = 16;
@@ -24,7 +25,14 @@ void BigEnemyTank::Render(HDC hdc)
 			shape.right,
 			shape.bottom);
 	}
-	img->Render(hdc, pos.x, pos.y, elapsedCount+ elapsedWay, 3);
+	if (SpawnEffect() == false)
+	{
+		img->Render(hdc, pos.x, pos.y, elapsedCount+ elapsedWay, 3);
+	}
+	else
+	{
+		spawnEffect->Render(hdc, pos.x, pos.y,spawnEffect->GetCurrFrameX(), 0);
+	}
 
 }
 

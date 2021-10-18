@@ -2,6 +2,7 @@
 
 HRESULT NormalEnemyTank::Init()
 {
+
 	img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy.bmp");
 	pos.x = 16+8;
 	pos.y = 16;
@@ -11,9 +12,10 @@ HRESULT NormalEnemyTank::Init()
 
 void NormalEnemyTank::Update()
 {
-	TankUpdate();
 
+	TankUpdate();
 }
+
 
 void NormalEnemyTank::Render(HDC hdc)
 {
@@ -24,7 +26,14 @@ void NormalEnemyTank::Render(HDC hdc)
 			shape.right,
 			shape.bottom);
 	}
-	img->Render(hdc, pos.x, pos.y, elapsedCount+ elapsedWay, 0);
+	if (SpawnEffect() == false)
+	{
+		img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, 0);
+	}
+	else
+	{
+		spawnEffect->Render(hdc, pos.x, pos.y, spawnEffect->GetCurrFrameX(), 0);
+	}
 }
 
 void NormalEnemyTank::Release()

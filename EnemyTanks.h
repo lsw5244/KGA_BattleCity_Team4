@@ -19,6 +19,12 @@ protected:
 	int elapsedWay;
 	int elapsedCount;
 	float time;
+	Image* spawnEffect;
+	float effectTime;
+	int effectFrameX;
+	int effectCount;
+	bool frameUp;
+	bool SpawnEffect();
 
 public:
 	inline void SetTileInfo(TILE_INFO(*tileInfo)[TILE_COUNT]) { this->tileInfo = tileInfo; }

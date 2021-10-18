@@ -87,48 +87,53 @@ void EnemyTanks::PosReset(MoveDir movedir)
 
 void EnemyTanks::TankUpdate()
 {
-    time += TimerManager::GetSingleton()->GetDeltaTime();
-    if (time >= 0.3f) {
-        tuple<MoveDir, bool> result = AutoMove(movedir, pos);
-        if (get<0>(result) == movedir && get<1>(result)) {
-            time = 0;
+    SpawnEffect();
+    if (SpawnEffect() == false)
+    {
+        time += TimerManager::GetSingleton()->GetDeltaTime();
+        if (time >= 0.3f) {
+            tuple<MoveDir, bool> result = AutoMove(movedir, pos);
+            if (get<0>(result) == movedir && get<1>(result)) {
+                time = 0;
+            }
+            else if (get<0>(result) != movedir && !get<1>(result)) {
+                movedir = get<0>(result);
+                time = 0;
+            }
         }
-        else if (get<0>(result) != movedir && !get<1>(result)) {
-            movedir = get<0>(result);
-            time = 0;
-        }
-    }
 
-    switch (movedir) {
-    case MoveDir::Up:
-        PosReset(MoveDir::Up);
-        CollisionAndMove(MoveDir::Up);
-        elapsedWay = 0;
-        elapsedCount++;
-        elapsedCount = CurrFrame(*img, &elapsedCount, 1);
-        break;
-    case MoveDir::Down:
-        PosReset(MoveDir::Down);
-        CollisionAndMove(MoveDir::Down);
-        elapsedWay = 4;
-        elapsedCount++;
-        elapsedCount = CurrFrame(*img, &elapsedCount, 5);
-        break;
-    case MoveDir::Right:
-        PosReset(MoveDir::Right);
-        CollisionAndMove(MoveDir::Right);
-        elapsedWay = 6;
-        elapsedCount++;
-        elapsedCount = CurrFrame(*img, &elapsedCount, 3);
-        break;
-    case MoveDir::Left:
-        PosReset(MoveDir::Left);
-        CollisionAndMove(MoveDir::Left);
-        elapsedWay = 2;
-        elapsedCount++;
-        elapsedCount = CurrFrame(*img, &elapsedCount, 7);
-        break;
+        switch (movedir) {
+        case MoveDir::Up:
+            PosReset(MoveDir::Up);
+            CollisionAndMove(MoveDir::Up);
+            elapsedWay = 0;
+            elapsedCount++;
+            elapsedCount = CurrFrame(*img, &elapsedCount, 1);
+            break;
+        case MoveDir::Down:
+            PosReset(MoveDir::Down);
+            CollisionAndMove(MoveDir::Down);
+            elapsedWay = 4;
+            elapsedCount++;
+            elapsedCount = CurrFrame(*img, &elapsedCount, 5);
+            break;
+        case MoveDir::Right:
+            PosReset(MoveDir::Right);
+            CollisionAndMove(MoveDir::Right);
+            elapsedWay = 6;
+            elapsedCount++;
+            elapsedCount = CurrFrame(*img, &elapsedCount, 3);
+            break;
+        case MoveDir::Left:
+            PosReset(MoveDir::Left);
+            CollisionAndMove(MoveDir::Left);
+            elapsedWay = 2;
+            elapsedCount++;
+            elapsedCount = CurrFrame(*img, &elapsedCount, 7);
+            break;
+        }
     }
+    
 }
 
 int EnemyTanks::CurrFrame(Image enemyTank, int* elapsedCount, int setCurr)
@@ -286,8 +291,50 @@ tuple<MoveDir, bool> EnemyTanks::AutoMove(MoveDir moveDir, POINTFLOAT pos)
     return tuple<MoveDir, bool>(moveDir, false);
 }
 
+bool EnemyTanks::SpawnEffect()
+{
+
+
+    effectTime += TimerManager::GetSingleton()->GetDeltaTime();
+
+    if (effectTime >= 0.25)
+    {
+        if (effectCount != 12)
+        {
+            if (effectFrameX == 3)
+            {
+                frameUp = false;
+            }
+            else if (effectFrameX == 0)
+            {
+                frameUp = true;
+            }
+            switch(frameUp)
+            {
+            case true:
+                effectFrameX++;
+                break;
+            case false:
+                effectFrameX--;
+                break;
+        
+            }
+            spawnEffect->SetCurrFrameX(effectFrameX);
+
+            effectCount++;
+        }
+        effectTime = 0;
+    }
+
+    if(effectCount == 12) return false;
+
+}
+
 HRESULT EnemyTanks::TankInit()
 {
+    ImageManager::GetSingleton()->AddImage("Image/Effect/Spawn_Effect.bmp", 64, 16, 4, 1, true, RGB(255, 0, 255));
+    spawnEffect = ImageManager::GetSingleton()->FindImage("Image/Effect/Spawn_Effect.bmp");
+
     shape.left = pos.x - 8;
     shape.top = pos.y - 8;
     shape.right = pos.x + 8;
@@ -295,6 +342,9 @@ HRESULT EnemyTanks::TankInit()
     movedir = MoveDir::Down;
     elapsedCount = 0;
     elapsedWay = 0;
+    effectFrameX = 3;
+    effectCount = 0;
+
     return S_OK;
 }
 
