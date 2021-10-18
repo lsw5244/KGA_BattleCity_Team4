@@ -87,7 +87,9 @@ void EnemyTanks::PosReset(MoveDir movedir)
 
 void EnemyTanks::TankUpdate()
 {
-
+    SpawnEffect();
+    if (SpawnEffect() == false)
+    {
         time += TimerManager::GetSingleton()->GetDeltaTime();
         if (time >= 0.3f) {
             tuple<MoveDir, bool> result = AutoMove(movedir, pos);
@@ -130,7 +132,7 @@ void EnemyTanks::TankUpdate()
             elapsedCount = CurrFrame(*img, &elapsedCount, 7);
             break;
         }
-
+    }
     
 }
 
@@ -330,6 +332,8 @@ bool EnemyTanks::SpawnEffect()
 
 HRESULT EnemyTanks::TankInit()
 {
+    ImageManager::GetSingleton()->AddImage("Image/Effect/Spawn_Effect.bmp", 64, 16, 4, 1, true, RGB(255, 0, 255));
+    spawnEffect = ImageManager::GetSingleton()->FindImage("Image/Effect/Spawn_Effect.bmp");
 
     shape.left = pos.x - 8;
     shape.top = pos.y - 8;
@@ -338,6 +342,8 @@ HRESULT EnemyTanks::TankInit()
     movedir = MoveDir::Down;
     elapsedCount = 0;
     elapsedWay = 0;
+    effectFrameX = 3;
+    effectCount = 0;
 
     return S_OK;
 }

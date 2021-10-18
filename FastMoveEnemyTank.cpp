@@ -2,8 +2,7 @@
 
 HRESULT FastMoveEnemyTank::Init()
 {
-	ImageManager::GetSingleton()->AddImage("Image/Effect/Spawn_Effect.bmp", 64, 16, 4, 1, true, RGB(255, 0, 255));
-	spawnEffect = ImageManager::GetSingleton()->FindImage("Image/Effect/Spawn_Effect.bmp");
+
 	img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy.bmp");
 	pos.x = 32+8;
 	pos.y = 16;
@@ -14,11 +13,7 @@ HRESULT FastMoveEnemyTank::Init()
 
 void FastMoveEnemyTank::Update()
 {
-	SpawnEffect();
-	if (SpawnEffect() == false)
-	{
-		TankUpdate();
-	}
+	TankUpdate();
 }
 
 void FastMoveEnemyTank::Render(HDC hdc)
