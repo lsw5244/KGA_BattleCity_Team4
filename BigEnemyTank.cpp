@@ -11,6 +11,12 @@ HRESULT BigEnemyTank::Init()
 
 void BigEnemyTank::Update()
 {
+	static bool check = true;
+    static int count = 0;
+    if (check && count < 10) {
+        cout << *test << endl;
+        count++;
+    }
 	TankUpdate();
 }
 

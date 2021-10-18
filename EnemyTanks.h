@@ -5,6 +5,7 @@
 #include "ImageManager.h"
 #include <tuple>
 #include "PlayerTank.h"
+
 class EnemyTanks : public GameObject
 {
 private:
@@ -17,14 +18,17 @@ protected:
 	TILE_INFO(*tileInfo)[TILE_COUNT];
 	
 	RECT* playerRect;
+
 	MoveDir movedir;
 	int elapsedWay;
 	int elapsedCount;
 	float time;
 
+	int* test;
 public:
 	inline void SetTileInfo(TILE_INFO(*tileInfo)[TILE_COUNT]) { this->tileInfo = tileInfo; }
 	void SetPlyaerRect(PlayerTank playerTank);
+	void SetPlyaerTest(PlayerTank playerTank);
 	HRESULT TankInit(int posX);
 	virtual HRESULT Init() = 0;
 	virtual void Update() = 0;

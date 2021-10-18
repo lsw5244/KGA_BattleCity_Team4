@@ -14,6 +14,7 @@ void EnemyTankFactory::NewEnemyTank(TILE_INFO(*tileInfo)[TILE_COUNT], PlayerTank
 	vecEnemyTank.back()->Init();
 	vecEnemyTank.back()->SetTileInfo(tileInfo);
 	vecEnemyTank.back()->SetPlyaerRect(playerTank);
+	vecEnemyTank.back()->SetPlyaerTest(playerTank);
 }
 
 EnemyTankFactory::~EnemyTankFactory()

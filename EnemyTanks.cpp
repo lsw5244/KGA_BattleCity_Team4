@@ -1,5 +1,4 @@
 #include "EnemyTanks.h"
-
 void EnemyTanks::CollisionAndMove(MoveDir movedir)
 {
     RECT rc;
@@ -90,6 +89,7 @@ void EnemyTanks::PosReset(MoveDir movedir)
 
 void EnemyTanks::TankUpdate()
 {
+
     time += TimerManager::GetSingleton()->GetDeltaTime();
     if (time >= 0.3f) {
         tuple<MoveDir, bool> result = AutoMove(movedir, pos);
@@ -291,8 +291,13 @@ tuple<MoveDir, bool> EnemyTanks::AutoMove(MoveDir moveDir, POINTFLOAT pos)
 
 void EnemyTanks::SetPlyaerRect(PlayerTank playerTank)
 {
-    RECT* rc = playerTank.GetRect();
-    this->playerRect = playerTank.GetRect();
+    playerRect = playerTank.GetRect();
+}
+
+void EnemyTanks::SetPlyaerTest(PlayerTank playerTank)
+{
+    this->test = playerTank.GetTest();
+
 }
 
 HRESULT EnemyTanks::TankInit(int posX)
