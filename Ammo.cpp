@@ -54,6 +54,27 @@ void Ammo::Update()
 	shape.top = pos.y - bodySize / 2;
 	shape.bottom = shape.top + bodySize;
 
+	//if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_RIGHT) && renderBoomEffect == false)
+	//{
+	//	Fire(MoveDir::Right, pos);
+	//}
+	//if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_LEFT) && renderBoomEffect == false)
+	//{
+	//	Fire(MoveDir::Left, pos);
+	//}
+	//if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_UP) && renderBoomEffect == false)
+	//{
+	//	Fire(MoveDir::Up, pos);
+	//}
+	//if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_DOWN) && renderBoomEffect == false)
+	//{
+	//	Fire(MoveDir::Down, pos);
+	//}
+	//if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_SPACE))
+	//{
+	//	DestroyAmmo();
+	//}
+
 	if (KeyManager::GetSingleton()->IsOnceKeyDown('P'))
 	{
 		showCollider = showCollider ? false : true;
@@ -395,9 +416,9 @@ void Ammo::DestroyWall(TILE_INFO* tileInfo1, TILE_INFO* tileinfo2)
 			tileinfo2->isDes[0][0] == false &&
 			tileinfo2->isDes[1][0] == false)
 		{
-			tileInfo1->isDes[1][0] = false;
+			tileInfo1->isDes[0][1] = false;
 			tileInfo1->isDes[1][1] = false;
-			tileinfo2->isDes[1][0] = false;
+			tileinfo2->isDes[0][1] = false;
 			tileinfo2->isDes[1][1] = false;
 		}
 		else
