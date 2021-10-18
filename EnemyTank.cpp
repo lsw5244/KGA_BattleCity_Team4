@@ -58,7 +58,7 @@ HRESULT EnemyTank::Init()
     pos.x = 100;
     pos.y = 100;
 
-    moveDir = Down;
+    moveDir = MoveDir::Down;
 
     return S_OK;
 }
@@ -88,22 +88,22 @@ void EnemyTank::Update()
 
     if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_LEFT) /*&& pos.x > 0*/)
     {
-        moveDir = Left;
+        moveDir = MoveDir::Left;
         Move(MoveDir::Left);
     }
     else if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_RIGHT) /*&& pos.x < WIN_SIZE_X*/)
     {
-        moveDir = Right;
+        moveDir = MoveDir::Right;
         Move(MoveDir::Right);
     }
     else if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_UP) /*&& pos.y > 0*/)
     {
-        moveDir = Up;
+        moveDir = MoveDir::Up;
         Move(MoveDir::Up);
     }
     else if (Singleton<KeyManager>::GetSingleton()->IsStayKeyDown(VK_DOWN) /*&& pos.y < WIN_SIZE_Y*/)
     {
-        moveDir = Down;
+        moveDir = MoveDir::Down;
         Move(MoveDir::Down);
     }
 }
@@ -126,7 +126,7 @@ void EnemyTank::Move(MoveDir dir)
 {
     switch (dir)
     {
-    case Left:
+    case MoveDir::Left:
         pos.x -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 
         elapsedCount2++;
@@ -143,7 +143,7 @@ void EnemyTank::Move(MoveDir dir)
             elapsedCount2 = 0;
         }
         break;
-    case Right:
+    case MoveDir::Right:
         pos.x += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 
         elapsedCount2++;
@@ -160,7 +160,7 @@ void EnemyTank::Move(MoveDir dir)
             elapsedCount2 = 0;
         }
         break;
-    case Up:
+    case MoveDir::Up:
         pos.y -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 
         elapsedCount2++;
@@ -177,7 +177,7 @@ void EnemyTank::Move(MoveDir dir)
             elapsedCount2 = 0;
         }
         break;
-    case Down:
+    case MoveDir::Down:
         pos.y += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 
         elapsedCount2++;

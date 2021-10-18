@@ -3,27 +3,48 @@
 #include "PlayerTank.h"
 #include "Tank.h"
 #include "CommonFunction.h"
-
+#include "EnemyTankFactory.h"
 #define POS 8
 
 HRESULT BattleScene::Init()
 {
     SetWindowSize(300, 20, WIN_SIZE_X*4, WIN_SIZE_Y*4);
-    windowX = WIN_SIZE_X;
-    windowY = WIN_SIZE_Y;
+    windowX = WIN_SIZE_X , windowY = WIN_SIZE_Y;
+    // 화면 비율 조정
+
     sampleImage = ImageManager::GetSingleton()->AddImage("Image/SamlpTile.bmp",
         88, 88, SAMPLE_TILE_COUNT, SAMPLE_TILE_COUNT, true, RGB(255, 0, 255));
+    // 맵 이미지 불러오기
 
     battleBackGround = ImageManager::GetSingleton()->AddImage("Image/background.bmp", WIN_SIZE_X, WIN_SIZE_Y);
     Load();
+    // 배틀신 배경 불러오기
+
+    ImageManager::GetSingleton()->AddImage("Image/Player/Player3.bmp", 128, 76, 8, 4, true, RGB(255, 0, 255));
+    // 플레이어 이미지 저장
+
+    ImageManager::GetSingleton()->AddImage("Image/Enemy/Enemy.bmp", 128, 96, 8, 6, true, RGB(255, 0, 255));
+    // 적 탱크 이미지 저장
+
+    ImageManager::GetSingleton()->AddImage("Image/Enemy/Enemy_Item.bmp", 128, 128, 8, 8, true, RGB(255, 0, 255));
+    // 적 아이템 탱크 이미지 저장
 
     playerTank = new PlayerTank;
     playerTank->Init();
     playerTank->SetTileInfo(tileInfo);
 
+    enemyTankFactory[0] = new NormalTankFactory;
+    enemyTankFactory[1] = new FastShootTankFactory;
+    enemyTankFactory[2] = new FastMoveTankFactory;
+    enemyTankFactory[3] = new BigTankFactory;
+    
+    enemyTankFactory[0]->NewEnemyTank(tileInfo);
+    enemyTankFactory[1]->NewEnemyTank(tileInfo);
+    enemyTankFactory[2]->NewEnemyTank(tileInfo);
+    enemyTankFactory[3]->NewEnemyTank(tileInfo);
 
-    enemyTank = new Tank;
-    enemyTank->Init();
+    //enemyTank = new Tank;
+    //enemyTank->Init();
 
     addEnemy = true;
 
@@ -32,14 +53,17 @@ HRESULT BattleScene::Init()
 
 void BattleScene::Update()
 {
-    if (addEnemy)
-    {
-        enemyTank->AddEnemy(EnemyTankType::iNormal, 1);
-        enemyTank->AddEnemy(EnemyTankType::iFastMove, 2);
-        addEnemy = false;
+    for (int i = 0; i < 4; i++) {
+        enemyTankFactory[i]->Update();
     }
 
-    enemyTank->Update();
+    //if (addEnemy)
+    //{
+    //    enemyTank->AddEnemy(EnemyTankType::iNormal, 1);
+    //    enemyTank->AddEnemy(EnemyTankType::iFastMove, 2);
+    //    addEnemy = false;
+    //}
+    //enemyTank->Update();
 
     playerTank->Update();
 }
@@ -108,13 +132,20 @@ void BattleScene::Render(HDC hdc)
         }
     }
 
+    for (int i = 0; i < 4; i++) {
+        enemyTankFactory[i]->Render(hdc);
+    }
 
-    enemyTank->Render(hdc);
+    //enemyTank->Render(hdc);
     playerTank->Render(hdc);
 }
 
 void BattleScene::Release()
 {
+    for (int i = 0; i < 4; i++) {
+        enemyTankFactory[i]->Release();
+    }
+
 }
 
 void BattleScene::Load()
