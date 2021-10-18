@@ -13,32 +13,8 @@ HRESULT FastMoveEnemyTank::Init()
 
 void FastMoveEnemyTank::Update()
 {
-	switch (movedir) {
-	case MoveDir::Up:
-		PosReset(MoveDir::Up);
-		CollisionAndMove(MoveDir::Up);
-		elapsedCount++;
-		elapsedCount = CurrFrame(*img, &elapsedCount, 1);
-		break;
-	case MoveDir::Down:
-		PosReset(MoveDir::Down);
-		CollisionAndMove(MoveDir::Down);
-		elapsedCount++;
-		elapsedCount = CurrFrame(*img, &elapsedCount, 5);
-		break;
-	case MoveDir::Right:
-		PosReset(MoveDir::Right);
-		CollisionAndMove(MoveDir::Right);
-		elapsedCount++;
-		elapsedCount = CurrFrame(*img, &elapsedCount, 3);
-		break;
-	case MoveDir::Left:
-		PosReset(MoveDir::Left);
-		CollisionAndMove(MoveDir::Left);
-		elapsedCount++;
-		elapsedCount = CurrFrame(*img, &elapsedCount, 7);
-		break;
-	}
+	TankUpdate();
+
 }
 
 void FastMoveEnemyTank::Render(HDC hdc)
@@ -50,7 +26,7 @@ void FastMoveEnemyTank::Render(HDC hdc)
 			shape.right,
 			shape.bottom);
 	}
-	img->Render(hdc, pos.x, pos.y, elapsedCount, 1);
+	img->Render(hdc, pos.x, pos.y, elapsedCount+ elapsedWay, 1);
 
 }
 
