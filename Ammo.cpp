@@ -3,7 +3,6 @@
 		사용 할 총알에 tileInfo넣어주기
 		발사할 때 Fire()함수를 작동시키면 발사
 		총알이 충돌하면 DestroyAmmo()함수 작동시키기
-		
 
 		FIXME
 		1. 부수지 못하는 벽돌, 탱크랑 출돌했을 때 추가하기
@@ -19,8 +18,8 @@ HRESULT Ammo::Init()
 	img = ImageManager::GetSingleton()->AddImage("Image/Bullet/Missile_Right.bmp", 4, 3, true, RGB(255, 0, 255));
 	ImageManager::GetSingleton()->AddImage("Image/Bullet/Missile_Up.bmp", 3, 4, true, RGB(255, 0, 255));
 
-	boomEffect = ImageManager::GetSingleton()->AddImage("Image/Effect/Boom_Effect.bmp", 48, 16, 3, 1, true, RGB(255, 0, 255));
-
+	ImageManager::GetSingleton()->AddImage("Image/Effect/Boom_Effect.bmp", 48, 16, 3, 1, true, RGB(255, 0, 255));
+	boomEffect = ImageManager::GetSingleton()->FindImage("Image/Effect/Boom_Effect.bmp");
 	isAlive = false;
 	//dir = MoveDir::Right;
 	renderBoomEffect = false;
@@ -51,6 +50,27 @@ void Ammo::Update()
 	shape.right = shape.left + bodySize;
 	shape.top = pos.y - bodySize / 2;
 	shape.bottom = shape.top + bodySize;
+
+	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT))
+	{
+		Fire(MoveDir::Right, pos);
+	}
+	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT))
+	{
+		Fire(MoveDir::Left, pos);
+	}
+	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_UP))
+	{
+		Fire(MoveDir::Up, pos);
+	}
+	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_DOWN))
+	{
+		Fire(MoveDir::Down, pos);
+	}
+	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_SPACE))
+	{
+		DestroyAmmo();
+	}
 
 	if (KeyManager::GetSingleton()->IsOnceKeyDown('P'))
 	{
@@ -102,7 +122,7 @@ void Ammo::Render(HDC hdc)
 	{
 		return;
 	}
-	
+
 	img->Render(hdc, pos.x, pos.y);
 
 	if (showCollider == true)
@@ -157,7 +177,8 @@ void Ammo::AmmoHitCheck()
 	{
 		for (int j = 0; j < TILE_COUNT; j++)
 		{
-			if (PtInRect(&tileInfo[i][j].selectRc, { (int)pos.x, (int)pos.y }))
+			//if (PtInRect(&tileInfo[i][j].selectRc, { (int)pos.x, (int)pos.y }))
+			if (CollisionEnter(tileInfo[i][j].selectRc, shape))
 			{
 				if (tileInfo[i][j].terrain == Terrain::Brick)
 				{
@@ -227,9 +248,18 @@ void Ammo::DestroyWall(int i, int j)
 		{
 			tileInfo[i][j].isDes[0][0] = false;
 			tileInfo[i][j].isDes[1][0] = false;
-		}			
+		}
 		break;
 	}
 
 }
 
+bool Ammo::CollisionEnter(RECT rc1, RECT rc2)
+{
+	if (rc1.left > rc2.right)	return false;
+	if (rc1.right < rc2.left)	return false;
+	if (rc1.top > rc2.bottom)	return false;
+	if (rc1.bottom < rc2.top)	return false;
+
+	return true;
+}
