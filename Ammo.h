@@ -17,6 +17,11 @@ private:
 
 	TILE_INFO(*tileInfo)[TILE_COUNT];
 
+	TILE_INFO* hitTile1;
+	TILE_INFO* hitTile2;
+
+	bool isHit;
+
 public:
 	virtual HRESULT Init();
 	virtual void Update();
@@ -30,5 +35,11 @@ public:
 
 	void AmmoHitCheck();
 	void DestroyWall(int i, int j);
-};
+	void DestroyWall(TILE_INFO* tileInfo);
+	void DestroyWall(TILE_INFO* tileInfo1, TILE_INFO* tileinfo2);
 
+	inline bool GetIsAlive() { return isAlive; }
+	inline bool GetRenderBoomEffect() { return renderBoomEffect; }
+
+	bool CollisionEnter(RECT rc1, RECT rc2);
+};
