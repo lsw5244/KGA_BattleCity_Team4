@@ -15,7 +15,7 @@ HRESULT Ammo::Init()
 {
 	ImageManager::GetSingleton()->AddImage("Image/Bullet/Missile_Down.bmp", 3, 4, true, RGB(255, 0, 255));
 	ImageManager::GetSingleton()->AddImage("Image/Bullet/Missile_Left.bmp", 4, 3, true, RGB(255, 0, 255));
-	img = ImageManager::GetSingleton()->AddImage("Image/Bullet/Missile_Right.bmp", 4, 3, true, RGB(255, 0, 255));
+	ImageManager::GetSingleton()->AddImage("Image/Bullet/Missile_Right.bmp", 4, 3, true, RGB(255, 0, 255));
 	ImageManager::GetSingleton()->AddImage("Image/Bullet/Missile_Up.bmp", 3, 4, true, RGB(255, 0, 255));
 
 	ImageManager::GetSingleton()->AddImage("Image/Effect/Boom_Effect.bmp", 48, 16, 3, 1, true, RGB(255, 0, 255));
@@ -38,6 +38,7 @@ HRESULT Ammo::Init()
 	shape.top = pos.y - bodySize / 2;
 	shape.bottom = shape.top + bodySize;
 
+	SetRect(&gameSceneRect, 16, 8, 224, 216);
 
 	hitTile1 = nullptr;
 	hitTile2 = nullptr;
@@ -54,26 +55,10 @@ void Ammo::Update()
 	shape.top = pos.y - bodySize / 2;
 	shape.bottom = shape.top + bodySize;
 
-	//if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_RIGHT) && renderBoomEffect == false)
-	//{
-	//	Fire(MoveDir::Right, pos);
-	//}
-	//if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_LEFT) && renderBoomEffect == false)
-	//{
-	//	Fire(MoveDir::Left, pos);
-	//}
-	//if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_UP) && renderBoomEffect == false)
-	//{
-	//	Fire(MoveDir::Up, pos);
-	//}
-	//if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_DOWN) && renderBoomEffect == false)
-	//{
-	//	Fire(MoveDir::Down, pos);
-	//}
-	//if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_SPACE))
-	//{
-	//	DestroyAmmo();
-	//}
+	if (!(CollisionEnter(gameSceneRect, shape)) && isAlive == true)
+	{
+		DestroyAmmo();
+	}
 
 	if (KeyManager::GetSingleton()->IsOnceKeyDown('P'))
 	{
