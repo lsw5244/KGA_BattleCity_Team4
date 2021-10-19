@@ -22,6 +22,8 @@ private:
 
 	bool isHit;
 
+	RECT gameSceneRect;
+
 public:
 	virtual HRESULT Init();
 	virtual void Update();
