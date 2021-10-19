@@ -1,11 +1,12 @@
 #include "BigEnemyTank.h"
+void BigEnemyTank::SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank, int num)
+{
+	this->vecEnemyTanks[num] = vecEnemyTank;
+}
 HRESULT BigEnemyTank::Init()
 {
 
 	img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy.bmp");
-	pos.x = 64+8;
-	pos.y = 16;
-
 	moveSpeed = 50;
 
 	return S_OK;

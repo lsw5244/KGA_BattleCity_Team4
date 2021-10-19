@@ -6,6 +6,7 @@ void EnemyTanks::CollisionAndMove(MoveDir movedir)
     RECT bufferRc;
     POINTFLOAT bufferPos;
     bool check = false;
+    bool tankCheck = false;
 
     bufferRc = shape;
     bufferPos = pos;
@@ -25,14 +26,39 @@ void EnemyTanks::CollisionAndMove(MoveDir movedir)
     shape.top = pos.y - 8;
     shape.right = pos.x + 8;
     shape.bottom = pos.y + 8;
-    for (int i = 0; i < TILE_COUNT; i++) {
-        for (int j = 0; j < TILE_COUNT; j++) {
+
+    int xCount = (((int)pos.x - 16) / 8) % 26;
+    int yCount = (((int)pos.y - 8) / 8) % 26;
+    int xMinCount = xCount - 2;
+    int xMaxCount = xCount + 2;
+    int yMinCount = yCount - 2;
+    int yMaxCount = yCount + 2;
+    if (xMinCount < 0) xMinCount = 0;
+    if (xMaxCount > 26) xMaxCount = 26;
+    if (yMinCount < 0) yMinCount = 0;
+    if (yMaxCount > 26) yMaxCount = 26;
+    for (int i = yMinCount; i < yMaxCount; i++) {
+        for (int j = xMinCount; j < xMaxCount; j++) {
             if ((!(tileInfo[i][j].terrain == Terrain::Empty) && IntersectRect(&rc, &shape, &tileInfo[i][j].selectRc)) ||
                 (!(tileInfo[i][j].terrain == Terrain::Empty) && IntersectRect(&rc, playerRect, &shape))) {
                 check = true;
             }
         }
     }
+    for (int i = 0; i < 4; i++) {
+        for (vector<EnemyTanks*>::iterator it = vecEnemyTanks[i].begin();
+            it != vecEnemyTanks[i].end();
+            it++)
+        {
+            RECT enemyRect = (*it)->GetRect();
+            if (enemyRect.left == shape.left && enemyRect.top == shape.top &&
+                enemyRect.right == shape.right && enemyRect.bottom == shape.bottom) continue;
+            if (IntersectRect(&rc, &shape, &enemyRect)) {
+                if (!spawnColl)tankCheck = true;
+            }
+        }
+    }
+
 
     if (movedir == MoveDir::Left) {
         if (pos.x <= 16 + 8) check = true;
@@ -46,7 +72,7 @@ void EnemyTanks::CollisionAndMove(MoveDir movedir)
     else if (movedir == MoveDir::Down) {
         if (pos.y >= 208 + 1) check = true;
     }
-    if (check) {
+    if (check || tankCheck) {
         shape = bufferRc;
         pos = bufferPos;
     }
@@ -91,6 +117,24 @@ void EnemyTanks::TankUpdate()
     SpawnEffect();
     if (SpawnEffect() == false)
     {
+        if (spawnColl) {
+            int count = 0;
+            RECT rc;
+            for (int i = 0; i < 4; i++) {
+                for (vector<EnemyTanks*>::iterator it = vecEnemyTanks[i].begin();
+                    it != vecEnemyTanks[i].end();
+                    it++)
+                {
+                    RECT enemyRect = (*it)->GetRect();
+                    if (IntersectRect(&rc, &shape, &enemyRect)) {
+                        count++;
+                    }
+                }
+            }
+            if (count == 2) spawnColl = true;
+            if (count == 1) spawnColl = false;
+        }
+
         time += TimerManager::GetSingleton()->GetDeltaTime();
         if (time >= 0.3f) {
             tuple<MoveDir, bool> result = AutoMove(movedir, pos);
@@ -223,8 +267,18 @@ tuple<MoveDir, bool> EnemyTanks::AutoMove(MoveDir moveDir, POINTFLOAT pos)
         bufferRc2.right = bufferPos2.x + 7;
     }
 
-    for (int i = 0; i < TILE_COUNT; i++) {
-        for (int j = 0; j < TILE_COUNT; j++) {
+    int xCount = (((int)pos.x - 16) / 8) % 26;
+    int yCount = (((int)pos.y - 8) / 8) % 26;
+    int xMinCount = xCount - 2;
+    int xMaxCount = xCount + 2;
+    int yMinCount = yCount - 2;
+    int yMaxCount = yCount + 2;
+    if (xMinCount < 0) xMinCount = 0;
+    if (xMaxCount > 26) xMaxCount = 26;
+    if (yMinCount < 0) yMinCount = 0;
+    if (yMaxCount > 26) yMaxCount = 26;
+    for (int i = yMinCount; i < yMaxCount; i++) {
+        for (int j = xMinCount; j < xMaxCount; j++) {
             if (!(tileInfo[i][j].terrain == Terrain::Empty) && IntersectRect(&rc, &bufferRc1, &tileInfo[i][j].selectRc)) {
                 check1 = false;
             }
@@ -237,10 +291,25 @@ tuple<MoveDir, bool> EnemyTanks::AutoMove(MoveDir moveDir, POINTFLOAT pos)
             }
         }
     }
+    for (int i = 0; i < 4; i++) {
+        for (vector<EnemyTanks*>::iterator it = vecEnemyTanks[i].begin();
+            it != vecEnemyTanks[i].end();
+            it++)
+        {
+            RECT enemyRect = (*it)->GetRect();
+            if (enemyRect.left == shape.left && enemyRect.top == shape.top &&
+                enemyRect.right == shape.right && enemyRect.bottom == shape.bottom) continue;
+            if (IntersectRect(&rc, &bufferRc3, &enemyRect)) {
+                if (!spawnColl)check3 = false;
+            }
+        }
+    }
+
     if (moveDir == MoveDir::Left || moveDir == MoveDir::Right) {
         if (bufferPos1.y <= 16) check1 = false;
         if (bufferPos2.y >= 208 + 1) check2 = false;
-    } else if (moveDir == MoveDir::Up || moveDir == MoveDir::Down) {
+    }
+    else if (moveDir == MoveDir::Up || moveDir == MoveDir::Down) {
         if (bufferPos1.x <= 16 + 8) check1 = false;
         if (bufferPos2.x >= 208 + 9) check2 = false;
     }
@@ -258,11 +327,13 @@ tuple<MoveDir, bool> EnemyTanks::AutoMove(MoveDir moveDir, POINTFLOAT pos)
                 else if (randomValue == 1) {
                     return tuple<MoveDir, bool>(MoveDir::Left, false);
                 }
-            } else {
+            }
+            else {
                 if (check1) return tuple<MoveDir, bool>(MoveDir::Left, false);
                 if (check2) return tuple<MoveDir, bool>(MoveDir::Right, false);
             }
-        } else if (moveDir == MoveDir::Right || moveDir == MoveDir::Left) {
+        }
+        else if (moveDir == MoveDir::Right || moveDir == MoveDir::Left) {
             if (randomValue == 2 && check3) {
                 return tuple<MoveDir, bool>(moveDir, true);
             }
@@ -274,12 +345,14 @@ tuple<MoveDir, bool> EnemyTanks::AutoMove(MoveDir moveDir, POINTFLOAT pos)
                 else if (randomValue == 1) {
                     return tuple<MoveDir, bool>(MoveDir::Down, false);
                 }
-            } else {
+            }
+            else {
                 if (check1) return tuple<MoveDir, bool>(MoveDir::Up, false);
                 if (check2) return tuple<MoveDir, bool>(MoveDir::Down, false);
             }
         }
-    } else {
+    }
+    else {
         if (!check3) {
             if (moveDir == MoveDir::Up) return tuple<MoveDir, bool>(MoveDir::Down, false);
             if (moveDir == MoveDir::Down) return tuple<MoveDir, bool>(MoveDir::Up, false);
@@ -337,10 +410,8 @@ HRESULT EnemyTanks::TankInit(int posX)
     ImageManager::GetSingleton()->AddImage("Image/Effect/Spawn_Effect.bmp", 64, 16, 4, 1, true, RGB(255, 0, 255));
     spawnEffect = ImageManager::GetSingleton()->FindImage("Image/Effect/Spawn_Effect.bmp");
 
-    shape.left = pos.x - 8;
-    shape.top = pos.y - 8;
-    shape.right = pos.x + 8;
-    shape.bottom = pos.y + 8;
+
+    spawnColl = true;
     movedir = MoveDir::Down;
     elapsedCount = 0;
     elapsedWay = 0;
@@ -353,6 +424,12 @@ HRESULT EnemyTanks::TankInit(int posX)
     else {
         pos.x = 16 + (8 + 192);
     }
+    pos.y = 16;
+
+    shape.left = pos.x - 8;
+    shape.top = pos.y - 8;
+    shape.right = pos.x + 8;
+    shape.bottom = pos.y + 8;
     effectFrameX = 3;
     effectCount = 0;
 

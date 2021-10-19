@@ -10,12 +10,15 @@ class EnemyTanks : public GameObject
 {
 private:
 protected:
+	vector<EnemyTanks*> vecEnemyTanks[4];
+
 	void CollisionAndMove(MoveDir moveDir);
 	void PosReset(MoveDir moveDir);
 	void TankUpdate();
 	int CurrFrame(Image enemyTank, int* elapsedCount, int setCurr);
 	tuple<MoveDir, bool> AutoMove(MoveDir moveDir, POINTFLOAT pos);
 	TILE_INFO(*tileInfo)[TILE_COUNT];
+	bool spawnColl;
 
 	RECT* playerRect;
 	MoveDir movedir;
@@ -39,6 +42,7 @@ public:
 	virtual void Update() = 0;
 	virtual void Render(HDC hdc) = 0;
 	virtual void Release() = 0;
+	virtual void SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank, int num) = 0;
 	inline RECT GetRect() { return this->shape; }
 
 	EnemyTanks() {}

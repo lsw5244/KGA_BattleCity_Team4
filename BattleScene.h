@@ -5,6 +5,7 @@
 class Tank;
 class Image;
 class PlayerTank;
+class EnemyTanks;
 class EnemyTankFactory;
 class AmmoManager;
 class BattleScene : public GameEntity
@@ -14,6 +15,8 @@ private:
 	Tank* enemyTank;
 	EnemyTankFactory* enemyTankFactory[4];
 	PlayerTank* playerTank;
+
+	vector<EnemyTanks*> vecEnemyTank[4];
 
 	// 타일 샘플정보
 	Image* sampleImage;

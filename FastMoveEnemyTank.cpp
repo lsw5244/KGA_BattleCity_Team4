@@ -1,11 +1,14 @@
 #include "FastMoveEnemyTank.h"
 
+void FastMoveEnemyTank::SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank, int num)
+{
+	this->vecEnemyTanks[num] = vecEnemyTank;
+}
+
 HRESULT FastMoveEnemyTank::Init()
 {
 
 	img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy.bmp");
-	pos.x = 32+8;
-	pos.y = 16;
 	moveSpeed = 50;
 
 	return S_OK;
