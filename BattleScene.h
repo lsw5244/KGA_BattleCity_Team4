@@ -6,6 +6,7 @@ class Tank;
 class Image;
 class PlayerTank;
 class EnemyTankFactory;
+class AmmoManager;
 class BattleScene : public GameEntity
 {
 private:
@@ -26,6 +27,8 @@ private:
 	TILE_INFO tileInfo[TILE_COUNT][TILE_COUNT];
 
 	HPEN pen, oPen;
+
+	AmmoManager* ammoMgr;
 
 public:
 	HRESULT Init();

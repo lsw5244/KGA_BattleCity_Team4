@@ -4,6 +4,7 @@
 #include "Tank.h"
 #include "CommonFunction.h"
 #include "EnemyTankFactory.h"
+#include "AmmoManager.h"
 #define POS 8
 
 HRESULT BattleScene::Init()
@@ -28,6 +29,8 @@ HRESULT BattleScene::Init()
 
     ImageManager::GetSingleton()->AddImage("Image/Enemy/Enemy_Item.bmp", 128, 128, 8, 8, true, RGB(255, 0, 255));
     // 적 아이템 탱크 이미지 저장
+
+    ammoMgr = new AmmoManager;
 
     playerTank = new PlayerTank;
     playerTank->Init();
@@ -56,6 +59,7 @@ void BattleScene::Update()
     }
 
     playerTank->Update();
+    ammoMgr->Update();
 }
 
 void BattleScene::Render(HDC hdc)
@@ -128,6 +132,7 @@ void BattleScene::Render(HDC hdc)
 
     //enemyTank->Render(hdc);
     playerTank->Render(hdc);
+    ammoMgr->Render(hdc);
 }
 
 void BattleScene::Release()
@@ -135,6 +140,7 @@ void BattleScene::Release()
     for (int i = 0; i < 4; i++) {
         enemyTankFactory[i]->Release();
     }
+    SAFE_RELEASE(ammoMgr);
 }
 
 void BattleScene::Load()
