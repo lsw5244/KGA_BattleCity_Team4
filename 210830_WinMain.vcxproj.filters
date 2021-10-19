@@ -46,6 +46,9 @@
     <Filter Include="MainGame\Enemy\EnemyTank">
       <UniqueIdentifier>{f3cf7ea1-bf40-43b4-bc79-51612ead3264}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\UI">
+      <UniqueIdentifier>{d0fee03c-67e6-4bdb-9aa8-974a75e064bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -125,6 +128,12 @@
     </ClCompile>
     <ClCompile Include="AmmoManager.cpp">
       <Filter>MainGame\Ammo</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyStatus.cpp">
+      <Filter>MainGame\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerStatus.cpp">
+      <Filter>MainGame\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +220,12 @@
     </ClInclude>
     <ClInclude Include="AmmoManager.h">
       <Filter>MainGame\Ammo</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyStatus.h">
+      <Filter>MainGame\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerStatus.h">
+      <Filter>MainGame\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
