@@ -3,6 +3,7 @@
 
 class EnemyTanks;
 class Image;
+class AmmoManager;
 class PlayerTank : public  Tank
 {
 private:
@@ -14,6 +15,8 @@ private:
 	float time;
 
 	TILE_INFO(*tileInfo)[TILE_COUNT];
+
+	AmmoManager* ammoMgr;
 
 	int CurrFrame(Image playerTank, int elapsedCount, int setCurr);
 	void CollisionAndMove(MoveDir movedir);
@@ -36,6 +39,7 @@ public:
 	inline void SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank, int num) { this->vecEnemyTank[num] = vecEnemyTank; }
 	inline void SetTileInfo(TILE_INFO(*tileInfo)[TILE_COUNT]) { this->tileInfo = tileInfo; }
 	inline RECT* GetRect() { return &shape; }
+	inline void SetAmmoMgr(AmmoManager* mgr) { ammoMgr = mgr; }
 
 };
 

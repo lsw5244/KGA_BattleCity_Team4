@@ -31,10 +31,14 @@ HRESULT BattleScene::Init()
     // 적 아이템 탱크 이미지 저장
 
     ammoMgr = new AmmoManager;
+    ammoMgr->SetTileInfo(tileInfo);
+    ammoMgr->Init();
 
     playerTank = new PlayerTank;
     playerTank->Init();
     playerTank->SetTileInfo(tileInfo);
+    playerTank->SetAmmoMgr(ammoMgr);
+
     enemyTankFactory[0] = new NormalTankFactory;
     enemyTankFactory[1] = new FastShootTankFactory;
     enemyTankFactory[2] = new FastMoveTankFactory;

@@ -177,6 +177,9 @@ HRESULT PlayerTank::Init()
     pos.x = 16 + 8;
     pos.y = WIN_SIZE_Y - 16;
 
+    
+
+
     moveSpeed = 50;
     shape.left = pos.x - 8;
     shape.top = pos.y - 8;
