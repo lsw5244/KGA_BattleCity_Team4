@@ -75,10 +75,10 @@ void AmmoManager::PlayerFire(MoveDir dir, POINTFLOAT pos)
 	for (int i = 0; i < PLAYE_MAX_AMMO_COUNT; i++)
 	{
 		if (playerAmmos[i]->GetIsAlive() == false && playerAmmos[i]->GetRenderBoomEffect() == false)
-			continue;
-
-		playerAmmos[i]->Fire(dir, pos);
-		break;
+		{
+			playerAmmos[i]->Fire(dir, pos);
+			break;
+		}
 	}
 
 }
