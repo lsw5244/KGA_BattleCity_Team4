@@ -2,6 +2,7 @@
 #include "Image.h"
 #include "Config.h"
 #include "EnemyTanks.h"
+#include "AmmoManager.h"
 
 int PlayerTank::CurrFrame(Image playerTank, int elapsedCount, int setCurr)
 {
@@ -177,8 +178,7 @@ HRESULT PlayerTank::Init()
     pos.x = 16 + 8;
     pos.y = WIN_SIZE_Y - 16;
 
-    
-
+    moveDir = MoveDir::Up;
 
     moveSpeed = 50;
     shape.left = pos.x - 8;
@@ -197,24 +197,28 @@ void PlayerTank::Update()
         time += TimerManager::GetSingleton()->GetDeltaTime();
         if (KeyManager::GetSingleton()->IsStayKeyDown(VK_UP))
         {
+            moveDir = MoveDir::Up;
             PosReset(MoveDir::Up);
             CollisionAndMove(MoveDir::Up);
             elapsedCount++;
             elapsedCount = CurrFrame(*playerTank, elapsedCount, 1);
         }
         else if (KeyManager::GetSingleton()->IsStayKeyDown(VK_DOWN)) {
+            moveDir = MoveDir::Down;
             PosReset(MoveDir::Down);
             CollisionAndMove(MoveDir::Down);
             elapsedCount++;
             elapsedCount = CurrFrame(*playerTank, elapsedCount, 5);
         }
         else if (KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT)) {
+            moveDir = MoveDir::Left;
             PosReset(MoveDir::Left);
             CollisionAndMove(MoveDir::Left);
             elapsedCount++;
             elapsedCount = CurrFrame(*playerTank, elapsedCount, 3);
         }
         else if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT)) {
+            moveDir = MoveDir::Right;
             PosReset(MoveDir::Right);
             CollisionAndMove(MoveDir::Right);
             elapsedCount++;
