@@ -29,6 +29,8 @@ void PlayerTank::CollisionAndMove(MoveDir movedir)
 
     bufferRc = shape;
     bufferPos = pos;
+
+
     if (movedir == MoveDir::Left) {
         pos.x -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
     }
@@ -41,6 +43,7 @@ void PlayerTank::CollisionAndMove(MoveDir movedir)
     else if (movedir == MoveDir::Down) {
         pos.y += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
     }
+
     shape.left = pos.x - 8;
     shape.top = pos.y - 8;
     shape.right = pos.x + 8;
@@ -78,13 +81,13 @@ void PlayerTank::CollisionAndMove(MoveDir movedir)
         if (pos.x <= 16 + 8) check = true;
     }
     else if (movedir == MoveDir::Right) {
-        if (pos.x >= 208+9) check = true;
+        if (pos.x >= 208 + 9) check = true;
     }
     else if (movedir == MoveDir::Up) {
         if (pos.y <= 16) check = true;
     }
     else if (movedir == MoveDir::Down) {
-        if (pos.y >= 208+1) check = true;
+        if (pos.y >= 208 + 1) check = true;
     }
     if (check) {
         shape = bufferRc;
@@ -101,18 +104,21 @@ void PlayerTank::PosReset(MoveDir movedir)
         if (posY <= 3) {
             pos.y = (posCount - 1) * 8;
             pos.y += 8;
-        } else {
+        }
+        else {
             pos.y = (posCount - 1) * 8;
             pos.y += 16;
         }
-    } else if (movedir == MoveDir::Up || movedir == MoveDir::Down) {
+    }
+    else if (movedir == MoveDir::Up || movedir == MoveDir::Down) {
         int posX = ((int)pos.x - 16) % 8;
         for (float posNum = pos.x; posNum >= 8; posNum -= 8) posCount++;
 
         if (posX <= 3) {
             pos.x = (posCount - 1) * 8;
             pos.x += 8;
-        } else {
+        }
+        else {
             pos.x = (posCount - 1) * 8;
             pos.x += 16;
         }
@@ -123,11 +129,52 @@ void PlayerTank::PosReset(MoveDir movedir)
     shape.bottom = pos.y + 8;
 }
 
+bool PlayerTank::SpawnEffect()
+{
+    effectTime += TimerManager::GetSingleton()->GetDeltaTime();
+
+    if (effectTime >= 0.25)
+    {
+        if (effectCount != 12)
+        {
+            if (effectFrameX == 3)
+            {
+                frameUp = false;
+            }
+            else if (effectFrameX == 0)
+            {
+                frameUp = true;
+            }
+            switch (frameUp)
+            {
+            case true:
+                effectFrameX++;
+                break;
+            case false:
+                effectFrameX--;
+                break;
+
+            }
+            spawnEffect->SetCurrFrameX(effectFrameX);
+
+            effectCount++;
+        }
+        effectTime = 0;
+    }
+
+    if (effectCount == 12) return false;
+}
+
 HRESULT PlayerTank::Init()
 {
+    ImageManager::GetSingleton()->AddImage("Image/Effect/Spawn_Effect.bmp", 64, 16, 4, 1, true, RGB(255, 0, 255));
+    spawnEffect = ImageManager::GetSingleton()->FindImage("Image/Effect/Spawn_Effect.bmp");
+    effectFrameX = 3;
+    effectCount = 0;
+
     ImageManager::GetSingleton()->AddImage("Image/Player/Player3.bmp", 128, 76, 8, 4, true, RGB(255, 0, 255));
     playerTank = ImageManager::GetSingleton()->FindImage("Image/Player/Player3.bmp");
-    pos.x = 16 + 8 ;
+    pos.x = 16 + 8;
     pos.y = WIN_SIZE_Y - 16;
 
     moveSpeed = 50;
@@ -141,29 +188,35 @@ HRESULT PlayerTank::Init()
 void PlayerTank::Update()
 {
     RECT rc;
-
-    time += TimerManager::GetSingleton()->GetDeltaTime();
-    if (KeyManager::GetSingleton()->IsStayKeyDown(VK_UP))
-    {  
-        PosReset(MoveDir::Up);
-        CollisionAndMove(MoveDir::Up);
-        elapsedCount++;
-        elapsedCount = CurrFrame(*playerTank, elapsedCount, 1);
-    } else if (KeyManager::GetSingleton()->IsStayKeyDown(VK_DOWN)) {
-        PosReset(MoveDir::Down);
-        CollisionAndMove(MoveDir::Down);
-        elapsedCount++;
-        elapsedCount = CurrFrame(*playerTank, elapsedCount, 5);
-    } else if (KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT)) {
-        PosReset(MoveDir::Left);
-        CollisionAndMove(MoveDir::Left);
-        elapsedCount++;
-        elapsedCount = CurrFrame(*playerTank, elapsedCount, 3);
-    } else if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT)) {
-        PosReset(MoveDir::Right);
-        CollisionAndMove(MoveDir::Right);
-        elapsedCount++;
-        elapsedCount = CurrFrame(*playerTank, elapsedCount, 7);
+    SpawnEffect();
+    if (SpawnEffect() == false)
+    {
+        time += TimerManager::GetSingleton()->GetDeltaTime();
+        if (KeyManager::GetSingleton()->IsStayKeyDown(VK_UP))
+        {
+            PosReset(MoveDir::Up);
+            CollisionAndMove(MoveDir::Up);
+            elapsedCount++;
+            elapsedCount = CurrFrame(*playerTank, elapsedCount, 1);
+        }
+        else if (KeyManager::GetSingleton()->IsStayKeyDown(VK_DOWN)) {
+            PosReset(MoveDir::Down);
+            CollisionAndMove(MoveDir::Down);
+            elapsedCount++;
+            elapsedCount = CurrFrame(*playerTank, elapsedCount, 5);
+        }
+        else if (KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT)) {
+            PosReset(MoveDir::Left);
+            CollisionAndMove(MoveDir::Left);
+            elapsedCount++;
+            elapsedCount = CurrFrame(*playerTank, elapsedCount, 3);
+        }
+        else if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT)) {
+            PosReset(MoveDir::Right);
+            CollisionAndMove(MoveDir::Right);
+            elapsedCount++;
+            elapsedCount = CurrFrame(*playerTank, elapsedCount, 7);
+        }
     }
 }
 
@@ -177,7 +230,14 @@ void PlayerTank::Render(HDC hdc)
             shape.right,
             shape.bottom);
     }
-    playerTank->Render(hdc, pos.x, pos.y, playerTank->GetCurrFrameX(), playerTank->GetCurrFrameY());
+    if (SpawnEffect() == false)
+    {
+        playerTank->Render(hdc, pos.x, pos.y, playerTank->GetCurrFrameX(), playerTank->GetCurrFrameY());
+    }
+    else
+    {
+        spawnEffect->Render(hdc, pos.x, pos.y, spawnEffect->GetCurrFrameX(), 0);
+    }
 }
 
 void PlayerTank::Release()

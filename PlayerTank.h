@@ -19,6 +19,12 @@ private:
 	void CollisionAndMove(MoveDir movedir);
 	void PosReset(MoveDir movedir);
 
+	Image* spawnEffect;
+	float effectTime;
+	int effectFrameX;
+	int effectCount;
+	bool frameUp;
+	bool SpawnEffect();
 
 public:
 
