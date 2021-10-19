@@ -225,6 +225,12 @@ void PlayerTank::Update()
             elapsedCount = CurrFrame(*playerTank, elapsedCount, 7);
         }
     }
+
+    if (KeyManager::GetSingleton()->IsOnceKeyDown('Z'))
+    {
+        ammoMgr->PlayerFire(moveDir, pos);
+    }
+
 }
 
 void PlayerTank::Render(HDC hdc)
