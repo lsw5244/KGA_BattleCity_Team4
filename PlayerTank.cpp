@@ -227,7 +227,23 @@ void PlayerTank::Update()
 
         if (KeyManager::GetSingleton()->IsOnceKeyDown('Z'))
         {
-            ammoMgr->PlayerFire(moveDir, pos);
+            switch (moveDir)
+            {
+            case MoveDir::Left:
+                ammoMgr->PlayerFire(moveDir, { (float)shape.left, pos.y });
+                break;
+            case MoveDir::Right:
+                ammoMgr->PlayerFire(moveDir, { (float)shape.right, pos.y });
+                break;
+            case MoveDir::Up:
+                ammoMgr->PlayerFire(moveDir, { pos.x, (float)shape.top });
+                break;
+            case MoveDir::Down:
+                ammoMgr->PlayerFire(moveDir, { pos.x, (float)shape.bottom });
+                break;
+            }
+
+            //ammoMgr->PlayerFire(moveDir, pos);
         }
     }
 }
