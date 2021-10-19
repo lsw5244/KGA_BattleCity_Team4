@@ -2,6 +2,7 @@
 #include "Image.h"
 #include "Config.h"
 #include "EnemyTanks.h"
+#include "AmmoManager.h"
 
 int PlayerTank::CurrFrame(Image playerTank, int elapsedCount, int setCurr)
 {
@@ -177,6 +178,8 @@ HRESULT PlayerTank::Init()
     pos.x = 16 + 8;
     pos.y = WIN_SIZE_Y - 16;
 
+    moveDir = MoveDir::Up;
+
     moveSpeed = 50;
     shape.left = pos.x - 8;
     shape.top = pos.y - 8;
@@ -194,28 +197,53 @@ void PlayerTank::Update()
         time += TimerManager::GetSingleton()->GetDeltaTime();
         if (KeyManager::GetSingleton()->IsStayKeyDown(VK_UP))
         {
+            moveDir = MoveDir::Up;
             PosReset(MoveDir::Up);
             CollisionAndMove(MoveDir::Up);
             elapsedCount++;
             elapsedCount = CurrFrame(*playerTank, elapsedCount, 1);
         }
         else if (KeyManager::GetSingleton()->IsStayKeyDown(VK_DOWN)) {
+            moveDir = MoveDir::Down;
             PosReset(MoveDir::Down);
             CollisionAndMove(MoveDir::Down);
             elapsedCount++;
             elapsedCount = CurrFrame(*playerTank, elapsedCount, 5);
         }
         else if (KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT)) {
+            moveDir = MoveDir::Left;
             PosReset(MoveDir::Left);
             CollisionAndMove(MoveDir::Left);
             elapsedCount++;
             elapsedCount = CurrFrame(*playerTank, elapsedCount, 3);
         }
         else if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT)) {
+            moveDir = MoveDir::Right;
             PosReset(MoveDir::Right);
             CollisionAndMove(MoveDir::Right);
             elapsedCount++;
             elapsedCount = CurrFrame(*playerTank, elapsedCount, 7);
+        }
+
+        if (KeyManager::GetSingleton()->IsOnceKeyDown('Z'))
+        {
+            switch (moveDir)
+            {
+            case MoveDir::Left:
+                ammoMgr->PlayerFire(moveDir, { (float)shape.left, pos.y });
+                break;
+            case MoveDir::Right:
+                ammoMgr->PlayerFire(moveDir, { (float)shape.right, pos.y });
+                break;
+            case MoveDir::Up:
+                ammoMgr->PlayerFire(moveDir, { pos.x, (float)shape.top });
+                break;
+            case MoveDir::Down:
+                ammoMgr->PlayerFire(moveDir, { pos.x, (float)shape.bottom });
+                break;
+            }
+
+            //ammoMgr->PlayerFire(moveDir, pos);
         }
     }
 }
