@@ -126,7 +126,7 @@ void EnemyTanks::TankUpdate()
                     it++)
                 {
                     RECT enemyRect = (*it)->GetRect();
-                    if (IntersectRect(&rc, &shape, &enemyRect)) {
+                    if (IntersectRect(&rc, &shape, &enemyRect) || IntersectRect(&rc, playerRect, &shape)) {
                         count++;
                     }
                 }
