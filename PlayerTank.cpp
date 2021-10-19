@@ -3,6 +3,7 @@
 #include "Config.h"
 #include "EnemyTanks.h"
 #include "AmmoManager.h"
+#include "PlayerStatus.h"
 
 int PlayerTank::CurrFrame(Image playerTank, int elapsedCount, int setCurr)
 {
@@ -185,11 +186,25 @@ HRESULT PlayerTank::Init()
     shape.top = pos.y - 8;
     shape.right = pos.x + 8;
     shape.bottom = pos.y + 8;
+
+    life = 2;
+
+    playerStatus = new PlayerStatus;
+    playerStatus->Init();
     return S_OK;
 }
 
 void PlayerTank::Update()
 {
+    playerStatus->ChangeLife(life);
+    if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_PRIOR))
+    {
+        life++;
+    }
+    else if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_NEXT))
+    {
+        life--;
+    }
     RECT rc;
     SpawnEffect();
     if (SpawnEffect() == false)
@@ -250,7 +265,6 @@ void PlayerTank::Update()
 
 void PlayerTank::Render(HDC hdc)
 {
-
     if (KeyManager::GetSingleton()->IsStayKeyDown(TANK_COLLIDER_DEBUG)) {
         Rectangle(hdc,
             shape.left,
@@ -266,6 +280,7 @@ void PlayerTank::Render(HDC hdc)
     {
         spawnEffect->Render(hdc, pos.x, pos.y, spawnEffect->GetCurrFrameX(), 0);
     }
+    playerStatus->Render(hdc);
 }
 
 void PlayerTank::Release()

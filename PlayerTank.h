@@ -4,6 +4,7 @@
 class EnemyTanks;
 class Image;
 class AmmoManager;
+class PlayerStatus;
 class PlayerTank : public  Tank
 {
 private:
@@ -13,10 +14,13 @@ private:
 	int elapsedCount;
 	bool isFire;
 	float time;
+	int life;
 
 	TILE_INFO(*tileInfo)[TILE_COUNT];
 
 	AmmoManager* ammoMgr;
+
+	PlayerStatus* playerStatus;
 
 	int CurrFrame(Image playerTank, int elapsedCount, int setCurr);
 	void CollisionAndMove(MoveDir movedir);
