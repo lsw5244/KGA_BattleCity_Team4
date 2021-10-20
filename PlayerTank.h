@@ -14,6 +14,7 @@ private:
 	int elapsedCount;
 	bool isFire;
 	float time;
+	float effectDelay;
 	int life;
 	MoveDir moveDir;
 	TILE_INFO(*tileInfo)[TILE_COUNT];
@@ -25,12 +26,14 @@ private:
 	void CollisionAndMove(MoveDir movedir);
 	void PosReset(MoveDir movedir);
 
+	Image* shieldEffect;
 	Image* spawnEffect;
 	float effectTime;
 	int effectFrameX;
 	int effectCount;
 	bool frameUp;
 	bool SpawnEffect();
+	bool ShieldEffect();
 
 public:
 	HRESULT Init();

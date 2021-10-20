@@ -6,11 +6,14 @@
 #include <tuple>
 #include "PlayerTank.h"
 
+class AmmoManager;
 class EnemyTanks : public GameObject
 {
 private:
 protected:
 	vector<EnemyTanks*> vecEnemyTanks[4];
+
+	AmmoManager* ammoMgr;
 
 	void CollisionAndMove(MoveDir moveDir);
 	void PosReset(MoveDir moveDir);
@@ -23,8 +26,8 @@ protected:
 	int CurrFrame(Image enemyTank, int* elapsedCount, int setCurr);
 	tuple<MoveDir, bool> AutoMove(MoveDir moveDir, POINTFLOAT pos);
 	TILE_INFO(*tileInfo)[TILE_COUNT];
-	bool spawnColl;		// ½ºÆù½Ã ´Ù¸¥ ÅÊÅ©¿Í °ãÃÄÀÖ´ÂÁö ¿©ºÎ
-	bool itemTank;		// ¾ÆÀÌÅÛÀ» ¼ÒÀ¯ÇÏ°í ÀÖ´Â ÅÊÅ©ÀÎÁö ¿©ºÎ
+	bool spawnColl;		// ìŠ¤í°ì‹œ ë‹¤ë¥¸ íƒ±í¬ì™€ ê²¹ì³ìžˆëŠ”ì§€ ì—¬ë¶€
+	bool itemTank;		// ì•„ì´í…œì„ ì†Œìœ í•˜ê³  ìžˆëŠ” íƒ±í¬ì¸ì§€ ì—¬ë¶€
 
 	RECT* playerRect;
 	MoveDir movedir;
@@ -39,9 +42,15 @@ protected:
 	bool frameUp;
 	bool SpawnEffect();
 
+	float attackDelayTime = 0.0f;
+	int attackDelay = 1;
+
 public:
 	inline void SetTileInfo(TILE_INFO(*tileInfo)[TILE_COUNT]) { this->tileInfo = tileInfo; }
+	
 	inline void SetPlyaerRect(PlayerTank& playerTank) { this->playerRect = playerTank.GetRect(); }
+	void SetAmmoMgr(AmmoManager* mgr) { ammoMgr = mgr; }
+	virtual void AutoFire() = 0;
 
 	HRESULT TankInit(int posX, bool item);
 	virtual HRESULT Init() = 0;
@@ -49,6 +58,7 @@ public:
 	virtual void Render(HDC hdc) = 0;
 	virtual void Release() = 0;
 	virtual void SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank, int num) = 0;
+	
 	inline RECT GetRect() { return this->shape; }
 
 	EnemyTanks() {}

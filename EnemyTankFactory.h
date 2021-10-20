@@ -5,6 +5,7 @@
 using namespace std;
 class PlayerTank;
 class EnemyTanks;
+class AmmoManager;
 class EnemyTankFactory
 {
 private:
@@ -13,7 +14,7 @@ protected:
 
 public:
 	vector<EnemyTanks*> vecEnemyTank;
-	void NewEnemyTank(TILE_INFO(*tileInfo)[TILE_COUNT], PlayerTank& playerTank, int posX, bool item = false);
+	void NewEnemyTank(TILE_INFO(*tileInfo)[TILE_COUNT], PlayerTank& playerTank, int posX, AmmoManager* mgr, bool item = false);
 	void SetVecEnemyTanks(vector<EnemyTanks*> vecEnemyTank, int num);
 	virtual HRESULT Init() = 0;
 	virtual void Update() = 0;

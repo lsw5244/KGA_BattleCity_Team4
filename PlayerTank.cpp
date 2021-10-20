@@ -157,6 +157,37 @@ bool PlayerTank::SpawnEffect()
     if (effectCount == 12) return false;
 }
 
+bool PlayerTank::ShieldEffect()
+{
+   time += TimerManager::GetSingleton()->GetDeltaTime();
+   effectDelay += TimerManager::GetSingleton()->GetDeltaTime();
+   
+   if (time < 3.0f)
+   {
+       if (effectDelay < 0.1f)
+       {
+           return true;
+       }
+       if (shieldEffect->GetCurrFrameX() == 1)
+       {
+           shieldEffect->SetCurrFrameX(0);
+       }
+       else if (shieldEffect->GetCurrFrameX() == 0)
+       {
+           shieldEffect->SetCurrFrameX(1);
+       }
+       effectDelay = 0.0f;
+       return true;
+   }
+
+   
+  
+   if (time > 3.0f)
+    return false;
+
+   
+}
+
 HRESULT PlayerTank::Init()
 {
     ImageManager::GetSingleton()->AddImage("Image/Effect/Spawn_Effect.bmp", 64, 16, 4, 1, true, RGB(255, 0, 255));
@@ -168,6 +199,10 @@ HRESULT PlayerTank::Init()
     playerTank = ImageManager::GetSingleton()->FindImage("Image/Player/Player3.bmp");
     pos.x = 16 + 8;
     pos.y = WIN_SIZE_Y - 16;
+
+    ImageManager::GetSingleton()->AddImage("Image/Effect/Shield.bmp", 32, 16, 2, 1, true, RGB(255, 0, 255));
+    shieldEffect = ImageManager::GetSingleton()->FindImage("Image/Effect/Shield.bmp");
+    effectDelay = 0.0f;
 
     moveDir = MoveDir::Up;
 
@@ -199,7 +234,7 @@ void PlayerTank::Update()
     SpawnEffect();
     if (SpawnEffect() == false)
     {
-        time += TimerManager::GetSingleton()->GetDeltaTime();
+       // time += TimerManager::GetSingleton()->GetDeltaTime();
         if (KeyManager::GetSingleton()->IsStayKeyDown(VK_UP))
         {
             moveDir = MoveDir::Up;
@@ -251,6 +286,9 @@ void PlayerTank::Update()
             //ammoMgr->PlayerFire(moveDir, pos);
         }
     }
+    
+    
+   
 }
 
 void PlayerTank::Render(HDC hdc)
@@ -271,6 +309,12 @@ void PlayerTank::Render(HDC hdc)
         spawnEffect->Render(hdc, pos.x, pos.y, spawnEffect->GetCurrFrameX(), 0);
     }
     playerStatus->Render(hdc);
+
+    if (ShieldEffect() == true && SpawnEffect() == false)
+    {
+        shieldEffect->Render(hdc, pos.x, pos.y, shieldEffect->GetCurrFrameX(), 0);
+    }
+   
 }
 
 void PlayerTank::Release()
