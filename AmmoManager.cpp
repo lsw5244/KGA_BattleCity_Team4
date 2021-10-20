@@ -68,6 +68,14 @@ void AmmoManager::Release()
 
 void AmmoManager::EnemyFire(MoveDir dir, POINTFLOAT pos)
 {
+	for (it = vecEnemyAmmos.begin(); it != vecEnemyAmmos.end(); it++)
+	{
+		if ((*it)->GetIsAlive() == false && (*it)->GetRenderBoomEffect() == false)
+		{
+			(*it)->Fire(dir, pos);
+			break;
+		}
+	}
 }
 
 void AmmoManager::PlayerFire(MoveDir dir, POINTFLOAT pos)
