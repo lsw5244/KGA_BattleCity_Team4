@@ -145,7 +145,6 @@
     <ClCompile Include="BattleScene.cpp" />
     <ClCompile Include="BigEnemyTank.cpp" />
     <ClCompile Include="EnemyStatus.cpp" />
-    <ClCompile Include="EnemyTank.cpp" />
     <ClCompile Include="EnemyTankFactory.cpp" />
     <ClCompile Include="EnemyTanks.cpp" />
     <ClCompile Include="FastMoveEnemyTank.cpp" />
@@ -162,7 +161,6 @@
     <ClCompile Include="PlayerStatus.cpp" />
     <ClCompile Include="PlayerTank.cpp" />
     <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="Tank.cpp" />
     <ClCompile Include="TilemapToolScene.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TimerManager.cpp" />
@@ -177,7 +175,6 @@
     <ClInclude Include="CommonFunction.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="EnemyStatus.h" />
-    <ClInclude Include="EnemyTank.h" />
     <ClInclude Include="EnemyTankFactory.h" />
     <ClInclude Include="EnemyTanks.h" />
     <ClInclude Include="FastMoveEnemyTank.h" />
@@ -194,7 +191,6 @@
     <ClInclude Include="PlayerTank.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Singleton.h" />
-    <ClInclude Include="Tank.h" />
     <ClInclude Include="TilemapToolScene.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TimerManager.h" />

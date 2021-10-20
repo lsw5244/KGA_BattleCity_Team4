@@ -5,10 +5,14 @@ void BigEnemyTank::SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank, int num)
 }
 HRESULT BigEnemyTank::Init()
 {
-
-	img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy.bmp");
+	if (itemTank) {
+		img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy_Item.bmp");
+		itemTime = 0.0f;
+		itemfraemY = 6;
+	} else {
+		img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy.bmp");
+	}
 	moveSpeed = 50;
-
 	return S_OK;
 }
 
@@ -28,7 +32,12 @@ void BigEnemyTank::Render(HDC hdc)
 	}
 	if (SpawnEffect() == false)
 	{
-		img->Render(hdc, pos.x, pos.y, elapsedCount+ elapsedWay, 3);
+		if (itemTank) {
+			img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, itemTankImg(6));
+		}
+		else {
+			img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, 3);
+		}
 	}
 	else
 	{

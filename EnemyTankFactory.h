@@ -13,7 +13,7 @@ protected:
 
 public:
 	vector<EnemyTanks*> vecEnemyTank;
-	void NewEnemyTank(TILE_INFO(*tileInfo)[TILE_COUNT], PlayerTank& playerTank, int posX);
+	void NewEnemyTank(TILE_INFO(*tileInfo)[TILE_COUNT], PlayerTank& playerTank, int posX, bool item = false);
 	void SetVecEnemyTanks(vector<EnemyTanks*> vecEnemyTank, int num);
 	virtual HRESULT Init() = 0;
 	virtual void Update() = 0;

@@ -8,7 +8,13 @@ void FastMoveEnemyTank::SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank, int nu
 HRESULT FastMoveEnemyTank::Init()
 {
 
-	img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy.bmp");
+	if (itemTank) {
+		img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy_Item.bmp");
+		itemTime = 0.0f;
+		itemfraemY = 2;
+	} else {
+		img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy.bmp");
+	}
 	moveSpeed = 50;
 
 	return S_OK;
@@ -30,7 +36,12 @@ void FastMoveEnemyTank::Render(HDC hdc)
 	}
 	if (SpawnEffect() == false)
 	{
-		img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, 1);
+		if (itemTank) {
+			img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, itemTankImg(2));
+		}
+		else {
+			img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, 1);
+		}
 	}
 	else
 	{
