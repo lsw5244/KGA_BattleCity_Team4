@@ -190,7 +190,17 @@ void Ammo::AmmoHitCheck()
 					}
 					return;
 				}
+
+				if (tileInfo[i][j].terrain == Terrain::IronBrick)
+				{
+					cout << "@@@@@@" << endl;
+
+
+
+				}
 			}
+
+
 		}
 	}
 }
