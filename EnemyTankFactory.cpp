@@ -4,12 +4,14 @@
 #include "FastMoveEnemyTank.h"
 #include "FastShootEnemyTank.h"
 #include "BigEnemyTank.h"
+#include "AmmoManager.h"
 
-void EnemyTankFactory::NewEnemyTank(TILE_INFO(*tileInfo)[TILE_COUNT], PlayerTank& playerTank, int posX, bool item)
+void EnemyTankFactory::NewEnemyTank(TILE_INFO(*tileInfo)[TILE_COUNT], PlayerTank& playerTank, int posX, AmmoManager* mgr, bool item)
 {
 	EnemyTanks* enemyTank = CreateEnemyTank();
 	vecEnemyTank.push_back(enemyTank);
 	vecEnemyTank.back()->TankInit(posX, item);
+	vecEnemyTank.back()->SetAmmoMgr(mgr);
 	vecEnemyTank.back()->Init();
 	vecEnemyTank.back()->SetTileInfo(tileInfo);
 	vecEnemyTank.back()->SetPlyaerRect(playerTank);
