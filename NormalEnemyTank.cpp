@@ -7,6 +7,7 @@ void NormalEnemyTank::SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank, int num)
 
 HRESULT NormalEnemyTank::Init()
 {
+	attackDelay = rand() % 3 + 1;
 
 	if (itemTank) {
 		img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy_Item.bmp");
@@ -66,6 +67,5 @@ void NormalEnemyTank::AutoFire()
 		attackDelay = rand() % 3 + 1;
 
 		attackDelayTime = 0.0f;
-
 	}
 }

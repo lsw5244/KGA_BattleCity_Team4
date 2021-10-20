@@ -7,6 +7,7 @@ void FastMoveEnemyTank::SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank, int nu
 
 HRESULT FastMoveEnemyTank::Init()
 {
+	attackDelay = rand() % 3 + 1;
 
 	if (itemTank) {
 		img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy_Item.bmp");
@@ -66,6 +67,5 @@ void FastMoveEnemyTank::AutoFire()
 		attackDelay = rand() % 3 + 1;
 
 		attackDelayTime = 0.0f;
-
 	}
 }
