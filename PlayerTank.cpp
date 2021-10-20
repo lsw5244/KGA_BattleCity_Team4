@@ -4,6 +4,7 @@
 #include "EnemyTanks.h"
 #include "AmmoManager.h"
 #include "PlayerStatus.h"
+#include "CommonFunction.h"
 
 int PlayerTank::CurrFrame(Image playerTank, int elapsedCount, int setCurr)
 {
@@ -51,19 +52,8 @@ void PlayerTank::CollisionAndMove(MoveDir movedir)
     shape.right = pos.x + 8;
     shape.bottom = pos.y + 8;
 
-    int xCount = (((int)pos.x - 16) / 8) % 26;
-    int yCount = (((int)pos.y - 8) / 8) % 26;
-    int xMinCount = xCount - 2;
-    int xMaxCount = xCount + 2;
-    int yMinCount = yCount - 2;
-    int yMaxCount = yCount + 2;
-    if (xMinCount < 0) xMinCount = 0;
-    if (xMaxCount > 26) xMaxCount = 26;
-    if (yMinCount < 0) yMinCount = 0;
-    if (yMaxCount > 26) yMaxCount = 26;
-
-    for (int i = yMinCount; i < yMaxCount; i++) {
-        for (int j = xMinCount; j < xMaxCount; j++) {
+    for (int i = GetPosCount(pos.y, -2, false); i < GetPosCount(pos.y, 2, false); i++) {
+        for (int j = GetPosCount(pos.x, -2, true); j < GetPosCount(pos.x, 2, true); j++) {
             if (!(tileInfo[i][j].terrain == Terrain::Empty) && IntersectRect(&rc, &shape, &tileInfo[i][j].selectRc)) {
                 check = true;
             }
@@ -250,29 +240,29 @@ void PlayerTank::Update()
             moveDir = MoveDir::Up;
             PosReset(MoveDir::Up);
             CollisionAndMove(MoveDir::Up);
-            elapsedCount++;
-            elapsedCount = CurrFrame(*playerTank, elapsedCount, 1);
+            //elapsedCount++;
+            elapsedCount = CurrFrame(*playerTank, ++elapsedCount, 1);
         }
         else if (KeyManager::GetSingleton()->IsStayKeyDown(VK_DOWN)) {
             moveDir = MoveDir::Down;
             PosReset(MoveDir::Down);
             CollisionAndMove(MoveDir::Down);
-            elapsedCount++;
-            elapsedCount = CurrFrame(*playerTank, elapsedCount, 5);
+            //elapsedCount++;
+            elapsedCount = CurrFrame(*playerTank, ++elapsedCount, 5);
         }
         else if (KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT)) {
             moveDir = MoveDir::Left;
             PosReset(MoveDir::Left);
             CollisionAndMove(MoveDir::Left);
-            elapsedCount++;
-            elapsedCount = CurrFrame(*playerTank, elapsedCount, 3);
+            //elapsedCount++;
+            elapsedCount = CurrFrame(*playerTank, ++elapsedCount, 3);
         }
         else if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT)) {
             moveDir = MoveDir::Right;
             PosReset(MoveDir::Right);
             CollisionAndMove(MoveDir::Right);
-            elapsedCount++;
-            elapsedCount = CurrFrame(*playerTank, elapsedCount, 7);
+            //elapsedCount++;
+            elapsedCount = CurrFrame(*playerTank, ++elapsedCount, 7);
         }
 
         if (KeyManager::GetSingleton()->IsOnceKeyDown('Z'))

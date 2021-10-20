@@ -1,16 +1,17 @@
 /*
-		»ç¿ëÇÏ±â
-		»ç¿ë ÇÒ ÃÑ¾Ë¿¡ tileInfo³Ö¾îÁÖ±â
-		¹ß»çÇÒ ¶§ Fire()ÇÔ¼ö¸¦ ÀÛµ¿½ÃÅ°¸é ¹ß»ç
-		ÃÑ¾ËÀÌ Ãæµ¹ÇÏ¸é DestroyAmmo()ÇÔ¼ö ÀÛµ¿½ÃÅ°±â
+		ì‚¬ìš©í•˜ê¸°
+		ì‚¬ìš© í•  ì´ì•Œì— tileInfoë„£ì–´ì£¼ê¸°
+		ë°œì‚¬í•  ë•Œ Fire()í•¨ìˆ˜ë¥¼ ìž‘ë™ì‹œí‚¤ë©´ ë°œì‚¬
+		ì´ì•Œì´ ì¶©ëŒí•˜ë©´ DestroyAmmo()í•¨ìˆ˜ ìž‘ë™ì‹œí‚¤ê¸°
 
 		FIXME
-		1. ºÎ¼öÁö ¸øÇÏ´Â º®µ¹, ÅÊÅ©¶û Ãâµ¹ÇßÀ» ¶§ Ãß°¡ÇÏ±â
+		1. ë¶€ìˆ˜ì§€ ëª»í•˜ëŠ” ë²½ëŒ, íƒ±í¬ëž‘ ì¶œëŒí–ˆì„ ë•Œ ì¶”ê°€í•˜ê¸°
 */
 
 #include "Ammo.h"
 #include "Image.h"
 #include "PlayerTank.h"
+#include "CommonFunction.h"
 HRESULT Ammo::Init()
 {
 	ImageManager::GetSingleton()->AddImage("Image/Bullet/Missile_Down.bmp", 3, 4, true, RGB(255, 0, 255));
@@ -50,7 +51,7 @@ void Ammo::Update()
 {
 	if (CollisionEnter(*(playerTank->GetRect()), shape) && type != TankType::Player)
 	{
-		cout << "ÇÃ·¹ÀÌ¾î È÷Æ® !!" << endl;
+		cout << "í”Œë ˆì´ì–´ ížˆíŠ¸ !!" << endl;
 	}
 
 	AmmoHitCheck();
@@ -162,15 +163,15 @@ void Ammo::DestroyAmmo()
 
 void Ammo::AmmoHitCheck()
 {
-	for (int i = 0; i < TILE_COUNT; i++)
+	for (int i = GetPosCount(pos.y, -2, false); i < GetPosCount(pos.y, 2, false); i++) 
 	{
-		for (int j = 0; j < TILE_COUNT; j++)
+		for (int j = GetPosCount(pos.x, -2, true); j < GetPosCount(pos.x, 2, true); j++) 
 		{
 			if (CollisionEnter(tileInfo[i][j].selectRc, shape))
 			{
 				if (tileInfo[i][j].terrain == Terrain::Brick)
 				{
-					// ¿À¸¥ÂÊ, ¾Æ·¡ÂÊ È®ÀÎÇÏ±â
+					// ì˜¤ë¥¸ìª½, ì•„ëž˜ìª½ í™•ì¸í•˜ê¸°
 					hitTile1 = &tileInfo[i][j];
 
 					if (CollisionEnter(tileInfo[i + 1][j].selectRc, shape) &&
