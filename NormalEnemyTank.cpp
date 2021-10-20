@@ -8,7 +8,14 @@ void NormalEnemyTank::SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank, int num)
 HRESULT NormalEnemyTank::Init()
 {
 
-	img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy.bmp");
+	if (itemTank) {
+		img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy_Item.bmp");
+		itemTime = 0.0f;
+		itemfraemY = 0;
+	}
+	else {
+		img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy.bmp");
+	}
 	moveSpeed = 50;
 	return S_OK;
 }
@@ -31,7 +38,12 @@ void NormalEnemyTank::Render(HDC hdc)
 	}
 	if (SpawnEffect() == false)
 	{
-		img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, 0);
+		if (itemTank) {
+			img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, itemTankImg(0));
+		}
+		else {
+			img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, 2);
+		}
 	}
 	else
 	{

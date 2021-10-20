@@ -15,10 +15,16 @@ protected:
 	void CollisionAndMove(MoveDir moveDir);
 	void PosReset(MoveDir moveDir);
 	void TankUpdate();
+
+	int itemTankImg(int num);
+	float itemTime;
+	int itemfraemY;
+
 	int CurrFrame(Image enemyTank, int* elapsedCount, int setCurr);
 	tuple<MoveDir, bool> AutoMove(MoveDir moveDir, POINTFLOAT pos);
 	TILE_INFO(*tileInfo)[TILE_COUNT];
-	bool spawnColl;
+	bool spawnColl;		// 스폰시 다른 탱크와 겹쳐있는지 여부
+	bool itemTank;		// 아이템을 소유하고 있는 탱크인지 여부
 
 	RECT* playerRect;
 	MoveDir movedir;
@@ -37,7 +43,7 @@ public:
 	inline void SetTileInfo(TILE_INFO(*tileInfo)[TILE_COUNT]) { this->tileInfo = tileInfo; }
 	void SetPlyaerRect(PlayerTank& playerTank) { this->playerRect = playerTank.GetRect(); }
 
-	HRESULT TankInit(int posX);
+	HRESULT TankInit(int posX, bool item);
 	virtual HRESULT Init() = 0;
 	virtual void Update() = 0;
 	virtual void Render(HDC hdc) = 0;

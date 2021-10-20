@@ -5,7 +5,7 @@ class EnemyTanks;
 class Image;
 class AmmoManager;
 class PlayerStatus;
-class PlayerTank : public  Tank
+class PlayerTank : public  GameObject
 {
 private:
 	vector<EnemyTanks*> vecEnemyTank[4];
@@ -15,7 +15,7 @@ private:
 	bool isFire;
 	float time;
 	int life;
-
+	MoveDir moveDir;
 	TILE_INFO(*tileInfo)[TILE_COUNT];
 
 	AmmoManager* ammoMgr;

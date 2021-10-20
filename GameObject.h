@@ -25,7 +25,6 @@ protected:	// 상속된 클래스에 노출시킨다.
 	RECT shape;
 	float moveSpeed;
 	int bodySize;
-
 	Image* img;
 
 public:
