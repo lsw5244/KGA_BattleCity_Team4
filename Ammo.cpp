@@ -164,14 +164,21 @@ void Ammo::AmmoHitCheck()
 	{
 		for (int j = 0; j < TILE_COUNT; j++)
 		{
-			//if (PtInRect(&tileInfo[i][j].selectRc, { (int)pos.x, (int)pos.y }))
 			if (CollisionEnter(tileInfo[i][j].selectRc, shape))
 			{
 				if (tileInfo[i][j].terrain == Terrain::Brick)
 				{
 					// 오른쪽, 아래쪽 확인하기
 					hitTile1 = &tileInfo[i][j];
-					if (CollisionEnter(tileInfo[i + 1][j].selectRc ,shape) &&
+
+					if (CollisionEnter(tileInfo[i + 1][j].selectRc, shape) &&
+						tileInfo[i + 1][j].terrain == Terrain::IronBrick || 
+						(CollisionEnter(tileInfo[i][j + 1].selectRc, shape) &&
+						tileInfo[i][j + 1].terrain == Terrain::IronBrick))
+					{
+						IronWallHitDestroyWall(hitTile1);
+					}
+					else if (CollisionEnter(tileInfo[i + 1][j].selectRc ,shape) &&
 						tileInfo[i + 1][j].terrain == Terrain::Brick)
 					{
 						hitTile2 = &tileInfo[i + 1][j];
@@ -182,13 +189,35 @@ void Ammo::AmmoHitCheck()
 					{
 						hitTile2 = &tileInfo[i][j + 1];
 						DestroyWall(hitTile1, hitTile2);
-
 					}
 					else
 					{
 						DestroyWall(hitTile1);
 					}
 					return;
+				}
+
+				if (tileInfo[i][j].terrain == Terrain::IronBrick)
+				{
+					hitTile1 = &tileInfo[i][j];
+					if (CollisionEnter(tileInfo[i + 1][j].selectRc, shape) &&
+						tileInfo[i + 1][j].terrain == Terrain::Brick)
+					{
+						hitTile2 = &tileInfo[i + 1][j];
+						IronWallHitDestroyWall(hitTile2);
+					}
+					else if (CollisionEnter(tileInfo[i][j + 1].selectRc, shape) &&
+						tileInfo[i][j + 1].terrain == Terrain::Brick)
+					{
+						hitTile2 = &tileInfo[i][j + 1];
+						IronWallHitDestroyWall(hitTile2);
+					}
+					else
+					{
+						DestroyAmmo();
+					}
+					return;
+
 				}
 			}
 		}
@@ -413,6 +442,36 @@ void Ammo::DestroyWall(TILE_INFO* tileInfo1, TILE_INFO* tileinfo2)
 			tileinfo2->isDes[0][0] = false;
 			tileinfo2->isDes[1][0] = false;
 		}
+		break;
+	}
+
+	hitTile1 = nullptr;
+	hitTile2 = nullptr;
+}
+
+void Ammo::IronWallHitDestroyWall(TILE_INFO* tileInfo)
+{
+	if (isAlive == false)	return;
+
+	DestroyAmmo();
+
+	switch (dir)
+	{
+	case MoveDir::Left:
+		tileInfo->isDes[0][1] = false;
+		tileInfo->isDes[1][1] = false;
+		break;
+	case MoveDir::Right:
+		tileInfo->isDes[0][0] = false;
+		tileInfo->isDes[1][0] = false;
+		break;
+	case MoveDir::Up:
+		tileInfo->isDes[1][0] = false;
+		tileInfo->isDes[1][1] = false;
+		break;
+	case MoveDir::Down:
+		tileInfo->isDes[0][0] = false;
+		tileInfo->isDes[0][1] = false;
 		break;
 	}
 
