@@ -18,6 +18,7 @@ HRESULT BigEnemyTank::Init()
 
 void BigEnemyTank::Update()
 {
+	AutoFire();
 	TankUpdate();
 }
 
@@ -48,4 +49,16 @@ void BigEnemyTank::Render(HDC hdc)
 
 void BigEnemyTank::Release()
 {
+}
+
+void BigEnemyTank::AutoFire()
+{
+	attackDelay += TimerManager::GetSingleton()->GetDeltaTime();
+
+	if (attackDelay > 1.0f)
+	{
+		cout << "@@@@@@@@@@@@@@@@@@@" << endl;
+		attackDelay = 0.0f;
+
+	}
 }

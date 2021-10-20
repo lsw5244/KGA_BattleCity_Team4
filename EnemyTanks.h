@@ -42,12 +42,14 @@ protected:
 	bool frameUp;
 	bool SpawnEffect();
 
+	float attackDelay = 0.0f;
+
 public:
 	inline void SetTileInfo(TILE_INFO(*tileInfo)[TILE_COUNT]) { this->tileInfo = tileInfo; }
 	void SetPlyaerRect(PlayerTank& playerTank) { this->playerRect = playerTank.GetRect(); }
 	void SetAmmoMgr(AmmoManager* mgr) { ammoMgr = mgr; }
 	
-	//virtual void AutoFire() = 0;
+	virtual void AutoFire() = 0;
 
 	HRESULT TankInit(int posX, bool item);
 	virtual HRESULT Init() = 0;

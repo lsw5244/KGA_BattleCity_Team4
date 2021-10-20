@@ -22,6 +22,7 @@ HRESULT FastShootEnemyTank::Init()
 
 void FastShootEnemyTank::Update()
 {
+	AutoFire();
 	TankUpdate();
 	
 }
@@ -53,4 +54,9 @@ void FastShootEnemyTank::Render(HDC hdc)
 
 void FastShootEnemyTank::Release()
 {
+}
+
+void FastShootEnemyTank::AutoFire()
+{
+	cout << "FastShootFire" << endl;
 }

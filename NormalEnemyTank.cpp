@@ -22,7 +22,7 @@ HRESULT NormalEnemyTank::Init()
 
 void NormalEnemyTank::Update()
 {
-
+	AutoFire();
 	TankUpdate();
 }
 
@@ -53,4 +53,9 @@ void NormalEnemyTank::Render(HDC hdc)
 
 void NormalEnemyTank::Release()
 {
+}
+
+void NormalEnemyTank::AutoFire()
+{
+	cout << "normaEnemyFire" << endl;
 }
