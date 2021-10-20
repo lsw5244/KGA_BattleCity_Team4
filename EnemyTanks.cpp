@@ -1,5 +1,5 @@
 #include "EnemyTanks.h"
-
+#include "CommonFunction.h"
 void EnemyTanks::CollisionAndMove(MoveDir movedir)
 {
     RECT rc;
@@ -27,18 +27,8 @@ void EnemyTanks::CollisionAndMove(MoveDir movedir)
     shape.right = pos.x + 8;
     shape.bottom = pos.y + 8;
 
-    int xCount = (((int)pos.x - 16) / 8) % 26;
-    int yCount = (((int)pos.y - 8) / 8) % 26;
-    int xMinCount = xCount - 2;
-    int xMaxCount = xCount + 2;
-    int yMinCount = yCount - 2;
-    int yMaxCount = yCount + 2;
-    if (xMinCount < 0) xMinCount = 0;
-    if (xMaxCount > 26) xMaxCount = 26;
-    if (yMinCount < 0) yMinCount = 0;
-    if (yMaxCount > 26) yMaxCount = 26;
-    for (int i = yMinCount; i < yMaxCount; i++) {
-        for (int j = xMinCount; j < xMaxCount; j++) {
+    for (int i = GetPosCount(pos.y, -2, false); i < GetPosCount(pos.y, 2, false); i++) {
+        for (int j = GetPosCount(pos.x, -2, true); j < GetPosCount(pos.x, 2, true); j++) {
             if ((!(tileInfo[i][j].terrain == Terrain::Empty) && IntersectRect(&rc, &shape, &tileInfo[i][j].selectRc)) ||
                 IntersectRect(&rc, playerRect, &shape)) {
                 check = true;
@@ -289,18 +279,8 @@ tuple<MoveDir, bool> EnemyTanks::AutoMove(MoveDir moveDir, POINTFLOAT pos)
         bufferRc2.right = bufferPos2.x + 7;
     }
 
-    int xCount = (((int)pos.x - 16) / 8) % 26;
-    int yCount = (((int)pos.y - 8) / 8) % 26;
-    int xMinCount = xCount - 2;
-    int xMaxCount = xCount + 2;
-    int yMinCount = yCount - 2;
-    int yMaxCount = yCount + 2;
-    if (xMinCount < 0) xMinCount = 0;
-    if (xMaxCount > 26) xMaxCount = 26;
-    if (yMinCount < 0) yMinCount = 0;
-    if (yMaxCount > 26) yMaxCount = 26;
-    for (int i = yMinCount; i < yMaxCount; i++) {
-        for (int j = xMinCount; j < xMaxCount; j++) {
+    for (int i = GetPosCount(pos.y, -2, false); i < GetPosCount(pos.y, 2, false); i++) {
+        for (int j = GetPosCount(pos.x, -2, true); j < GetPosCount(pos.x, 2, true); j++) {
             if (!(tileInfo[i][j].terrain == Terrain::Empty) && IntersectRect(&rc, &bufferRc1, &tileInfo[i][j].selectRc)) {
                 check1 = false;
             }

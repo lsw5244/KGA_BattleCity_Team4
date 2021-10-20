@@ -25,3 +25,18 @@ inline void SetWindowSize(int startX, int startY, int sizeX, int sizeY)
 	MoveWindow(g_hWnd, startX, startY,
 		rc.right - rc.left, rc.bottom - rc.top, true);
 }
+
+inline int GetPosCount(int pos, int isSize, bool isPosX) {
+	int Count = 0;
+
+	if (isPosX) {
+		Count = ((pos - 16) / 8) % 26;
+		Count += isSize;
+	} else {
+		Count = ((pos - 8) / 8) % 26;
+		Count += isSize;
+	}
+	if (Count < 0) Count = 0;
+	if (Count > 26) Count = 26;
+	return Count;
+}
