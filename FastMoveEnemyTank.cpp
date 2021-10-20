@@ -1,5 +1,5 @@
 #include "FastMoveEnemyTank.h"
-
+#include "AmmoManager.h"
 void FastMoveEnemyTank::SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank, int num)
 {
 	this->vecEnemyTanks[num] = vecEnemyTank;
@@ -7,6 +7,7 @@ void FastMoveEnemyTank::SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank, int nu
 
 HRESULT FastMoveEnemyTank::Init()
 {
+	attackDelay = rand() % 3 + 1;
 
 	if (itemTank) {
 		img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy_Item.bmp");
@@ -22,6 +23,7 @@ HRESULT FastMoveEnemyTank::Init()
 
 void FastMoveEnemyTank::Update()
 {
+	AutoFire();
 	TankUpdate();
 }
 
@@ -52,4 +54,18 @@ void FastMoveEnemyTank::Render(HDC hdc)
 
 void FastMoveEnemyTank::Release()
 {
+}
+
+void FastMoveEnemyTank::AutoFire()
+{
+	attackDelayTime += TimerManager::GetSingleton()->GetDeltaTime();
+
+	if (attackDelayTime > attackDelay)
+	{
+		ammoMgr->EnemyFire(movedir, pos);
+
+		attackDelay = rand() % 3 + 1;
+
+		attackDelayTime = 0.0f;
+	}
 }

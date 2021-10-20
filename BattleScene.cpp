@@ -45,10 +45,11 @@ HRESULT BattleScene::Init()
     enemyTankFactory[2] = new FastMoveTankFactory;
     enemyTankFactory[3] = new BigTankFactory;
     
-    enemyTankFactory[0]->NewEnemyTank(tileInfo, *playerTank, 1, true);
-    enemyTankFactory[1]->NewEnemyTank(tileInfo, *playerTank, 2, true);
-    enemyTankFactory[2]->NewEnemyTank(tileInfo, *playerTank, 3, true);
-    enemyTankFactory[3]->NewEnemyTank(tileInfo, *playerTank, 1, true);
+    enemyTankFactory[0]->NewEnemyTank(tileInfo, *playerTank, 1, ammoMgr, true);
+    enemyTankFactory[1]->NewEnemyTank(tileInfo, *playerTank, 2, ammoMgr, true);
+    enemyTankFactory[2]->NewEnemyTank(tileInfo, *playerTank, 3, ammoMgr, true);
+    enemyTankFactory[3]->NewEnemyTank(tileInfo, *playerTank, 1, ammoMgr, true);
+
 
     for (int i = 0; i < 4; i++)playerTank->SetVecEnemyTank(enemyTankFactory[i]->vecEnemyTank, i);
 
