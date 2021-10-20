@@ -10,7 +10,7 @@
 
 #include "Ammo.h"
 #include "Image.h"
-
+#include "CommonFunction.h"
 HRESULT Ammo::Init()
 {
 	ImageManager::GetSingleton()->AddImage("Image/Bullet/Missile_Down.bmp", 3, 4, true, RGB(255, 0, 255));
@@ -159,9 +159,9 @@ void Ammo::DestroyAmmo()
 
 void Ammo::AmmoHitCheck()
 {
-	for (int i = 0; i < TILE_COUNT; i++)
+	for (int i = GetPosCount(pos.y, -2, false); i < GetPosCount(pos.y, 2, false); i++) 
 	{
-		for (int j = 0; j < TILE_COUNT; j++)
+		for (int j = GetPosCount(pos.x, -2, true); j < GetPosCount(pos.x, 2, true); j++) 
 		{
 			if (CollisionEnter(tileInfo[i][j].selectRc, shape))
 			{
