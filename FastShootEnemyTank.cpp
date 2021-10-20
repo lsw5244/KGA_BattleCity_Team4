@@ -1,5 +1,5 @@
 #include "FastShootEnemyTank.h"
-
+#include "AmmoManager.h"
 void FastShootEnemyTank::SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank, int num)
 {
 	this->vecEnemyTanks[num] = vecEnemyTank;
@@ -58,5 +58,15 @@ void FastShootEnemyTank::Release()
 
 void FastShootEnemyTank::AutoFire()
 {
-	cout << "FastShootFire" << endl;
+	attackDelayTime += TimerManager::GetSingleton()->GetDeltaTime();
+
+	if (attackDelayTime > attackDelay)
+	{
+		ammoMgr->EnemyFire(movedir, pos);
+
+		attackDelay = rand() % 3 + 1;
+
+		attackDelayTime = 0.0f;
+
+	}
 }

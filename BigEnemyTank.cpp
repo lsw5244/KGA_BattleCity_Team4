@@ -1,4 +1,5 @@
 #include "BigEnemyTank.h"
+#include "AmmoManager.h"
 void BigEnemyTank::SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank, int num)
 {
 	this->vecEnemyTanks[num] = vecEnemyTank;
@@ -53,12 +54,15 @@ void BigEnemyTank::Release()
 
 void BigEnemyTank::AutoFire()
 {
-	attackDelay += TimerManager::GetSingleton()->GetDeltaTime();
+	attackDelayTime += TimerManager::GetSingleton()->GetDeltaTime();
 
-	if (attackDelay > 1.0f)
+	if (attackDelayTime > attackDelay)
 	{
-		cout << "@@@@@@@@@@@@@@@@@@@" << endl;
-		attackDelay = 0.0f;
+		ammoMgr->EnemyFire(movedir, pos);
+
+		attackDelay = rand() % 3 + 1;
+
+		attackDelayTime = 0.0f;
 
 	}
 }

@@ -42,7 +42,8 @@ protected:
 	bool frameUp;
 	bool SpawnEffect();
 
-	float attackDelay = 0.0f;
+	float attackDelayTime = 0.0f;
+	int attackDelay = 1;
 
 public:
 	inline void SetTileInfo(TILE_INFO(*tileInfo)[TILE_COUNT]) { this->tileInfo = tileInfo; }
