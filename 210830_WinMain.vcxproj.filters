@@ -132,6 +132,9 @@
     <ClCompile Include="Item.cpp">
       <Filter>MainGame\Item</Filter>
     </ClCompile>
+    <ClCompile Include="ItemManager.cpp">
+      <Filter>MainGame\Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h">
@@ -219,6 +222,9 @@
       <Filter>MainGame\UI</Filter>
     </ClInclude>
     <ClInclude Include="Item.h">
+      <Filter>MainGame\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemManager.h">
       <Filter>MainGame\Item</Filter>
     </ClInclude>
   </ItemGroup>

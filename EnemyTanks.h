@@ -23,6 +23,8 @@ protected:
 	float itemTime;
 	int itemfraemY;
 
+	int hp;
+
 	int CurrFrame(Image enemyTank, int* elapsedCount, int setCurr);
 	tuple<MoveDir, bool> AutoMove(MoveDir moveDir, POINTFLOAT pos);
 	TILE_INFO(*tileInfo)[TILE_COUNT];

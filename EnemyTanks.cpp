@@ -430,7 +430,7 @@ HRESULT EnemyTanks::TankInit(int posX, bool item)
     shape.bottom = pos.y + 8;
     effectFrameX = 3;
     effectCount = 0;
-
+    hp = 1;
     return S_OK;
 }
 

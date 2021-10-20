@@ -6,6 +6,7 @@
 #include "EnemyTankFactory.h"
 #include "EnemyTanks.h"
 #include "AmmoManager.h"
+#include "ItemManager.h"
 #define POS 8
 
 HRESULT BattleScene::Init()
@@ -35,6 +36,7 @@ HRESULT BattleScene::Init()
     ammoMgr->SetTileInfo(tileInfo);
     ammoMgr->Init();
 
+
     playerTank = new PlayerTank;
     playerTank->Init();
     playerTank->SetTileInfo(tileInfo);
@@ -50,6 +52,8 @@ HRESULT BattleScene::Init()
     enemyTankFactory[2]->NewEnemyTank(tileInfo, *playerTank, 3, ammoMgr, true);
     enemyTankFactory[3]->NewEnemyTank(tileInfo, *playerTank, 1, ammoMgr, true);
 
+    itemManager = new ItemManager;
+    itemManager->newItem(*playerTank);
 
     for (int i = 0; i < 4; i++)playerTank->SetVecEnemyTank(enemyTankFactory[i]->vecEnemyTank, i);
 
@@ -75,6 +79,7 @@ void BattleScene::Update()
     for (int i = 0; i < 4; i++) enemyTankFactory[i]->Update();
     playerTank->Update();
     ammoMgr->Update();
+    itemManager->Update();
 }
 
 void BattleScene::Render(HDC hdc)
@@ -148,6 +153,7 @@ void BattleScene::Render(HDC hdc)
     //enemyTank->Render(hdc);
     playerTank->Render(hdc);
     ammoMgr->Render(hdc);
+    itemManager->Render(hdc);
 }
 
 void BattleScene::Release()

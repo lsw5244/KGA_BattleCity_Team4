@@ -9,13 +9,14 @@ private:
 	RECT* playerRect;
 	ItemState itemState;
 	float aliveTime;
+	float renderTime;
 	int itemNum;
 	inline void SetPlyaerRect(PlayerTank& playerTank) { this->playerRect = playerTank.GetRect(); }
 
 protected:
 public:
-	HRESULT Init();
-	void Update();
+	HRESULT Init(PlayerTank& playerTank);
+	bool ItemUpdate();
 	void Render(HDC hdc);
 	void Release();
 };
