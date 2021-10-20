@@ -41,7 +41,7 @@ protected:
 
 public:
 	inline void SetTileInfo(TILE_INFO(*tileInfo)[TILE_COUNT]) { this->tileInfo = tileInfo; }
-	void SetPlyaerRect(PlayerTank& playerTank) { this->playerRect = playerTank.GetRect(); }
+	inline void SetPlyaerRect(PlayerTank& playerTank) { this->playerRect = playerTank.GetRect(); }
 
 	HRESULT TankInit(int posX, bool item);
 	virtual HRESULT Init() = 0;
