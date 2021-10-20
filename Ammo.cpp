@@ -10,7 +10,7 @@
 
 #include "Ammo.h"
 #include "Image.h"
-
+#include "PlayerTank.h"
 HRESULT Ammo::Init()
 {
 	ImageManager::GetSingleton()->AddImage("Image/Bullet/Missile_Down.bmp", 3, 4, true, RGB(255, 0, 255));
@@ -48,6 +48,11 @@ HRESULT Ammo::Init()
 
 void Ammo::Update()
 {
+	if (CollisionEnter(*(playerTank->GetRect()), shape) && type != TankType::Player)
+	{
+		cout << "플레이어 히트 !!" << endl;
+	}
+
 	AmmoHitCheck();
 
 	shape.left = pos.x - bodySize / 2;
@@ -91,8 +96,6 @@ void Ammo::Render(HDC hdc)
 {
 	if (renderBoomEffect == true)
 	{
-		cout << boomEffect->GetCurrFrameX() << endl;
-
 		boomEffect->Render(hdc, pos.x, pos.y, boomEffect->GetCurrFrameX(), boomEffect->GetCurrFrameY());
 		sec += TimerManager::GetSingleton()->GetDeltaTime();
 		if (sec > 0.05f)
