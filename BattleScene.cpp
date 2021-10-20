@@ -4,6 +4,7 @@
 #include "Tank.h"
 #include "CommonFunction.h"
 #include "EnemyTankFactory.h"
+#include "EnemyTanks.h"
 #include "AmmoManager.h"
 #define POS 8
 
@@ -58,12 +59,21 @@ HRESULT BattleScene::Init()
 
 void BattleScene::Update()
 {
+    for (int i = 0; i < 4; i++)playerTank->SetVecEnemyTank(enemyTankFactory[i]->vecEnemyTank, i);
+
     for (int i = 0; i < 4; i++) {
-        enemyTankFactory[i]->Update();
+        for (int j = 0; j < 4; j++) {
+            for (vector<EnemyTanks*>::iterator it = enemyTankFactory[i]->vecEnemyTank.begin();
+                it != enemyTankFactory[i]->vecEnemyTank.end();
+                it++)
+            {
+                (*it)->SetVecEnemyTank(enemyTankFactory[j]->vecEnemyTank, j);
+            }
+        }
     }
 
+    for (int i = 0; i < 4; i++) enemyTankFactory[i]->Update();
     playerTank->Update();
-    ammoMgr->Update();
 }
 
 void BattleScene::Render(HDC hdc)

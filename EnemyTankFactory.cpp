@@ -15,6 +15,17 @@ void EnemyTankFactory::NewEnemyTank(TILE_INFO(*tileInfo)[TILE_COUNT], PlayerTank
 	vecEnemyTank.back()->SetPlyaerRect(playerTank);
 }
 
+void EnemyTankFactory::SetVecEnemyTanks(vector<EnemyTanks*> vecEnemyTank, int num)
+{
+	for (vector<EnemyTanks*>::iterator it = vecEnemyTank.begin();
+		it != vecEnemyTank.end();
+		it++)
+	{
+		(*it)->SetVecEnemyTank(vecEnemyTank, num);
+	}
+}
+
+
 EnemyTankFactory::~EnemyTankFactory()
 {
 	for (vector<EnemyTanks*>::iterator it = vecEnemyTank.begin();
