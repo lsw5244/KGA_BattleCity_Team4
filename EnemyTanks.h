@@ -6,11 +6,14 @@
 #include <tuple>
 #include "PlayerTank.h"
 
+class AmmoManager;
 class EnemyTanks : public GameObject
 {
 private:
 protected:
 	vector<EnemyTanks*> vecEnemyTanks[4];
+
+	AmmoManager* ammoMgr;
 
 	void CollisionAndMove(MoveDir moveDir);
 	void PosReset(MoveDir moveDir);
@@ -42,6 +45,9 @@ protected:
 public:
 	inline void SetTileInfo(TILE_INFO(*tileInfo)[TILE_COUNT]) { this->tileInfo = tileInfo; }
 	void SetPlyaerRect(PlayerTank& playerTank) { this->playerRect = playerTank.GetRect(); }
+	void SetAmmoMgr(AmmoManager* mgr) { ammoMgr = mgr; }
+	
+	//virtual void AutoFire() = 0;
 
 	HRESULT TankInit(int posX, bool item);
 	virtual HRESULT Init() = 0;
@@ -49,6 +55,7 @@ public:
 	virtual void Render(HDC hdc) = 0;
 	virtual void Release() = 0;
 	virtual void SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank, int num) = 0;
+	
 	inline RECT GetRect() { return this->shape; }
 
 	EnemyTanks() {}
