@@ -35,20 +35,18 @@ void EnemyTanks::CollisionAndMove(MoveDir movedir)
             }
         }
     }
-    for (int i = 0; i < 4; i++) {
-        for (vector<EnemyTanks*>::iterator it = vecEnemyTanks[i].begin();
-            it != vecEnemyTanks[i].end();
-            it++)
-        {
-            RECT enemyRect = (*it)->GetRect();
-            if (enemyRect.left == shape.left && enemyRect.top == shape.top &&
-                enemyRect.right == shape.right && enemyRect.bottom == shape.bottom) continue;
+    
+    for (vector<EnemyTanks*>::iterator it = vecEnemyTanks.begin();
+        it != vecEnemyTanks.end();
+        it++)
+    {
+        RECT enemyRect = (*it)->GetRect();
+        if (this != (*it)) {
             if (IntersectRect(&rc, &shape, &enemyRect)) {
                 if (!spawnColl)tankCheck = true;
             }
         }
     }
-
 
     if (movedir == MoveDir::Left) {
         if (pos.x <= 16 + 8) check = true;
@@ -70,6 +68,7 @@ void EnemyTanks::CollisionAndMove(MoveDir movedir)
 
 void EnemyTanks::PosReset(MoveDir movedir)
 {
+    bool tankCheck = false;
     int posCount = 0;
     POINTFLOAT bufferPos = pos;
     RECT bufferRc = shape;
@@ -104,7 +103,20 @@ void EnemyTanks::PosReset(MoveDir movedir)
     shape.top = pos.y - 8;
     shape.right = pos.x + 8;
     shape.bottom = pos.y + 8;
-    if (IntersectRect(&rc, playerRect, &shape)) {
+
+    for (vector<EnemyTanks*>::iterator it = vecEnemyTanks.begin();
+        it != vecEnemyTanks.end();
+        it++)
+    {
+        RECT enemyRect = (*it)->GetRect();
+        if (this != (*it)) {
+            if (IntersectRect(&rc, &shape, &enemyRect)) {
+                if (!spawnColl)tankCheck = true;
+            }
+        }
+    }
+    
+    if (IntersectRect(&rc, playerRect, &shape)|| tankCheck) {
         shape = bufferRc;
         pos = bufferPos;
     }
@@ -116,21 +128,20 @@ void EnemyTanks::TankUpdate()
     if (SpawnEffect() == false)
     {
         if (spawnColl) {
-            int count = 0;
+            bool check = true;
             RECT rc;
-            for (int i = 0; i < 4; i++) {
-                for (vector<EnemyTanks*>::iterator it = vecEnemyTanks[i].begin();
-                    it != vecEnemyTanks[i].end();
-                    it++)
-                {
-                    RECT enemyRect = (*it)->GetRect();
+            for (vector<EnemyTanks*>::iterator it = vecEnemyTanks.begin();
+                it != vecEnemyTanks.end();
+                it++)
+            {
+                RECT enemyRect = (*it)->GetRect();
+                if (this != (*it)) {
                     if (IntersectRect(&rc, &shape, &enemyRect) || IntersectRect(&rc, playerRect, &shape)) {
-                        count++;
+                        check = false;
                     }
                 }
             }
-            if (count == 2) spawnColl = true;
-            if (count == 1) spawnColl = false;
+            if (check) spawnColl = false;
         }
 
         time += TimerManager::GetSingleton()->GetDeltaTime();
@@ -294,8 +305,8 @@ tuple<MoveDir, bool> EnemyTanks::AutoMove(MoveDir moveDir, POINTFLOAT pos)
     }
     if(IntersectRect(&rc, playerRect, &bufferRc3))check3 = false;
     for (int i = 0; i < 4; i++) {
-        for (vector<EnemyTanks*>::iterator it = vecEnemyTanks[i].begin();
-            it != vecEnemyTanks[i].end();
+        for (vector<EnemyTanks*>::iterator it = vecEnemyTanks.begin();
+            it != vecEnemyTanks.end();
             it++)
         {
             RECT enemyRect = (*it)->GetRect();

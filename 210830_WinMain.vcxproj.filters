@@ -135,6 +135,9 @@
     <ClCompile Include="ItemManager.cpp">
       <Filter>MainGame\Item</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyTankManager.cpp">
+      <Filter>MainGame\Enemy\EnemyFactoyy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h">
@@ -226,6 +229,9 @@
     </ClInclude>
     <ClInclude Include="ItemManager.h">
       <Filter>MainGame\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyTankManager.h">
+      <Filter>MainGame\Enemy\EnemyFactoyy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

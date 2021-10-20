@@ -146,6 +146,7 @@
     <ClCompile Include="BigEnemyTank.cpp" />
     <ClCompile Include="EnemyStatus.cpp" />
     <ClCompile Include="EnemyTankFactory.cpp" />
+    <ClCompile Include="EnemyTankManager.cpp" />
     <ClCompile Include="EnemyTanks.cpp" />
     <ClCompile Include="FastMoveEnemyTank.cpp" />
     <ClCompile Include="FastShootEnemyTank.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="EnemyStatus.h" />
     <ClInclude Include="EnemyTankFactory.h" />
+    <ClInclude Include="EnemyTankManager.h" />
     <ClInclude Include="EnemyTanks.h" />
     <ClInclude Include="FastMoveEnemyTank.h" />
     <ClInclude Include="FastShootEnemyTank.h" />

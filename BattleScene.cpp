@@ -7,6 +7,7 @@
 #include "EnemyTanks.h"
 #include "AmmoManager.h"
 #include "ItemManager.h"
+#include "EnemyTankManager.h"
 #define POS 8
 
 HRESULT BattleScene::Init()
@@ -36,7 +37,6 @@ HRESULT BattleScene::Init()
     ammoMgr->SetTileInfo(tileInfo);
     ammoMgr->Init();
 
-
     playerTank = new PlayerTank;
     playerTank->Init();
     playerTank->SetTileInfo(tileInfo);
@@ -46,40 +46,30 @@ HRESULT BattleScene::Init()
     enemyTankFactory[1] = new FastShootTankFactory;
     enemyTankFactory[2] = new FastMoveTankFactory;
     enemyTankFactory[3] = new BigTankFactory;
-    
-    enemyTankFactory[0]->NewEnemyTank(tileInfo, *playerTank, 1, ammoMgr, true);
-    enemyTankFactory[1]->NewEnemyTank(tileInfo, *playerTank, 2, ammoMgr, true);
-    enemyTankFactory[2]->NewEnemyTank(tileInfo, *playerTank, 3, ammoMgr, true);
-    enemyTankFactory[3]->NewEnemyTank(tileInfo, *playerTank, 1, ammoMgr, true);
+
+    enemyTankManager = new EnemyTankManager;
+    enemyTankManager->NewEnemyTank(enemyTankFactory[0]->CreateEnemyTank(), tileInfo, *playerTank, 1, ammoMgr, true);
+    enemyTankManager->NewEnemyTank(enemyTankFactory[1]->CreateEnemyTank(), tileInfo, *playerTank, 2, ammoMgr, true);
+    enemyTankManager->NewEnemyTank(enemyTankFactory[2]->CreateEnemyTank(), tileInfo, *playerTank, 3, ammoMgr, true);
+    enemyTankManager->NewEnemyTank(enemyTankFactory[3]->CreateEnemyTank(), tileInfo, *playerTank, 1, ammoMgr, true);
 
     itemManager = new ItemManager;
     itemManager->newItem(*playerTank);
-
-    for (int i = 0; i < 4; i++)playerTank->SetVecEnemyTank(enemyTankFactory[i]->vecEnemyTank, i);
-
 
     return S_OK;
 }
 
 void BattleScene::Update()
 {
-    for (int i = 0; i < 4; i++)playerTank->SetVecEnemyTank(enemyTankFactory[i]->vecEnemyTank, i);
+    playerTank->SetVecEnemyTank(enemyTankManager->GetVecEnemyTanks());
+    enemyTankManager->SetVecEnemyTank();
 
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            for (vector<EnemyTanks*>::iterator it = enemyTankFactory[i]->vecEnemyTank.begin();
-                it != enemyTankFactory[i]->vecEnemyTank.end();
-                it++)
-            {
-                (*it)->SetVecEnemyTank(enemyTankFactory[j]->vecEnemyTank, j);
-            }
-        }
-    }
-
-    for (int i = 0; i < 4; i++) enemyTankFactory[i]->Update();
+    enemyTankManager->Update();
     playerTank->Update();
     ammoMgr->Update();
     itemManager->Update();
+
+    cout << endl;
 }
 
 void BattleScene::Render(HDC hdc)
@@ -146,11 +136,7 @@ void BattleScene::Render(HDC hdc)
         }
     }
 
-    for (int i = 0; i < 4; i++) {
-        enemyTankFactory[i]->Render(hdc);
-    }
-
-    //enemyTank->Render(hdc);
+    enemyTankManager->Render(hdc);
     playerTank->Render(hdc);
     ammoMgr->Render(hdc);
     itemManager->Render(hdc);
@@ -158,9 +144,7 @@ void BattleScene::Render(HDC hdc)
 
 void BattleScene::Release()
 {
-    for (int i = 0; i < 4; i++) {
-        enemyTankFactory[i]->Release();
-    }
+
     SAFE_RELEASE(ammoMgr);
 }
 

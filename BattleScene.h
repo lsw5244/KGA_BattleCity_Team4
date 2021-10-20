@@ -9,6 +9,7 @@ class EnemyTanks;
 class EnemyTankFactory;
 class AmmoManager;
 class ItemManager;
+class EnemyTankManager;
 class BattleScene : public GameEntity
 {
 private:
@@ -28,6 +29,7 @@ private:
 
 	ItemManager* itemManager;
 
+	EnemyTankManager* enemyTankManager;
 
 	TILE_INFO tileInfo[TILE_COUNT][TILE_COUNT];
 

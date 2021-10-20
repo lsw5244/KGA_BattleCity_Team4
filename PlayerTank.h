@@ -8,7 +8,7 @@ class PlayerStatus;
 class PlayerTank : public  GameObject
 {
 private:
-	vector<EnemyTanks*> vecEnemyTank[4];
+	vector<EnemyTanks*> vecEnemyTank;
 	Image* playerTank;
 	int Level;
 	int elapsedCount;
@@ -41,7 +41,8 @@ public:
 	void Render(HDC hdc);
 	void Release();
 
-	inline void SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank, int num) { this->vecEnemyTank[num] = vecEnemyTank; }
+	void LevelUp();
+	inline void SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank) { this->vecEnemyTank = vecEnemyTank; }
 	inline void SetTileInfo(TILE_INFO(*tileInfo)[TILE_COUNT]) { this->tileInfo = tileInfo; }
 	inline RECT* GetRect() { return &shape; }
 	inline void SetAmmoMgr(AmmoManager* mgr) { ammoMgr = mgr; }

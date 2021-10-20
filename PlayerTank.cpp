@@ -57,14 +57,14 @@ void PlayerTank::CollisionAndMove(MoveDir movedir)
             if (!(tileInfo[i][j].terrain == Terrain::Empty) && IntersectRect(&rc, &shape, &tileInfo[i][j].selectRc)) {
                 check = true;
             }
-            for (int i = 0; i < 4; i++) {
-                for (vector<EnemyTanks*>::iterator it = vecEnemyTank[i].begin();
-                    it != vecEnemyTank[i].end();
-                    it++)
-                {
-                    RECT enemyRect = (*it)->GetRect();
-                    if (IntersectRect(&rc, &shape, &enemyRect)) check = true;
-                }
+
+            for (vector<EnemyTanks*>::iterator it = vecEnemyTank.begin();
+                it != vecEnemyTank.end();
+                it++)
+            {
+                RECT enemyRect = (*it)->GetRect();
+                if (IntersectRect(&rc, &shape, &enemyRect)) check = true;
+
             }
         }
     }
@@ -155,6 +155,7 @@ bool PlayerTank::SpawnEffect()
     }
 
     if (effectCount == 12) return false;
+    return true;
 }
 
 bool PlayerTank::ShieldEffect()
@@ -213,7 +214,7 @@ HRESULT PlayerTank::Init()
     shape.bottom = pos.y + 8;
 
     life = 2;
-
+    Level = 0;
     playerStatus = new PlayerStatus;
     playerStatus->Init();
     return S_OK;
@@ -234,34 +235,30 @@ void PlayerTank::Update()
     SpawnEffect();
     if (SpawnEffect() == false)
     {
-       // time += TimerManager::GetSingleton()->GetDeltaTime();
+        // time += TimerManager::GetSingleton()->GetDeltaTime();
         if (KeyManager::GetSingleton()->IsStayKeyDown(VK_UP))
         {
             moveDir = MoveDir::Up;
             PosReset(MoveDir::Up);
             CollisionAndMove(MoveDir::Up);
-            //elapsedCount++;
             elapsedCount = CurrFrame(*playerTank, ++elapsedCount, 1);
         }
         else if (KeyManager::GetSingleton()->IsStayKeyDown(VK_DOWN)) {
             moveDir = MoveDir::Down;
             PosReset(MoveDir::Down);
             CollisionAndMove(MoveDir::Down);
-            //elapsedCount++;
             elapsedCount = CurrFrame(*playerTank, ++elapsedCount, 5);
         }
         else if (KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT)) {
             moveDir = MoveDir::Left;
             PosReset(MoveDir::Left);
             CollisionAndMove(MoveDir::Left);
-            //elapsedCount++;
             elapsedCount = CurrFrame(*playerTank, ++elapsedCount, 3);
         }
         else if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT)) {
             moveDir = MoveDir::Right;
             PosReset(MoveDir::Right);
             CollisionAndMove(MoveDir::Right);
-            //elapsedCount++;
             elapsedCount = CurrFrame(*playerTank, ++elapsedCount, 7);
         }
 
@@ -282,13 +279,8 @@ void PlayerTank::Update()
                 ammoMgr->PlayerFire(moveDir, { pos.x, (float)shape.bottom });
                 break;
             }
-
-            //ammoMgr->PlayerFire(moveDir, pos);
         }
     }
-    
-    
-   
 }
 
 void PlayerTank::Render(HDC hdc)
@@ -302,7 +294,7 @@ void PlayerTank::Render(HDC hdc)
     }
     if (SpawnEffect() == false)
     {
-        playerTank->Render(hdc, pos.x, pos.y, playerTank->GetCurrFrameX(), playerTank->GetCurrFrameY());
+        playerTank->Render(hdc, pos.x, pos.y, playerTank->GetCurrFrameX(), Level);
     }
     else
     {
@@ -320,4 +312,12 @@ void PlayerTank::Render(HDC hdc)
 void PlayerTank::Release()
 {
 
+}
+
+void PlayerTank::LevelUp()
+{
+    if (Level < 3) Level++;
+    if (Level == 1);
+    if (Level == 2);
+    if (Level == 3);
 }

@@ -1,9 +1,6 @@
 #include "BigEnemyTank.h"
 #include "AmmoManager.h"
-void BigEnemyTank::SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank, int num)
-{
-	this->vecEnemyTanks[num] = vecEnemyTank;
-}
+
 HRESULT BigEnemyTank::Init()
 {
 	attackDelay = rand() % 3 + 1;
@@ -22,6 +19,7 @@ HRESULT BigEnemyTank::Init()
 
 void BigEnemyTank::Update()
 {
+
 	AutoFire();
 	TankUpdate();
 }
