@@ -164,7 +164,6 @@ void Ammo::AmmoHitCheck()
 	{
 		for (int j = 0; j < TILE_COUNT; j++)
 		{
-			//if (PtInRect(&tileInfo[i][j].selectRc, { (int)pos.x, (int)pos.y }))
 			if (CollisionEnter(tileInfo[i][j].selectRc, shape))
 			{
 				if (tileInfo[i][j].terrain == Terrain::Brick)
@@ -175,10 +174,8 @@ void Ammo::AmmoHitCheck()
 					if (CollisionEnter(tileInfo[i + 1][j].selectRc, shape) &&
 						tileInfo[i + 1][j].terrain == Terrain::IronBrick || 
 						(CollisionEnter(tileInfo[i][j + 1].selectRc, shape) &&
-						tileInfo[i][j + 1].terrain == Terrain::IronBrick)
-						)
+						tileInfo[i][j + 1].terrain == Terrain::IronBrick))
 					{
-						hitTile2 = &tileInfo[i + 1][j];
 						IronWallHitDestroyWall(hitTile1);
 					}
 					else if (CollisionEnter(tileInfo[i + 1][j].selectRc ,shape) &&
@@ -192,7 +189,6 @@ void Ammo::AmmoHitCheck()
 					{
 						hitTile2 = &tileInfo[i][j + 1];
 						DestroyWall(hitTile1, hitTile2);
-
 					}
 					else
 					{
@@ -224,8 +220,6 @@ void Ammo::AmmoHitCheck()
 
 				}
 			}
-
-
 		}
 	}
 }
