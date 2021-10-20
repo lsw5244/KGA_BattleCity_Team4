@@ -20,7 +20,6 @@ private:
 	TILE_INFO(*tileInfo)[TILE_COUNT];
 
 	AmmoManager* ammoMgr;
-
 	PlayerStatus* playerStatus;
 
 	int CurrFrame(Image playerTank, int elapsedCount, int setCurr);
@@ -37,11 +36,10 @@ private:
 	bool ShieldEffect();
 
 public:
-
-	virtual HRESULT Init() override;
-	virtual void Update() override;
-	virtual void Render(HDC hdc) override;
-	virtual void Release() override;
+	HRESULT Init();
+	void Update();
+	void Render(HDC hdc);
+	void Release();
 
 	inline void SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank, int num) { this->vecEnemyTank[num] = vecEnemyTank; }
 	inline void SetTileInfo(TILE_INFO(*tileInfo)[TILE_COUNT]) { this->tileInfo = tileInfo; }
