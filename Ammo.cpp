@@ -1,15 +1,16 @@
 /*
-		»ç¿ëÇÏ±â
-		»ç¿ë ÇÒ ÃÑ¾Ë¿¡ tileInfo³Ö¾îÁÖ±â
-		¹ß»çÇÒ ¶§ Fire()ÇÔ¼ö¸¦ ÀÛµ¿½ÃÅ°¸é ¹ß»ç
-		ÃÑ¾ËÀÌ Ãæµ¹ÇÏ¸é DestroyAmmo()ÇÔ¼ö ÀÛµ¿½ÃÅ°±â
+		ì‚¬ìš©í•˜ê¸°
+		ì‚¬ìš© í•  ì´ì•Œì— tileInfoë„£ì–´ì£¼ê¸°
+		ë°œì‚¬í•  ë•Œ Fire()í•¨ìˆ˜ë¥¼ ì‘ë™ì‹œí‚¤ë©´ ë°œì‚¬
+		ì´ì•Œì´ ì¶©ëŒí•˜ë©´ DestroyAmmo()í•¨ìˆ˜ ì‘ë™ì‹œí‚¤ê¸°
 
 		FIXME
-		1. ºÎ¼öÁö ¸øÇÏ´Â º®µ¹, ÅÊÅ©¶û Ãâµ¹ÇßÀ» ¶§ Ãß°¡ÇÏ±â
+		1. ë¶€ìˆ˜ì§€ ëª»í•˜ëŠ” ë²½ëŒ, íƒ±í¬ë‘ ì¶œëŒí–ˆì„ ë•Œ ì¶”ê°€í•˜ê¸°
 */
 
 #include "Ammo.h"
 #include "Image.h"
+#include "PlayerTank.h"
 #include "CommonFunction.h"
 HRESULT Ammo::Init()
 {
@@ -48,6 +49,11 @@ HRESULT Ammo::Init()
 
 void Ammo::Update()
 {
+	if (CollisionEnter(*(playerTank->GetRect()), shape) && type != TankType::Player)
+	{
+		cout << "í”Œë ˆì´ì–´ íˆíŠ¸ !!" << endl;
+	}
+
 	AmmoHitCheck();
 
 	shape.left = pos.x - bodySize / 2;
@@ -91,8 +97,6 @@ void Ammo::Render(HDC hdc)
 {
 	if (renderBoomEffect == true)
 	{
-		cout << boomEffect->GetCurrFrameX() << endl;
-
 		boomEffect->Render(hdc, pos.x, pos.y, boomEffect->GetCurrFrameX(), boomEffect->GetCurrFrameY());
 		sec += TimerManager::GetSingleton()->GetDeltaTime();
 		if (sec > 0.05f)
@@ -167,7 +171,7 @@ void Ammo::AmmoHitCheck()
 			{
 				if (tileInfo[i][j].terrain == Terrain::Brick)
 				{
-					// ¿À¸¥ÂÊ, ¾Æ·¡ÂÊ È®ÀÎÇÏ±â
+					// ì˜¤ë¥¸ìª½, ì•„ë˜ìª½ í™•ì¸í•˜ê¸°
 					hitTile1 = &tileInfo[i][j];
 
 					if (CollisionEnter(tileInfo[i + 1][j].selectRc, shape) &&

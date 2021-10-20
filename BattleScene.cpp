@@ -33,12 +33,15 @@ HRESULT BattleScene::Init()
 
     ammoMgr = new AmmoManager;
     ammoMgr->SetTileInfo(tileInfo);
-    ammoMgr->Init();
 
     playerTank = new PlayerTank;
     playerTank->Init();
     playerTank->SetTileInfo(tileInfo);
     playerTank->SetAmmoMgr(ammoMgr);
+
+    ammoMgr->SetPlayerTank(playerTank);
+    ammoMgr->Init();
+
 
     enemyTankFactory[0] = new NormalTankFactory;
     enemyTankFactory[1] = new FastShootTankFactory;

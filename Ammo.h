@@ -3,6 +3,7 @@
 #include "GameObject.h"
 
 class Image;
+class PlayerTank;
 class Ammo : public GameObject
 {
 private:
@@ -24,6 +25,10 @@ private:
 
 	RECT gameSceneRect;
 
+	TankType type;
+
+	PlayerTank* playerTank;
+
 public:
 	virtual HRESULT Init();
 	virtual void Update();
@@ -43,6 +48,8 @@ public:
 
 	inline bool GetIsAlive() { return isAlive; }
 	inline bool GetRenderBoomEffect() { return renderBoomEffect; }
+	inline void SetType(TankType type) { this->type = type; }
+	inline void SetPlayerTank(PlayerTank* tank) { playerTank = tank; }
 
 	bool CollisionEnter(RECT rc1, RECT rc2);
 };

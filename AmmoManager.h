@@ -3,6 +3,7 @@
 #include "GameEntity.h"
 
 class Ammo;
+class PlayerTank;
 #define PLAYE_MAX_AMMO_COUNT 2
 class AmmoManager : public GameEntity
 {
@@ -16,6 +17,8 @@ private:
 
 	TILE_INFO(*tileInfo)[TILE_COUNT];
 
+	PlayerTank* playerTank;
+
 public:
 	HRESULT Init();
 	void Update();
@@ -26,5 +29,6 @@ public:
 	void PlayerFire(MoveDir dir, POINTFLOAT pos);
 
 	void SetTileInfo(TILE_INFO(*info)[TILE_COUNT]) { this->tileInfo = info; }
+	inline void SetPlayerTank(PlayerTank* tank) { playerTank = tank; }
 };
 
