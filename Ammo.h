@@ -24,6 +24,8 @@ private:
 
 	RECT gameSceneRect;
 
+	TankType type;
+
 public:
 	virtual HRESULT Init();
 	virtual void Update();
@@ -43,6 +45,7 @@ public:
 
 	inline bool GetIsAlive() { return isAlive; }
 	inline bool GetRenderBoomEffect() { return renderBoomEffect; }
+	inline void SetType(TankType type) { this->type = type; }
 
 	bool CollisionEnter(RECT rc1, RECT rc2);
 };

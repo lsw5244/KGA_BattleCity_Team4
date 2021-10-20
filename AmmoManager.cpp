@@ -14,6 +14,7 @@ HRESULT AmmoManager::Init()
 		(*it) = new Ammo;
 		(*it)->Init();
 		(*it)->SetTileInfo(tileInfo);
+		(*it)->SetType(TankType::Enemy);
 	}
 
 	for (int i = 0; i < PLAYE_MAX_AMMO_COUNT; i++)
@@ -21,6 +22,7 @@ HRESULT AmmoManager::Init()
 		playerAmmos[i] = new Ammo;
 		playerAmmos[i]->Init();
 		playerAmmos[i]->SetTileInfo(tileInfo);
+		playerAmmos[i]->SetType(TankType::Player);
 	}
 
 	return S_OK;
