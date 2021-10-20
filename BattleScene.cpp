@@ -74,6 +74,7 @@ void BattleScene::Update()
 
     for (int i = 0; i < 4; i++) enemyTankFactory[i]->Update();
     playerTank->Update();
+    ammoMgr->Update();
 }
 
 void BattleScene::Render(HDC hdc)
