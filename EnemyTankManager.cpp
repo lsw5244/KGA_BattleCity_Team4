@@ -32,12 +32,19 @@ HRESULT EnemyTankManager::Init()
 void EnemyTankManager::Update()
 {
 	for (vector<EnemyTanks*>::iterator it = vecEnemyTank.begin();
-		it != vecEnemyTank.end();
-		it++)
+		it != vecEnemyTank.end();)
 	{
 		(*it)->Update();
+		if ((*it)->GetisDestruction()) {
+			SAFE_RELEASE((*it));
+			it = vecEnemyTank.erase(it);
+		}
+		else {
+			it++;
+		}
 	}
 	totalEnemyNum = vecEnemyTank.size();
+	cout << vecEnemyTank.size() << endl;
 }
 
 void EnemyTankManager::Render(HDC hdc)

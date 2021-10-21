@@ -56,7 +56,7 @@ public:
 	inline void SetTileInfo(TILE_INFO(*tileInfo)[TILE_COUNT]) { this->tileInfo = tileInfo; }
 	inline void SetPlyaerRect(PlayerTank& playerTank) { this->playerRect = playerTank.GetRect(); }
 	inline void SetAmmoMgr(AmmoManager* mgr) { ammoMgr = mgr; }
-	inline void isHit() { this->hp--; if (hp <= 0) isDestructionEffect = true; }
+	inline void isHit() { this->hp = hp-1; if (hp <= 0) isDestructionEffect = true; }
 	inline void SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank) { this->vecEnemyTanks = vecEnemyTank; }
 	inline bool GetisDestruction() {return this->isDestruction;}
 	inline RECT GetRect() { return this->shape; }
