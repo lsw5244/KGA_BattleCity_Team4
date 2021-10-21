@@ -15,7 +15,7 @@ private:
 	bool showCollider;
 
 	float sec;
-
+	POINT baseStartPoint;
 	int boomEffectFrameX;
 
 	Image* boomEffect;

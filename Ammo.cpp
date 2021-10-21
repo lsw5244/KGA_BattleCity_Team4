@@ -530,72 +530,20 @@ void Ammo::IronWallHitDestroyWall(TILE_INFO* tileInfo)
 
 void Ammo::DestroyBase(int i, int j)
 {
-	
-	switch (dir)
-	{
-	case MoveDir::Left:
-		tileInfo[i][j].terrain = Terrain::BaseDes;
-		tileInfo[i][j].frameX[0] += 4;
-		tileInfo[i][j].frameX[1] += 4;
-		tileInfo[i][j - 1].terrain = Terrain::BaseDes;
-		tileInfo[i][j - 1].frameX[0] += 4;
-		tileInfo[i][j - 1].frameX[1] += 4;
+	baseStartPoint = { 24, 12 };
+	tileInfo[baseStartPoint.x][baseStartPoint.y].terrain = Terrain::BaseDes; // 각 1/4 칸
+	tileInfo[baseStartPoint.x][baseStartPoint.y].frameX[0] += 4;
+	tileInfo[baseStartPoint.x][baseStartPoint.y].frameX[1] += 4;
+	tileInfo[baseStartPoint.x + 1][baseStartPoint.y].terrain = Terrain::BaseDes;
+	tileInfo[baseStartPoint.x + 1][baseStartPoint.y].frameX[0] += 4;
+	tileInfo[baseStartPoint.x + 1][baseStartPoint.y].frameX[1] += 4;
 
-		tileInfo[i + 1][j].terrain = Terrain::BaseDes;
-		tileInfo[i + 1][j].frameX[0] += 4;
-		tileInfo[i + 1][j].frameX[1] += 4;
-		tileInfo[i + 1][j - 1].terrain = Terrain::BaseDes;
-		tileInfo[i + 1][j - 1].frameX[0] += 4;
-		tileInfo[i + 1][j - 1].frameX[1] += 4;
-		break;
-	case MoveDir::Right:
-		tileInfo[i][j].terrain = Terrain::BaseDes;
-		tileInfo[i][j].frameX[0] += 4;
-		tileInfo[i][j].frameX[1] += 4;
-		tileInfo[i][j + 1].terrain = Terrain::BaseDes;
-		tileInfo[i][j + 1].frameX[0] += 4;
-		tileInfo[i][j + 1].frameX[1] += 4;
-
-		tileInfo[i + 1][j].terrain = Terrain::BaseDes;
-		tileInfo[i + 1][j].frameX[0] += 4;
-		tileInfo[i + 1][j].frameX[1] += 4;
-		tileInfo[i + 1][j + 1].terrain = Terrain::BaseDes;
-		tileInfo[i + 1][j + 1].frameX[0] += 4;
-		tileInfo[i + 1][j + 1].frameX[1] += 4;
-		break;
-	case MoveDir::Up:
-		tileInfo[i][j].terrain = Terrain::BaseDes;
-		tileInfo[i][j].frameX[0] += 4;
-		tileInfo[i][j].frameX[1] += 4;
-		tileInfo[i - 1][j].terrain = Terrain::BaseDes;
-		tileInfo[i - 1][j].frameX[0] += 4;
-		tileInfo[i - 1][j].frameX[1] += 4;
-
-		tileInfo[i][j + 1].terrain = Terrain::BaseDes;
-		tileInfo[i][j + 1].frameX[0] += 4;
-		tileInfo[i][j + 1].frameX[1] += 4;
-		tileInfo[i - 1][j + 1].terrain = Terrain::BaseDes;
-		tileInfo[i - 1][j + 1].frameX[0] += 4;
-		tileInfo[i - 1][j + 1].frameX[1] += 4;
-		break;
-	case MoveDir::Down:
-		tileInfo[i][j].terrain = Terrain::BaseDes;
-		tileInfo[i][j].frameX[0] += 4;
-		tileInfo[i][j].frameX[1] += 4;
-		tileInfo[i + 1][j].terrain = Terrain::BaseDes;
-		tileInfo[i + 1][j].frameX[0] += 4;
-		tileInfo[i + 1][j].frameX[1] += 4;
-
-		tileInfo[i][j + 1].terrain = Terrain::BaseDes;
-		tileInfo[i][j + 1].frameX[0] += 4;
-		tileInfo[i][j + 1].frameX[1] += 4;
-		tileInfo[i + 1][j + 1].terrain = Terrain::BaseDes;
-		tileInfo[i + 1][j + 1].frameX[0] += 4;
-		tileInfo[i + 1][j + 1].frameX[1] += 4;
-		break;
-	default:
-		break;
-	}
+	tileInfo[baseStartPoint.x][baseStartPoint.y + 1].terrain = Terrain::BaseDes;
+	tileInfo[baseStartPoint.x][baseStartPoint.y + 1].frameX[0] += 4;
+	tileInfo[baseStartPoint.x][baseStartPoint.y + 1].frameX[1] += 4;
+	tileInfo[baseStartPoint.x + 1][baseStartPoint.y + 1].terrain = Terrain::BaseDes;
+	tileInfo[baseStartPoint.x + 1][baseStartPoint.y + 1].frameX[0] += 4;
+	tileInfo[baseStartPoint.x + 1][baseStartPoint.y + 1].frameX[1] += 4;
 
 }
 
