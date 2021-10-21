@@ -12,6 +12,7 @@ private:
 	bool isAlive;
 	bool renderBoomEffect;
 	bool showCollider;
+	bool hitCheck;
 
 	float sec;
 

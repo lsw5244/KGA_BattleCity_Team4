@@ -1,13 +1,3 @@
-/*
-		사용하기
-		사용 할 총알에 tileInfo넣어주기
-		발사할 때 Fire()함수를 작동시키면 발사
-		총알이 충돌하면 DestroyAmmo()함수 작동시키기
-
-		FIXME
-		1. 부수지 못하는 벽돌, 탱크랑 출돌했을 때 추가하기
-*/
-
 #include "Ammo.h"
 #include "Image.h"
 #include "PlayerTank.h"
@@ -45,8 +35,7 @@ HRESULT Ammo::Init()
 	hitTile1 = nullptr;
 	hitTile2 = nullptr;
 
-	//playerTank = nullptr;
-
+	isHit = false;
 	return S_OK;
 }
 
@@ -68,7 +57,11 @@ void Ammo::Update()
 		}
 	}
 	
-	AmmoHitCheck();
+	if (isAlive == true)
+	{
+		AmmoHitCheck();
+	}
+	
 
 	shape.left = pos.x - bodySize / 2;
 	shape.right = shape.left + bodySize;
@@ -178,6 +171,7 @@ void Ammo::DestroyAmmo()
 
 void Ammo::AmmoHitCheck()
 {
+
 	for (int i = GetPosCount(pos.y, -2, false); i < GetPosCount(pos.y, 2, false); i++) 
 	{
 		for (int j = GetPosCount(pos.x, -2, true); j < GetPosCount(pos.x, 2, true); j++) 
@@ -187,14 +181,27 @@ void Ammo::AmmoHitCheck()
 				//base hit
 				if (tileInfo[i][j].terrain == Terrain::Base)
 				{
+					cout << i << " " << j; // 24  12			// 25 12					왼쪽으로 쏠 때 24 13    25 13
 					DestroyAmmo();
 					DestroyBase(i, j);
-
+					return;
 				}
-
 
 				if (tileInfo[i][j].terrain == Terrain::Brick)
 				{
+					if (CollisionEnter(tileInfo[i + 1][j].selectRc, shape) &&
+						tileInfo[i + 1][j].terrain == Terrain::Base)
+					{
+						DestroyBase(i + 1, j);
+						return;
+					}
+					if(CollisionEnter(tileInfo[i][j + 1].selectRc, shape) &&
+						tileInfo[i][j + 1].terrain == Terrain::Base)
+					{
+						DestroyBase(i, j + 1);
+						return;
+					}
+
 					hitTile1 = &tileInfo[i][j];
 
 					if (CollisionEnter(tileInfo[i + 1][j].selectRc, shape) &&
@@ -248,6 +255,7 @@ void Ammo::AmmoHitCheck()
 			}
 		}
 	}
+
 }
 
 void Ammo::DestroyWall(int i, int j)
@@ -507,6 +515,11 @@ void Ammo::IronWallHitDestroyWall(TILE_INFO* tileInfo)
 
 void Ammo::DestroyBase(int i, int j)
 {
+	// 24  12			// 25 12					왼쪽으로 쏠 때 24 13    25 13
+	//tileInfo[24][12].frameX[0];
+	//cout << tileInfo[24][12].frameX[0] << endl;
+	//cout << tileInfo[24][12].frameX[1] << endl;
+
 	switch (dir)
 	{
 	case MoveDir::Left:
