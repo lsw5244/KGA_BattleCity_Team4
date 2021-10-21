@@ -5,7 +5,7 @@
 class Ammo;
 class PlayerTank;
 class EnemyTanks;
-#define PLAYE_MAX_AMMO_COUNT 2
+#define PLAYER_MAX_AMMO_COUNT 2
 class AmmoManager : public GameEntity
 {
 private:
@@ -15,7 +15,7 @@ private:
 
 	int enemyMaxAmmoCount = 30;
 
-	Ammo* playerAmmos[PLAYE_MAX_AMMO_COUNT];
+	Ammo* playerAmmos[PLAYER_MAX_AMMO_COUNT];
 
 	TILE_INFO(*tileInfo)[TILE_COUNT];
 

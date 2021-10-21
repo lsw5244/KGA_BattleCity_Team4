@@ -42,8 +42,18 @@ HRESULT Ammo::Init()
 
 void Ammo::Update()
 {
-
-
+	if (type == TankType::Enemy && isAlive == true)
+	{
+		for (int i = 0; i < 2; i++)
+		{
+			if (playerAmmos[i]->GetIsAlive() == true && CollisionEnter(playerAmmos[i]->GetRect(), shape))
+			{
+				playerAmmos[i]->EraseAmmo();
+				
+				EraseAmmo();
+			}
+		}
+	}
 
 	if (CollisionEnter(*(playerTank->GetRect()), shape) && type != TankType::Player)
 	{
@@ -63,7 +73,6 @@ void Ammo::Update()
 		AmmoHitCheck();
 	}
 	
-
 	shape.left = pos.x - bodySize / 2;
 	shape.right = shape.left + bodySize;
 	shape.top = pos.y - bodySize / 2;
@@ -115,8 +124,7 @@ void Ammo::Render(HDC hdc)
 			{
 				renderBoomEffect = false;
 				boomEffectFrameX = 0;
-				pos = { -10, -10 };
-
+				pos = { -10, -10 };	
 			}
 		}
 	}
@@ -168,6 +176,12 @@ void Ammo::DestroyAmmo()
 	isAlive = false;
 
 	renderBoomEffect = true;
+}
+
+void Ammo::EraseAmmo()
+{
+	isAlive = false;
+	pos = { -10, -10 };
 }
 
 void Ammo::AmmoHitCheck()

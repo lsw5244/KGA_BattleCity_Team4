@@ -5,6 +5,7 @@
 class Image;
 class PlayerTank;
 class EnemyTanks;
+class AmmoManager;
 class Ammo : public GameObject
 {
 private:
@@ -33,6 +34,9 @@ private:
 	PlayerTank* playerTank;
 	vector<EnemyTanks*> vecEnemys;
 	vector<EnemyTanks*>::iterator it;
+
+	Ammo** playerAmmos;
+
 public:
 	virtual HRESULT Init();
 	virtual void Update();
@@ -41,8 +45,10 @@ public:
 
 	void Fire(MoveDir dir, POINTFLOAT pos);
 	void DestroyAmmo();
+	void EraseAmmo();
 
 	void SetTileInfo(TILE_INFO(*info)[TILE_COUNT]) { this->tileInfo = info; }
+	void SetPlayerAmmos(Ammo** ammos) { playerAmmos = ammos; }
 
 	void AmmoHitCheck();
 	void DestroyWall(int i, int j);
@@ -58,4 +64,5 @@ public:
 	inline void SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank) { this->vecEnemys = vecEnemyTank; }
 
 	bool CollisionEnter(RECT rc1, RECT rc2);
+	RECT GetRect() { return shape; }
 };
