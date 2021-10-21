@@ -32,7 +32,6 @@ void PlayerTank::CollisionAndMove(MoveDir movedir)
     bufferRc = shape;
     bufferPos = pos;
 
-
     if (movedir == MoveDir::Left) {
         pos.x -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
     }
@@ -122,49 +121,48 @@ void PlayerTank::PosReset(MoveDir movedir)
 
 bool PlayerTank::SpawnEffect()
 {
-    effectTime += TimerManager::GetSingleton()->GetDeltaTime();
+    spawnEffectTime += TimerManager::GetSingleton()->GetDeltaTime();
 
-    if (effectTime >= 0.25)
+    if (spawnEffectTime >= 0.25)
     {
-        if (effectCount != 12)
+        if (spawnEffectCount != 12)
         {
-            if (effectFrameX == 3)
+            if (spawnEffectFrameX == 3)
             {
-                frameUp = false;
+                spawnFrameUp = false;
             }
-            else if (effectFrameX == 0)
+            else if (spawnEffectFrameX == 0)
             {
-                frameUp = true;
+                spawnFrameUp = true;
             }
-            switch (frameUp)
+            switch (spawnFrameUp)
             {
             case true:
-                effectFrameX++;
+                spawnEffectFrameX++;
                 break;
             case false:
-                effectFrameX--;
+                spawnEffectFrameX--;
                 break;
 
             }
-            spawnEffect->SetCurrFrameX(effectFrameX);
+            spawnEffect->SetCurrFrameX(spawnEffectFrameX);
 
-            effectCount++;
+            spawnEffectCount++;
         }
-        effectTime = 0;
+        spawnEffectTime = 0;
     }
 
-    if (effectCount == 12) return false;
+    if (spawnEffectCount == 12) return false;
     return true;
 }
 
 bool PlayerTank::ShieldEffect()
 {
-   time += TimerManager::GetSingleton()->GetDeltaTime();
-   effectDelay += TimerManager::GetSingleton()->GetDeltaTime();
-   
-   if (time < 3.0f)
+   if (shieldEffectTime < 3.0f)
    {
-       if (effectDelay < 0.1f)
+       shieldEffectTime += TimerManager::GetSingleton()->GetDeltaTime();
+       shieldEffectDelay += TimerManager::GetSingleton()->GetDeltaTime();
+       if (shieldEffectDelay < 0.1f)
        {
            return true;
        }
@@ -176,24 +174,19 @@ bool PlayerTank::ShieldEffect()
        {
            shieldEffect->SetCurrFrameX(1);
        }
-       effectDelay = 0.0f;
+       shieldEffectDelay = 0.0f;
        return true;
+   } else {
+       return false;
    }
-
-   
-  
-   if (time > 3.0f)
-    return false;
-
-   
 }
 
 HRESULT PlayerTank::Init()
 {
     ImageManager::GetSingleton()->AddImage("Image/Effect/Spawn_Effect.bmp", 64, 16, 4, 1, true, RGB(255, 0, 255));
     spawnEffect = ImageManager::GetSingleton()->FindImage("Image/Effect/Spawn_Effect.bmp");
-    effectFrameX = 3;
-    effectCount = 0;
+    spawnEffectFrameX = 3;
+    spawnEffectCount = 0;
 
     ImageManager::GetSingleton()->AddImage("Image/Player/Player3.bmp", 128, 76, 8, 4, true, RGB(255, 0, 255));
     playerTank = ImageManager::GetSingleton()->FindImage("Image/Player/Player3.bmp");
@@ -202,7 +195,7 @@ HRESULT PlayerTank::Init()
 
     ImageManager::GetSingleton()->AddImage("Image/Effect/Shield.bmp", 32, 16, 2, 1, true, RGB(255, 0, 255));
     shieldEffect = ImageManager::GetSingleton()->FindImage("Image/Effect/Shield.bmp");
-    effectDelay = 0.0f;
+    shieldEffectDelay = 0.0f;
 
     moveDir = MoveDir::Up;
 
@@ -212,6 +205,7 @@ HRESULT PlayerTank::Init()
     shape.right = pos.x + 8;
     shape.bottom = pos.y + 8;
 
+    isBarrier = false;
     life = 2;
     Level = 0;
     return S_OK;

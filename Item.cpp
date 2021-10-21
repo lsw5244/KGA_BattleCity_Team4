@@ -9,11 +9,12 @@ HRESULT Item::Init(PlayerTank& playerTank)
 	SetPlyaer(playerTank);
 	srand((unsigned int)time(nullptr));
 
+	collCheck = false;
 	aliveTime = renderTime = 0.0f;
 	itemNum = rand() % 6;
 	pos.x = 16 + ((rand() % 26) * 8);
 	pos.y = 8 + ((rand() % 26) * 8)+1;
-	itemNum = 3;
+	itemNum = 0;
 	switch (itemNum) {
 	case 0:
 		itemState = ItemState::Barrier;
@@ -51,6 +52,7 @@ bool Item::ItemUpdate()
 	{
 		switch (itemState) {
 		case ItemState::Barrier:
+			playerTank->ActiveBarrier();
 			break;
 		case ItemState::TimeStop:
 			break;
@@ -62,10 +64,13 @@ bool Item::ItemUpdate()
 		case ItemState::Boom:
 			break;
 		case ItemState::Life:
+			playerTank->LifeUp();
 			break;
 		}
+		collCheck = true;
+
 	}
-	if (aliveTime >= 9999.0f) {
+	if (aliveTime >= 20 || collCheck) {
 		Release();
 		return true;
 	}

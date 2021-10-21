@@ -60,7 +60,7 @@ HRESULT BattleScene::Init()
 
 
     itemManager = new ItemManager;
-    itemManager->newItem(*playerTank);
+    itemManager->newItem(*playerTank, tileInfo);
 
     uIManager = new UIManager;
     uIManager->Init(*playerTank, *enemyTankManager);
@@ -80,6 +80,7 @@ void BattleScene::Update()
     uIManager->Update(*playerTank, *enemyTankManager);
 
     cout << endl;
+
 }
 
 void BattleScene::Render(HDC hdc)
