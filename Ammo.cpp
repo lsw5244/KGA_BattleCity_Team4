@@ -36,6 +36,7 @@ HRESULT Ammo::Init()
 	hitTile2 = nullptr;
 
 	isHit = false;
+	boomEffectFrameX = 0;
 	return S_OK;
 }
 
@@ -104,16 +105,16 @@ void Ammo::Render(HDC hdc)
 {
 	if (renderBoomEffect == true && isAlive == false)
 	{
-		boomEffect->Render(hdc, pos.x, pos.y, boomEffect->GetCurrFrameX(), boomEffect->GetCurrFrameY());
+		boomEffect->Render(hdc, pos.x, pos.y, boomEffectFrameX, boomEffect->GetCurrFrameY());
 		sec += TimerManager::GetSingleton()->GetDeltaTime();
 		if (sec > 0.03f)
 		{
 			sec = 0.0f;
-			boomEffect->SetCurrFrameX((boomEffect->GetCurrFrameX()) + 1);
-			if (boomEffect->GetCurrFrameX() > 2)
+			boomEffectFrameX++;
+			if (boomEffectFrameX > 2)
 			{
 				renderBoomEffect = false;
-				boomEffect->SetCurrFrameX(0);
+				boomEffectFrameX = 0;
 				pos = { -10, -10 };
 
 			}
