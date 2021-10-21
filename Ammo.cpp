@@ -196,9 +196,8 @@ void Ammo::AmmoHitCheck()
 				//base hit
 				if (tileInfo[i][j].terrain == Terrain::Base)
 				{
-					cout << i << " " << j; // 24  12			// 25 12					왼쪽으로 쏠 때 24 13    25 13
 					DestroyAmmo();
-					DestroyBase(i, j);
+					DestroyBase();
 					return;
 				}
 
@@ -207,13 +206,13 @@ void Ammo::AmmoHitCheck()
 					if (CollisionEnter(tileInfo[i + 1][j].selectRc, shape) &&
 						tileInfo[i + 1][j].terrain == Terrain::Base)
 					{
-						DestroyBase(i + 1, j);
+						DestroyBase();
 						return;
 					}
 					if(CollisionEnter(tileInfo[i][j + 1].selectRc, shape) &&
 						tileInfo[i][j + 1].terrain == Terrain::Base)
 					{
-						DestroyBase(i, j + 1);
+						DestroyBase();
 						return;
 					}
 
@@ -528,7 +527,7 @@ void Ammo::IronWallHitDestroyWall(TILE_INFO* tileInfo)
 	hitTile2 = nullptr;
 }
 
-void Ammo::DestroyBase(int i, int j)
+void Ammo::DestroyBase()
 {
 	baseStartPoint = { 24, 12 };
 	tileInfo[baseStartPoint.x][baseStartPoint.y].terrain = Terrain::BaseDes; // 각 1/4 칸
