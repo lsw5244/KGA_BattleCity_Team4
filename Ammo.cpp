@@ -204,12 +204,8 @@ void Ammo::AmmoHitCheck()
 				if (tileInfo[i][j].terrain == Terrain::Brick)
 				{
 					if (CollisionEnter(tileInfo[i + 1][j].selectRc, shape) &&
-						tileInfo[i + 1][j].terrain == Terrain::Base)
-					{
-						DestroyBase();
-						return;
-					}
-					if(CollisionEnter(tileInfo[i][j + 1].selectRc, shape) &&
+						tileInfo[i + 1][j].terrain == Terrain::Base ||
+						CollisionEnter(tileInfo[i][j + 1].selectRc, shape) &&
 						tileInfo[i][j + 1].terrain == Terrain::Base)
 					{
 						DestroyBase();
@@ -264,7 +260,6 @@ void Ammo::AmmoHitCheck()
 						DestroyAmmo();
 					}
 					return;
-
 				}
 			}
 		}
