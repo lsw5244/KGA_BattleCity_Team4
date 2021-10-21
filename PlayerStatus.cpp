@@ -1,7 +1,7 @@
 #include "PlayerStatus.h"
 #include "Image.h"
 
-HRESULT PlayerStatus::Init()
+HRESULT PlayerStatus::Init(PlayerTank& playerTank)
 {
 	ImageManager::GetSingleton()->AddImage("Image/Icon/player1Life.bmp", 16, 16, true, RGB(255, 0, 255));
 	player1LifeImage = ImageManager::GetSingleton()->FindImage("Image/Icon/player1Life.bmp");
@@ -11,11 +11,14 @@ HRESULT PlayerStatus::Init()
 	ImageManager::GetSingleton()->AddImage("Image/Text/Number.bmp", 40, 14, 5, 2, true, RGB(255, 0, 255));
 	lifeNumImage = ImageManager::GetSingleton()->FindImage("Image/Text/Number.bmp");
 
+	SetPlayerTank(playerTank);
+
 	return S_OK;
 }
 
-void PlayerStatus::Update()
+void PlayerStatus::Update(PlayerTank& playerTank)
 {
+	ChangeLifeImage(playerTank.GetLife());
 }
 
 void PlayerStatus::Render(HDC hdc)
@@ -28,7 +31,7 @@ void PlayerStatus::Release()
 {
 }
 
-void PlayerStatus::ChangeLife(int life)
+void PlayerStatus::ChangeLifeImage(int life)
 {
 	lifeNumImage->SetCurrFrameX(life % 5);
 	lifeNumImage->SetCurrFrameY(life / 5);

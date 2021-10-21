@@ -2,17 +2,20 @@
 #include "EnemyTanks.h"
 
 class Image;
-class EnemyStatus : public EnemyTanks
+class EnemyTankManager;
+class EnemyStatus
 {
 private:
 	Image* enemyNumIcon;
 
-public:
-	HRESULT Init() override;
-	void Update() override;
-	void Render(HDC hdc) override;
-	void Release() override;
+	EnemyTankManager* enemyTanks;
 
-	void EnemyIconRender(HDC hdc, int enemyNum);
+	int totalEnmey;
+	inline void SetEnemyTank(EnemyTankManager& enemyTank) { this->enemyTanks = &enemyTank; }
+public:
+	HRESULT Init(EnemyTankManager& enemyTank);
+	void Update(EnemyTankManager& enemyTank);
+	void Render(HDC hdc);
+	void Release();
 };
 
