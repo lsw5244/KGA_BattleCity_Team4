@@ -42,8 +42,6 @@ HRESULT BattleScene::Init()
     playerTank->SetAmmoMgr(ammoMgr);
 
     ammoMgr->SetPlayerTank(playerTank);
-    ammoMgr->Init();
-
 
     enemyTankFactory[0] = new NormalTankFactory;
     enemyTankFactory[1] = new FastShootTankFactory;
@@ -55,6 +53,9 @@ HRESULT BattleScene::Init()
     enemyTankManager->NewEnemyTank(enemyTankFactory[1]->CreateEnemyTank(), tileInfo, *playerTank, 2, ammoMgr, true);
     enemyTankManager->NewEnemyTank(enemyTankFactory[2]->CreateEnemyTank(), tileInfo, *playerTank, 3, ammoMgr, true);
     enemyTankManager->NewEnemyTank(enemyTankFactory[3]->CreateEnemyTank(), tileInfo, *playerTank, 1, ammoMgr, true);
+
+    ammoMgr->SetVecEnemyTank(enemyTankManager->GetVecEnemyTanks());
+    ammoMgr->Init();
 
     itemManager = new ItemManager;
     itemManager->newItem(*playerTank);
