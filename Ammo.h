@@ -47,6 +47,7 @@ public:
 	void DestroyWall(TILE_INFO* tileInfo);
 	void DestroyWall(TILE_INFO* tileInfo1, TILE_INFO* tileinfo2);
 	void IronWallHitDestroyWall(TILE_INFO* tileInfo);
+	void DestroyBase(int i, int j);
 
 	inline bool GetIsAlive() { return isAlive; }
 	inline bool GetRenderBoomEffect() { return renderBoomEffect; }

@@ -53,6 +53,8 @@ HRESULT Ammo::Init()
 void Ammo::Update()
 {
 
+
+
 	if (CollisionEnter(*(playerTank->GetRect()), shape) && type != TankType::Player)
 	{
 		DestroyAmmo();
@@ -182,9 +184,17 @@ void Ammo::AmmoHitCheck()
 		{
 			if (CollisionEnter(tileInfo[i][j].selectRc, shape))
 			{
+				//base hit
+				if (tileInfo[i][j].terrain == Terrain::Base)
+				{
+					DestroyAmmo();
+					DestroyBase(i, j);
+
+				}
+
+
 				if (tileInfo[i][j].terrain == Terrain::Brick)
 				{
-					// 오른쪽, 아래쪽 확인하기
 					hitTile1 = &tileInfo[i][j];
 
 					if (CollisionEnter(tileInfo[i + 1][j].selectRc, shape) &&
@@ -493,6 +503,48 @@ void Ammo::IronWallHitDestroyWall(TILE_INFO* tileInfo)
 
 	hitTile1 = nullptr;
 	hitTile2 = nullptr;
+}
+
+void Ammo::DestroyBase(int i, int j)
+{
+	switch (dir)
+	{
+	case MoveDir::Left:
+		tileInfo[i][j].terrain = Terrain::BaseDes;
+		tileInfo[i][j].frameX[0] += 4;
+		tileInfo[i][j].frameX[1] += 4;
+		tileInfo[i][j - 1].terrain = Terrain::BaseDes;
+		tileInfo[i][j - 1].frameX[0] += 4;
+		tileInfo[i][j - 1].frameX[1] += 4;
+		break;
+	case MoveDir::Right:
+		tileInfo[i][j].terrain = Terrain::BaseDes;
+		tileInfo[i][j].frameX[0] += 4;
+		tileInfo[i][j].frameX[1] += 4;
+		tileInfo[i][j + 1].terrain = Terrain::BaseDes;
+		tileInfo[i][j + 1].frameX[0] += 4;
+		tileInfo[i][j + 1].frameX[1] += 4;
+		break;
+	case MoveDir::Up:
+		tileInfo[i][j].terrain = Terrain::BaseDes;
+		tileInfo[i][j].frameX[0] += 4;
+		tileInfo[i][j].frameX[1] += 4;
+		tileInfo[i - 1][j].terrain = Terrain::BaseDes;
+		tileInfo[i - 1][j].frameX[0] += 4;
+		tileInfo[i - 1][j].frameX[1] += 4;
+		break;
+	case MoveDir::Down:
+		tileInfo[i][j].terrain = Terrain::BaseDes;
+		tileInfo[i][j].frameX[0] += 4;
+		tileInfo[i][j].frameX[1] += 4;
+		tileInfo[i + 1][j].terrain = Terrain::BaseDes;
+		tileInfo[i + 1][j].frameX[0] += 4;
+		tileInfo[i + 1][j].frameX[1] += 4;
+		break;
+	default:
+		break;
+	}
+
 }
 
 bool Ammo::CollisionEnter(RECT rc1, RECT rc2)
