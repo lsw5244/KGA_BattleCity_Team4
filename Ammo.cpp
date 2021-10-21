@@ -1,13 +1,3 @@
-/*
-		사용하기
-		사용 할 총알에 tileInfo넣어주기
-		발사할 때 Fire()함수를 작동시키면 발사
-		총알이 충돌하면 DestroyAmmo()함수 작동시키기
-
-		FIXME
-		1. 부수지 못하는 벽돌, 탱크랑 출돌했을 때 추가하기
-*/
-
 #include "Ammo.h"
 #include "Image.h"
 #include "PlayerTank.h"
@@ -45,13 +35,25 @@ HRESULT Ammo::Init()
 	hitTile1 = nullptr;
 	hitTile2 = nullptr;
 
-	//playerTank = nullptr;
-
+	isHit = false;
+	boomEffectFrameX = 0;
 	return S_OK;
 }
 
 void Ammo::Update()
 {
+	if (type == TankType::Enemy && isAlive == true)
+	{
+		for (int i = 0; i < 2; i++)
+		{
+			if (playerAmmos[i]->GetIsAlive() == true && CollisionEnter(playerAmmos[i]->GetRect(), shape))
+			{
+				playerAmmos[i]->EraseAmmo();
+				
+				EraseAmmo();
+			}
+		}
+	}
 
 	if (CollisionEnter(*(playerTank->GetRect()), shape) && type != TankType::Player)
 	{
@@ -66,8 +68,11 @@ void Ammo::Update()
 		}
 	}
 	
-	AmmoHitCheck();
-
+	if (isAlive == true)
+	{
+		AmmoHitCheck();
+	}
+	
 	shape.left = pos.x - bodySize / 2;
 	shape.right = shape.left + bodySize;
 	shape.top = pos.y - bodySize / 2;
@@ -109,18 +114,17 @@ void Ammo::Render(HDC hdc)
 {
 	if (renderBoomEffect == true && isAlive == false)
 	{
-		boomEffect->Render(hdc, pos.x, pos.y, boomEffect->GetCurrFrameX(), boomEffect->GetCurrFrameY());
+		boomEffect->Render(hdc, pos.x, pos.y, boomEffectFrameX, boomEffect->GetCurrFrameY());
 		sec += TimerManager::GetSingleton()->GetDeltaTime();
 		if (sec > 0.03f)
 		{
 			sec = 0.0f;
-			boomEffect->SetCurrFrameX((boomEffect->GetCurrFrameX()) + 1);
-			if (boomEffect->GetCurrFrameX() > 2)
+			boomEffectFrameX++;
+			if (boomEffectFrameX > 2)
 			{
 				renderBoomEffect = false;
-				boomEffect->SetCurrFrameX(0);
-				pos = { -10, -10 };
-
+				boomEffectFrameX = 0;
+				pos = { -10, -10 };	
 			}
 		}
 	}
@@ -174,17 +178,40 @@ void Ammo::DestroyAmmo()
 	renderBoomEffect = true;
 }
 
+void Ammo::EraseAmmo()
+{
+	isAlive = false;
+	pos = { -10, -10 };
+}
+
 void Ammo::AmmoHitCheck()
 {
+
 	for (int i = GetPosCount(pos.y, -2, false); i < GetPosCount(pos.y, 2, false); i++) 
 	{
 		for (int j = GetPosCount(pos.x, -2, true); j < GetPosCount(pos.x, 2, true); j++) 
 		{
 			if (CollisionEnter(tileInfo[i][j].selectRc, shape))
 			{
+				//base hit
+				if (tileInfo[i][j].terrain == Terrain::Base)
+				{
+					DestroyAmmo();
+					DestroyBase();
+					return;
+				}
+
 				if (tileInfo[i][j].terrain == Terrain::Brick)
 				{
-					// 오른쪽, 아래쪽 확인하기
+					if (CollisionEnter(tileInfo[i + 1][j].selectRc, shape) &&
+						tileInfo[i + 1][j].terrain == Terrain::Base ||
+						CollisionEnter(tileInfo[i][j + 1].selectRc, shape) &&
+						tileInfo[i][j + 1].terrain == Terrain::Base)
+					{
+						DestroyBase();
+						return;
+					}
+
 					hitTile1 = &tileInfo[i][j];
 
 					if (CollisionEnter(tileInfo[i + 1][j].selectRc, shape) &&
@@ -233,11 +260,11 @@ void Ammo::AmmoHitCheck()
 						DestroyAmmo();
 					}
 					return;
-
 				}
 			}
 		}
 	}
+
 }
 
 void Ammo::DestroyWall(int i, int j)
@@ -493,6 +520,25 @@ void Ammo::IronWallHitDestroyWall(TILE_INFO* tileInfo)
 
 	hitTile1 = nullptr;
 	hitTile2 = nullptr;
+}
+
+void Ammo::DestroyBase()
+{
+	baseStartPoint = { 24, 12 };
+	tileInfo[baseStartPoint.x][baseStartPoint.y].terrain = Terrain::BaseDes; // 각 1/4 칸
+	tileInfo[baseStartPoint.x][baseStartPoint.y].frameX[0] += 4;
+	tileInfo[baseStartPoint.x][baseStartPoint.y].frameX[1] += 4;
+	tileInfo[baseStartPoint.x + 1][baseStartPoint.y].terrain = Terrain::BaseDes;
+	tileInfo[baseStartPoint.x + 1][baseStartPoint.y].frameX[0] += 4;
+	tileInfo[baseStartPoint.x + 1][baseStartPoint.y].frameX[1] += 4;
+
+	tileInfo[baseStartPoint.x][baseStartPoint.y + 1].terrain = Terrain::BaseDes;
+	tileInfo[baseStartPoint.x][baseStartPoint.y + 1].frameX[0] += 4;
+	tileInfo[baseStartPoint.x][baseStartPoint.y + 1].frameX[1] += 4;
+	tileInfo[baseStartPoint.x + 1][baseStartPoint.y + 1].terrain = Terrain::BaseDes;
+	tileInfo[baseStartPoint.x + 1][baseStartPoint.y + 1].frameX[0] += 4;
+	tileInfo[baseStartPoint.x + 1][baseStartPoint.y + 1].frameX[1] += 4;
+
 }
 
 bool Ammo::CollisionEnter(RECT rc1, RECT rc2)

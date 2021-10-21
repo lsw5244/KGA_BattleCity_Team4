@@ -7,8 +7,17 @@
 
 HRESULT AmmoManager::Init()
 {
-	vecEnemyAmmos.resize(enemyMaxAmmoCount);
+	for (int i = 0; i < PLAYER_MAX_AMMO_COUNT; i++)
+	{
+		playerAmmos[i] = new Ammo;
+		playerAmmos[i]->Init();
+		playerAmmos[i]->SetTileInfo(tileInfo);
+		playerAmmos[i]->SetType(TankType::Player);
+		playerAmmos[i]->SetPlayerTank(playerTank);
+		playerAmmos[i]->SetVecEnemyTank(vecEnemys);
+	}
 
+	vecEnemyAmmos.resize(enemyMaxAmmoCount);
 	for (it = vecEnemyAmmos.begin(); it != vecEnemyAmmos.end(); it++)
 	{
 		(*it) = new Ammo;
@@ -17,16 +26,7 @@ HRESULT AmmoManager::Init()
 		(*it)->SetType(TankType::Enemy);
 		(*it)->SetPlayerTank(playerTank);
 		(*it)->SetVecEnemyTank(vecEnemys);
-	}
-
-	for (int i = 0; i < PLAYE_MAX_AMMO_COUNT; i++)
-	{
-		playerAmmos[i] = new Ammo;
-		playerAmmos[i]->Init();
-		playerAmmos[i]->SetTileInfo(tileInfo);
-		playerAmmos[i]->SetType(TankType::Player);
-		playerAmmos[i]->SetPlayerTank(playerTank);
-		playerAmmos[i]->SetVecEnemyTank(vecEnemys);
+		(*it)->SetPlayerAmmos(playerAmmos);
 	}
 
 	return S_OK;
@@ -39,7 +39,7 @@ void AmmoManager::Update()
 		(*it)->Update();
 	}
 
-	for (int i = 0; i < PLAYE_MAX_AMMO_COUNT; i++)
+	for (int i = 0; i < PLAYER_MAX_AMMO_COUNT; i++)
 	{
 		playerAmmos[i]->Update();
 	}
@@ -52,7 +52,7 @@ void AmmoManager::Render(HDC hdc)
 		(*it)->Render(hdc);
 	}
 
-	for (int i = 0; i < PLAYE_MAX_AMMO_COUNT; i++)
+	for (int i = 0; i < PLAYER_MAX_AMMO_COUNT; i++)
 	{
 		playerAmmos[i]->Render(hdc);
 	}
@@ -66,7 +66,7 @@ void AmmoManager::Release()
 	}
 	vecEnemyAmmos.clear();
 
-	for (int i = 0; i < PLAYE_MAX_AMMO_COUNT; i++)
+	for (int i = 0; i < PLAYER_MAX_AMMO_COUNT; i++)
 	{
 		SAFE_RELEASE(playerAmmos[i]);
 	}
@@ -86,7 +86,7 @@ void AmmoManager::EnemyFire(MoveDir dir, POINTFLOAT pos)
 
 void AmmoManager::PlayerFire(MoveDir dir, POINTFLOAT pos)
 {
-	for (int i = 0; i < PLAYE_MAX_AMMO_COUNT; i++)
+	for (int i = 0; i < PLAYER_MAX_AMMO_COUNT; i++)
 	{
 		if (playerAmmos[i]->GetIsAlive() == false && playerAmmos[i]->GetRenderBoomEffect() == false)
 		{
@@ -94,5 +94,4 @@ void AmmoManager::PlayerFire(MoveDir dir, POINTFLOAT pos)
 			break;
 		}
 	}
-
 }
