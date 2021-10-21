@@ -4,6 +4,7 @@
 
 class Image;
 class PlayerTank;
+class EnemyTanks;
 class Ammo : public GameObject
 {
 private:
@@ -28,7 +29,8 @@ private:
 	TankType type;
 
 	PlayerTank* playerTank;
-
+	vector<EnemyTanks*> vecEnemys;
+	vector<EnemyTanks*>::iterator it;
 public:
 	virtual HRESULT Init();
 	virtual void Update();
@@ -50,6 +52,7 @@ public:
 	inline bool GetRenderBoomEffect() { return renderBoomEffect; }
 	inline void SetType(TankType type) { this->type = type; }
 	inline void SetPlayerTank(PlayerTank* tank) { playerTank = tank; }
+	inline void SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank) { this->vecEnemys = vecEnemyTank; }
 
 	bool CollisionEnter(RECT rc1, RECT rc2);
 };

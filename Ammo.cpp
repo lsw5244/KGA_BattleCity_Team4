@@ -12,6 +12,7 @@
 #include "Image.h"
 #include "PlayerTank.h"
 #include "CommonFunction.h"
+#include "EnemyTanks.h"
 HRESULT Ammo::Init()
 {
 	ImageManager::GetSingleton()->AddImage("Image/Bullet/Missile_Down.bmp", 3, 4, true, RGB(255, 0, 255));
@@ -44,15 +45,28 @@ HRESULT Ammo::Init()
 	hitTile1 = nullptr;
 	hitTile2 = nullptr;
 
+	//playerTank = nullptr;
+
 	return S_OK;
 }
 
 void Ammo::Update()
 {
+
 	if (CollisionEnter(*(playerTank->GetRect()), shape) && type != TankType::Player)
 	{
-		cout << "플레이어 히트 !!" << endl;
+		DestroyAmmo();
 	}
+
+	for (it = vecEnemys.begin(); it != vecEnemys.end(); it++)
+	{
+		if (CollisionEnter((*it)->GetRect(), shape) && type != TankType::Enemy)
+		{
+			DestroyAmmo();
+		}
+	}
+	
+
 
 	AmmoHitCheck();
 
