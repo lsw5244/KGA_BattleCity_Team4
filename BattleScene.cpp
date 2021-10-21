@@ -34,14 +34,12 @@ HRESULT BattleScene::Init()
     // 적 아이템 탱크 이미지 저장
 
     ammoMgr = new AmmoManager;
-    ammoMgr->SetTileInfo(tileInfo);
+
 
     playerTank = new PlayerTank;
     playerTank->Init();
     playerTank->SetTileInfo(tileInfo);
     playerTank->SetAmmoMgr(ammoMgr);
-
-    ammoMgr->SetPlayerTank(playerTank);
 
     enemyTankFactory[0] = new NormalTankFactory;
     enemyTankFactory[1] = new FastShootTankFactory;
@@ -54,8 +52,11 @@ HRESULT BattleScene::Init()
     enemyTankManager->NewEnemyTank(enemyTankFactory[2]->CreateEnemyTank(), tileInfo, *playerTank, 3, ammoMgr, true);
     enemyTankManager->NewEnemyTank(enemyTankFactory[3]->CreateEnemyTank(), tileInfo, *playerTank, 1, ammoMgr, true);
 
+    ammoMgr->SetTileInfo(tileInfo);
     ammoMgr->SetVecEnemyTank(enemyTankManager->GetVecEnemyTanks());
+    ammoMgr->SetPlayerTank(playerTank);
     ammoMgr->Init();
+
 
     itemManager = new ItemManager;
     itemManager->newItem(*playerTank);
