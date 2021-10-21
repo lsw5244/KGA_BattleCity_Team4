@@ -59,7 +59,7 @@ HRESULT BattleScene::Init()
 
 
     itemManager = new ItemManager;
-    itemManager->newItem(*playerTank);
+    itemManager->newItem(*playerTank, tileInfo);
 
     return S_OK;
 }
@@ -73,8 +73,6 @@ void BattleScene::Update()
     playerTank->Update();
     ammoMgr->Update();
     itemManager->Update();
-
-    cout << endl;
 }
 
 void BattleScene::Render(HDC hdc)

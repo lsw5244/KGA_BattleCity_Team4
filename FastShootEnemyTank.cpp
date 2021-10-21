@@ -15,14 +15,16 @@ HRESULT FastShootEnemyTank::Init()
 		img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy.bmp");
 	}
 	moveSpeed = 50;
-    return S_OK;
+	hp = 1;
+	return S_OK;
 }
 
 void FastShootEnemyTank::Update()
 {
-	AutoFire();
-	TankUpdate();
-	
+	if (isDestruction) {
+		AutoFire();
+		TankUpdate();
+	}
 }
 
 void FastShootEnemyTank::Render(HDC hdc)

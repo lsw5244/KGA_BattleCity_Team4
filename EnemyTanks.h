@@ -22,9 +22,7 @@ protected:
 	int itemTankImg(int num);
 	float itemTime;
 	int itemfraemY;
-
 	int hp;
-
 	int CurrFrame(Image enemyTank, int* elapsedCount, int setCurr);
 	tuple<MoveDir, bool> AutoMove(MoveDir moveDir, POINTFLOAT pos);
 	TILE_INFO(*tileInfo)[TILE_COUNT];
@@ -44,25 +42,33 @@ protected:
 	bool frameUp;
 	bool SpawnEffect();
 
+	Image* destructionEffect1;
+	Image* destructionEffect2;
+	int destructionEffectNum;
+	float destructionEffectTime;
+	bool isDestructionEffect;
+	bool isDestruction;
+
 	float attackDelayTime = 0.0f;
 	int attackDelay = 1;
 
 public:
 	inline void SetTileInfo(TILE_INFO(*tileInfo)[TILE_COUNT]) { this->tileInfo = tileInfo; }
-	
 	inline void SetPlyaerRect(PlayerTank& playerTank) { this->playerRect = playerTank.GetRect(); }
-	void SetAmmoMgr(AmmoManager* mgr) { ammoMgr = mgr; }
-	virtual void AutoFire() = 0;
-
+	inline void SetAmmoMgr(AmmoManager* mgr) { ammoMgr = mgr; }
+	inline void isHit() { this->hp--; if (hp <= 0) isDestructionEffect = true; }
+	inline void SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank) { this->vecEnemyTanks = vecEnemyTank; }
+	inline bool GetisDestruction() {return this->isDestruction;}
+	inline RECT GetRect() { return this->shape; }
+	//void isDestruction();
+	
 	HRESULT TankInit(int posX, bool item);
 	virtual HRESULT Init() = 0;
 	virtual void Update() = 0;
 	virtual void Render(HDC hdc) = 0;
 	virtual void Release() = 0;
-	inline void SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank) { this->vecEnemyTanks = vecEnemyTank; }
+	virtual void AutoFire() = 0;
 	
-	inline RECT GetRect() { return this->shape; }
-
 	EnemyTanks() {}
 	virtual ~EnemyTanks();
 };
