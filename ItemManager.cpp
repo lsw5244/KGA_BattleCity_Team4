@@ -1,10 +1,10 @@
 #include "ItemManager.h"
 #include "Item.h"
-void ItemManager::newItem(PlayerTank& playerTank, TILE_INFO(*tileInfo)[TILE_COUNT])
+void ItemManager::newItem(PlayerTank& playerTank, EnemyTankManager& enemyTankManager, TILE_INFO(*tileInfo)[TILE_COUNT])
 {
 	this->tileInfo = tileInfo;
 	vecItems.push_back(new Item);
-	vecItems.back()->Init(playerTank);
+	vecItems.back()->Init(playerTank, enemyTankManager);
 }
 
 HRESULT ItemManager::Init()

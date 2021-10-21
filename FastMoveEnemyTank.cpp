@@ -20,8 +20,10 @@ void FastMoveEnemyTank::Update()
 {
 
 	if (!isDestructionEffect) {
-		AutoFire();
-		TankUpdate();
+		if (!timeStop) {
+			AutoFire();
+			TankUpdate();
+		}
 	}
 	else {
 		destructionEffectTime += TimerManager::GetSingleton()->GetDeltaTime();

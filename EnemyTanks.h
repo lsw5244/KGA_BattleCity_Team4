@@ -43,11 +43,11 @@ protected:
 	bool SpawnEffect();
 
 	Image* destructionEffect1;
-	Image* destructionEffect2;
 	int destructionEffectNum;
 	float destructionEffectTime;
 	bool isDestructionEffect;
 	bool isDestruction;
+	bool timeStop;
 
 	float attackDelayTime = 0.0f;
 	int attackDelay = 1;
@@ -59,6 +59,7 @@ public:
 	inline void isHit() { this->hp = hp-1; if (hp <= 0) isDestructionEffect = true; }
 	inline void SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank) { this->vecEnemyTanks = vecEnemyTank; }
 	inline bool GetisDestruction() {return this->isDestruction;}
+	inline void SetTimeStop(bool timeStop) {this->timeStop = timeStop;}
 	inline RECT GetRect() { return this->shape; }
 	//void isDestruction();
 	
