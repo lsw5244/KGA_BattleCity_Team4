@@ -1,7 +1,8 @@
 #include "ItemManager.h"
 #include "Item.h"
-void ItemManager::newItem(PlayerTank& playerTank)
+void ItemManager::newItem(PlayerTank& playerTank, TILE_INFO(*tileInfo)[TILE_COUNT])
 {
+	this->tileInfo = tileInfo;
 	vecItems.push_back(new Item);
 	vecItems.back()->Init(playerTank);
 }
@@ -21,8 +22,7 @@ void ItemManager::Update()
 		if ((*it)->ItemUpdate()) 
 		{
 			SAFE_RELEASE((*it));
-			vecItems.erase(it);
-			if (it == vecItems.end())break;
+			it = vecItems.erase(it);
 		}
 		else {
 			it++;

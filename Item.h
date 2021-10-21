@@ -12,6 +12,7 @@ private:
 	float aliveTime;
 	float renderTime;
 	int itemNum;
+	bool collCheck; 
 	inline void SetPlyaerRect(PlayerTank& playerTank) { this->playerRect = playerTank.GetRect(); }
 	inline void SetPlyaer(PlayerTank& playerTank) { this->playerTank = &playerTank; }
 

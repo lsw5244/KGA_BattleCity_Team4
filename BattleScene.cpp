@@ -57,7 +57,7 @@ HRESULT BattleScene::Init()
     enemyTankManager->NewEnemyTank(enemyTankFactory[3]->CreateEnemyTank(), tileInfo, *playerTank, 1, ammoMgr, true);
 
     itemManager = new ItemManager;
-    itemManager->newItem(*playerTank);
+    itemManager->newItem(*playerTank, tileInfo);
 
     return S_OK;
 }

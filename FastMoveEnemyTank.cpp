@@ -12,7 +12,7 @@ HRESULT FastMoveEnemyTank::Init()
 		img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy.bmp");
 	}
 	moveSpeed = 50;
-
+	hp = 1;
 	return S_OK;
 }
 
