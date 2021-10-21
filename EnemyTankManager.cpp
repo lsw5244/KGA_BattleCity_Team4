@@ -37,6 +37,7 @@ void EnemyTankManager::Update()
 	{
 		(*it)->Update();
 	}
+	totalEnemyNum = vecEnemyTank.size();
 }
 
 void EnemyTankManager::Render(HDC hdc)

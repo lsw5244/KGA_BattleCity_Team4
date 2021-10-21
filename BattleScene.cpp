@@ -8,6 +8,7 @@
 #include "AmmoManager.h"
 #include "ItemManager.h"
 #include "EnemyTankManager.h"
+#include "UIManager.h"
 #define POS 8
 
 HRESULT BattleScene::Init()
@@ -61,6 +62,9 @@ HRESULT BattleScene::Init()
     itemManager = new ItemManager;
     itemManager->newItem(*playerTank, tileInfo);
 
+    uIManager = new UIManager;
+    uIManager->Init(*playerTank, *enemyTankManager);
+
     return S_OK;
 }
 
@@ -73,6 +77,10 @@ void BattleScene::Update()
     playerTank->Update();
     ammoMgr->Update();
     itemManager->Update();
+    uIManager->Update(*playerTank, *enemyTankManager);
+
+    cout << endl;
+
 }
 
 void BattleScene::Render(HDC hdc)
@@ -143,6 +151,7 @@ void BattleScene::Render(HDC hdc)
     playerTank->Render(hdc);
     ammoMgr->Render(hdc);
     itemManager->Render(hdc);
+    uIManager->Render(hdc);
 }
 
 void BattleScene::Release()

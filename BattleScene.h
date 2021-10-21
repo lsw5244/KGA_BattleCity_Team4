@@ -10,6 +10,7 @@ class EnemyTankFactory;
 class AmmoManager;
 class ItemManager;
 class EnemyTankManager;
+class UIManager;
 class BattleScene : public GameEntity
 {
 private:
@@ -36,6 +37,8 @@ private:
 	HPEN pen, oPen;
 
 	AmmoManager* ammoMgr;
+
+	UIManager* uIManager;
 
 public:
 	HRESULT Init();

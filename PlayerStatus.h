@@ -2,21 +2,23 @@
 #include "PlayerTank.h"
 
 class Iamge;
-class PlayerStatus : public PlayerTank
+class PlayerTank;
+class PlayerStatus
 {
 private:
 	Image* player1LifeImage;
-//	Image* player2LifeImage;
+	//	Image* player2LifeImage;
 	Image* lifeNumImage;
 
-	int player1Life, player2Life;
+	PlayerTank* playerTank;
 
+	inline void SetPlayerTank(PlayerTank& playerTank) { this->playerTank = &playerTank; }
 public:
-	virtual HRESULT Init() override;
-	virtual void Update() override;
-	virtual void Render(HDC hdc) override;
-	virtual void Release() override;
+	HRESULT Init(PlayerTank& playerTank);
+	void Update(PlayerTank& playerTank);
+	void Render(HDC hdc);
+	void Release();
 
-	void ChangeLife(int life);
+	void ChangeLifeImage(int life);
 };
 

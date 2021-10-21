@@ -8,6 +8,7 @@ class EnemyTankManager
 {
 private:
 	vector<EnemyTanks*> vecEnemyTank;
+	int totalEnemyNum;
 protected:
 public:
 	void NewEnemyTank(EnemyTanks* enemyTank, TILE_INFO(*tileInfo)[TILE_COUNT], PlayerTank& playerTank, int posX, AmmoManager* mgr, bool item = false);
@@ -17,5 +18,7 @@ public:
 	void Update();
 	void Render(HDC hdc);
 	void Release();
+
+	inline int GetTotalEnemyNum() { return totalEnemyNum; }
 };
 
