@@ -71,8 +71,6 @@ void BattleScene::Update()
     playerTank->Update();
     ammoMgr->Update();
     itemManager->Update();
-
-    cout << endl;
 }
 
 void BattleScene::Render(HDC hdc)

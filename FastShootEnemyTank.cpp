@@ -21,9 +21,10 @@ HRESULT FastShootEnemyTank::Init()
 
 void FastShootEnemyTank::Update()
 {
-	AutoFire();
-	TankUpdate();
-	
+	if (isDestruction) {
+		AutoFire();
+		TankUpdate();
+	}
 }
 
 void FastShootEnemyTank::Render(HDC hdc)

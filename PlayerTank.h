@@ -30,7 +30,6 @@ private:
 	float shieldEffectTime;
 	float shieldEffectDelay;
 
-
 	Image* spawnEffect;
 	float spawnEffectTime;
 	int spawnEffectFrameX;

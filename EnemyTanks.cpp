@@ -1,5 +1,6 @@
 #include "EnemyTanks.h"
 #include "CommonFunction.h"
+
 void EnemyTanks::CollisionAndMove(MoveDir movedir)
 {
     RECT rc;
@@ -418,8 +419,12 @@ HRESULT EnemyTanks::TankInit(int posX, bool item)
 {
     ImageManager::GetSingleton()->AddImage("Image/Effect/Spawn_Effect.bmp", 64, 16, 4, 1, true, RGB(255, 0, 255));
     spawnEffect = ImageManager::GetSingleton()->FindImage("Image/Effect/Spawn_Effect.bmp");
-    itemTank = item;
+    ImageManager::GetSingleton()->AddImage("Image/Effect/EnemyTankBoom.bmp", 160, 32, 5, 1, true, RGB(255, 0, 255));
+    destructionEffect1 = ImageManager::GetSingleton()->FindImage("Image/Effect/EnemyTankBoom.bmp");
 
+    destructionEffectTime = 0;
+
+    itemTank = item;
     spawnColl = true;
     movedir = MoveDir::Down;
     elapsedCount = 0;
@@ -441,6 +446,10 @@ HRESULT EnemyTanks::TankInit(int posX, bool item)
     shape.bottom = pos.y + 8;
     effectFrameX = 3;
     effectCount = 0;
+
+    isDestruction = false;
+    isDestructionEffect = false;
+    destructionEffectNum = 0;
     hp = 1;
     return S_OK;
 }
