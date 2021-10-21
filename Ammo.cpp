@@ -66,8 +66,6 @@ void Ammo::Update()
 		}
 	}
 	
-
-
 	AmmoHitCheck();
 
 	shape.left = pos.x - bodySize / 2;
@@ -109,11 +107,11 @@ void Ammo::Update()
 
 void Ammo::Render(HDC hdc)
 {
-	if (renderBoomEffect == true)
+	if (renderBoomEffect == true && isAlive == false)
 	{
 		boomEffect->Render(hdc, pos.x, pos.y, boomEffect->GetCurrFrameX(), boomEffect->GetCurrFrameY());
 		sec += TimerManager::GetSingleton()->GetDeltaTime();
-		if (sec > 0.05f)
+		if (sec > 0.03f)
 		{
 			sec = 0.0f;
 			boomEffect->SetCurrFrameX((boomEffect->GetCurrFrameX()) + 1);
@@ -122,6 +120,7 @@ void Ammo::Render(HDC hdc)
 				renderBoomEffect = false;
 				boomEffect->SetCurrFrameX(0);
 				pos = { -10, -10 };
+
 			}
 		}
 	}
