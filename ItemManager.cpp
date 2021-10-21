@@ -1,15 +1,14 @@
 #include "ItemManager.h"
 #include "Item.h"
-void ItemManager::newItem(PlayerTank& playerTank, EnemyTankManager& enemyTankManager, TILE_INFO(*tileInfo)[TILE_COUNT])
+void ItemManager::newItem()
 {
-	this->tileInfo = tileInfo;
 	vecItems.push_back(new Item);
-	vecItems.back()->Init(playerTank, enemyTankManager);
+	vecItems.back()->Init(*playerTank, *enemyTankManager);
 }
 
 HRESULT ItemManager::Init()
 {
-	vecItems.resize(5);
+	itemManager = this;
 	eraseCount = 0;
 	return S_OK;
 }
@@ -42,4 +41,11 @@ void ItemManager::Render(HDC hdc)
 
 void ItemManager::Release()
 {
+}
+
+void ItemManager::Setdata(PlayerTank& playerTank, EnemyTankManager& enemyTankManager, TILE_INFO(*tileInfo)[TILE_COUNT])
+{
+	this->playerTank = &playerTank;
+	this->enemyTankManager = &enemyTankManager;
+	this->tileInfo = tileInfo;
 }

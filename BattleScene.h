@@ -19,8 +19,6 @@ private:
 	EnemyTankFactory* enemyTankFactory[4];
 	PlayerTank* playerTank;
 
-	vector<EnemyTanks*> vecEnemyTank[4];
-
 	// 타일 샘플정보
 	Image* sampleImage;
 	// 배틀 백그라운드

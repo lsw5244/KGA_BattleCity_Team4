@@ -19,6 +19,7 @@ HRESULT BigEnemyTank::Init()
 
 void BigEnemyTank::Update()
 {
+	if (KeyManager::GetSingleton()->IsStayKeyDown('Q'))isHit();
 	if (!isDestructionEffect) {
 		if (!timeStop) {
 			AutoFire();
@@ -29,7 +30,10 @@ void BigEnemyTank::Update()
 		destructionEffectTime += TimerManager::GetSingleton()->GetDeltaTime();
 		if (destructionEffectTime >= 0.05f) {
 			destructionEffectNum++;
-			if (destructionEffectNum >= 8)isDestruction = true;
+			if (destructionEffectNum >= 8) {
+				isDestruction = true;
+				if (itemTank)itemManager->newItem();
+			}
 			destructionEffectTime = 0;
 		}
 	}
@@ -74,7 +78,6 @@ void BigEnemyTank::AutoFire()
 	if (attackDelayTime > attackDelay)
 	{
 		ammoMgr->EnemyFire(movedir, pos);
-
 		attackDelay = rand() % 3 + 1;
 
 		attackDelayTime = 0.0f;
