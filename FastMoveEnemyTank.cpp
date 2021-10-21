@@ -1,10 +1,5 @@
 #include "FastMoveEnemyTank.h"
 #include "AmmoManager.h"
-void FastMoveEnemyTank::SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank, int num)
-{
-	this->vecEnemyTanks[num] = vecEnemyTank;
-}
-
 HRESULT FastMoveEnemyTank::Init()
 {
 	attackDelay = rand() % 3 + 1;

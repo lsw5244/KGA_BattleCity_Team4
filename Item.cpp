@@ -1,15 +1,19 @@
 #include "Item.h"
 #include "Image.h"
 #include "TimerManager.h"
-HRESULT Item::Init()
+HRESULT Item::Init(PlayerTank& playerTank)
 {
 	ImageManager::GetSingleton()->AddImage("Image/item/items.bmp", 96, 16, 6, 1, true, RGB(255, 0, 255));
 	img = ImageManager::GetSingleton()->FindImage("Image/item/items.bmp");
+	SetPlyaerRect(playerTank);
+	SetPlyaer(playerTank);
+	srand((unsigned int)time(nullptr));
 
-	aliveTime = 0.0f;
+	aliveTime = renderTime = 0.0f;
 	itemNum = rand() % 6;
 	pos.x = 16 + ((rand() % 26) * 8);
-	pos.y = 8 + ((rand() % 26) * 8);
+	pos.y = 8 + ((rand() % 26) * 8)+1;
+	itemNum = 3;
 	switch (itemNum) {
 	case 0:
 		itemState = ItemState::Barrier;
@@ -38,20 +42,42 @@ HRESULT Item::Init()
 	return S_OK;
 }
 
-void Item::Update()
+bool Item::ItemUpdate()
 {
 	aliveTime += TimerManager::GetSingleton()->GetDeltaTime();
+	renderTime += TimerManager::GetSingleton()->GetDeltaTime();
 	RECT rc;
-	if (IntersectRect(&rc, &shape, playerRect));
-
+	if (IntersectRect(&rc, &shape, playerRect))
+	{
+		switch (itemState) {
+		case ItemState::Barrier:
+			break;
+		case ItemState::TimeStop:
+			break;
+		case ItemState::Shovel:
+			break;
+		case ItemState::Star:
+			playerTank->LevelUp();
+			break;
+		case ItemState::Boom:
+			break;
+		case ItemState::Life:
+			break;
+		}
+	}
+	if (aliveTime >= 9999.0f) {
+		Release();
+		return true;
+	}
+	return false;
 }
 
 void Item::Render(HDC hdc)
 {
-	if (aliveTime <= 0.1f) {
+	if (renderTime <= 0.1f) {
 		img->Render(hdc, pos.x, pos.y, itemNum, 0);
-		if (aliveTime >= 0.2f) aliveTime = 0.0f;
-	}
+		
+	} else if(renderTime >= 0.2f) renderTime = 0.0f;
 }
 
 void Item::Release()

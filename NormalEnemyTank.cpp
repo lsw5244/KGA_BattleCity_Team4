@@ -1,10 +1,5 @@
 #include "NormalEnemyTank.h"
 #include "AmmoManager.h"
-void NormalEnemyTank::SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank, int num)
-{
-	this->vecEnemyTanks[num] = vecEnemyTank;
-}
-
 HRESULT NormalEnemyTank::Init()
 {
 	attackDelay = rand() % 3 + 1;

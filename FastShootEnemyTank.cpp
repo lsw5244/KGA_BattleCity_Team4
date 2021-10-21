@@ -1,9 +1,6 @@
 #include "FastShootEnemyTank.h"
 #include "AmmoManager.h"
-void FastShootEnemyTank::SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank, int num)
-{
-	this->vecEnemyTanks[num] = vecEnemyTank;
-}
+
 
 HRESULT FastShootEnemyTank::Init()
 {

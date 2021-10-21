@@ -8,6 +8,8 @@ class PlayerTank;
 class EnemyTanks;
 class EnemyTankFactory;
 class AmmoManager;
+class ItemManager;
+class EnemyTankManager;
 class BattleScene : public GameEntity
 {
 private:
@@ -25,6 +27,9 @@ private:
 	// 배경 이미지
 	Image* backGround;
 
+	ItemManager* itemManager;
+
+	EnemyTankManager* enemyTankManager;
 
 	TILE_INFO tileInfo[TILE_COUNT][TILE_COUNT];
 

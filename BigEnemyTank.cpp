@@ -1,9 +1,6 @@
 #include "BigEnemyTank.h"
 #include "AmmoManager.h"
-void BigEnemyTank::SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank, int num)
-{
-	this->vecEnemyTanks[num] = vecEnemyTank;
-}
+
 HRESULT BigEnemyTank::Init()
 {
 	attackDelay = rand() % 3 + 1;
@@ -16,11 +13,13 @@ HRESULT BigEnemyTank::Init()
 		img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy.bmp");
 	}
 	moveSpeed = 50;
+	hp = 4;
 	return S_OK;
 }
 
 void BigEnemyTank::Update()
 {
+
 	AutoFire();
 	TankUpdate();
 }
