@@ -18,16 +18,18 @@ HRESULT FastMoveEnemyTank::Init()
 
 void FastMoveEnemyTank::Update()
 {
-	if (KeyManager::GetSingleton()->IsOnceKeyDown('Q')) isHit();
+
 	if (!isDestructionEffect) {
-		AutoFire();
-		TankUpdate();
+		if (!timeStop) {
+			AutoFire();
+			TankUpdate();
+		}
 	}
 	else {
 		destructionEffectTime += TimerManager::GetSingleton()->GetDeltaTime();
-		if (destructionEffectTime >= 0.1f) {
+		if (destructionEffectTime >= 0.05f) {
 			destructionEffectNum++;
-			if (destructionEffectNum >= 6)isDestruction = true;
+			if (destructionEffectNum >= 8)isDestruction = true;
 			destructionEffectTime = 0;
 		}
 	}
@@ -54,7 +56,10 @@ void FastMoveEnemyTank::Render(HDC hdc)
 		}
 	}
 	else {
-		destructionEffect1->Render(hdc, pos.x, pos.y, destructionEffectNum, 0);
+		if (destructionEffectNum < 5)destructionEffect1->Render(hdc, pos.x, pos.y, destructionEffectNum, 0);
+		if (destructionEffectNum == 5) destructionEffect1->Render(hdc, pos.x, pos.y, 3, 0);
+		if (destructionEffectNum == 6) destructionEffect1->Render(hdc, pos.x, pos.y, 2, 0);
+		if (destructionEffectNum == 7) destructionEffect1->Render(hdc, pos.x, pos.y, 1, 0);
 	}
 }
 

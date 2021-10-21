@@ -1,12 +1,14 @@
 #include "Item.h"
 #include "Image.h"
 #include "TimerManager.h"
-HRESULT Item::Init(PlayerTank& playerTank)
+#include "EnemyTankManager.h"
+HRESULT Item::Init(PlayerTank& playerTank, EnemyTankManager& enemyTankManager)
 {
 	ImageManager::GetSingleton()->AddImage("Image/item/items.bmp", 96, 16, 6, 1, true, RGB(255, 0, 255));
 	img = ImageManager::GetSingleton()->FindImage("Image/item/items.bmp");
 	SetPlyaerRect(playerTank);
 	SetPlyaer(playerTank);
+	SetEnemyTankManager(enemyTankManager);
 	srand((unsigned int)time(nullptr));
 
 	collCheck = false;
@@ -14,7 +16,7 @@ HRESULT Item::Init(PlayerTank& playerTank)
 	itemNum = rand() % 6;
 	pos.x = 16 + ((rand() % 26) * 8);
 	pos.y = 8 + ((rand() % 26) * 8)+1;
-	itemNum = 0;
+	itemNum = 1;
 	switch (itemNum) {
 	case 0:
 		itemState = ItemState::Barrier;
@@ -55,6 +57,7 @@ bool Item::ItemUpdate()
 			playerTank->ActiveBarrier();
 			break;
 		case ItemState::TimeStop:
+			enemyTankManager->TimeItemUse();
 			break;
 		case ItemState::Shovel:
 			break;
@@ -62,6 +65,7 @@ bool Item::ItemUpdate()
 			playerTank->LevelUp();
 			break;
 		case ItemState::Boom:
+			enemyTankManager->BoomItemUse();
 			break;
 		case ItemState::Life:
 			playerTank->LifeUp();

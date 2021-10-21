@@ -423,7 +423,7 @@ HRESULT EnemyTanks::TankInit(int posX, bool item)
     destructionEffect1 = ImageManager::GetSingleton()->FindImage("Image/Effect/EnemyTankBoom.bmp");
 
     destructionEffectTime = 0;
-
+    timeStop = false;
     itemTank = item;
     spawnColl = true;
     movedir = MoveDir::Down;

@@ -48,6 +48,7 @@ HRESULT BattleScene::Init()
     enemyTankFactory[3] = new BigTankFactory;
 
     enemyTankManager = new EnemyTankManager;
+    enemyTankManager->Init();
     enemyTankManager->NewEnemyTank(enemyTankFactory[0]->CreateEnemyTank(), tileInfo, *playerTank, 1, ammoMgr, true);
     enemyTankManager->NewEnemyTank(enemyTankFactory[1]->CreateEnemyTank(), tileInfo, *playerTank, 2, ammoMgr, true);
     enemyTankManager->NewEnemyTank(enemyTankFactory[2]->CreateEnemyTank(), tileInfo, *playerTank, 3, ammoMgr, true);
@@ -58,9 +59,8 @@ HRESULT BattleScene::Init()
     ammoMgr->SetPlayerTank(playerTank);
     ammoMgr->Init();
 
-
     itemManager = new ItemManager;
-    itemManager->newItem(*playerTank, tileInfo);
+    itemManager->newItem(*playerTank, *enemyTankManager,tileInfo);
 
     uIManager = new UIManager;
     uIManager->Init(*playerTank, *enemyTankManager);
@@ -78,9 +78,6 @@ void BattleScene::Update()
     ammoMgr->Update();
     itemManager->Update();
     uIManager->Update(*playerTank, *enemyTankManager);
-
-    cout << endl;
-
 }
 
 void BattleScene::Render(HDC hdc)

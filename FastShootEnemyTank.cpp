@@ -21,35 +21,48 @@ HRESULT FastShootEnemyTank::Init()
 
 void FastShootEnemyTank::Update()
 {
-	if (isDestruction) {
-		AutoFire();
-		TankUpdate();
+	if (!isDestructionEffect) {
+		if (!timeStop) {
+			AutoFire();
+			TankUpdate();
+		}
+	}
+	else {
+		destructionEffectTime += TimerManager::GetSingleton()->GetDeltaTime();
+		if (destructionEffectTime >= 0.05f) {
+			destructionEffectNum++;
+			if (destructionEffectNum >= 8)isDestruction = true;
+			destructionEffectTime = 0;
+		}
 	}
 }
 
 void FastShootEnemyTank::Render(HDC hdc)
 {
-	if (KeyManager::GetSingleton()->IsStayKeyDown(TANK_COLLIDER_DEBUG)) {
-		Rectangle(hdc,
-			shape.left,
-			shape.top,
-			shape.right,
-			shape.bottom);
-	}
-	if (SpawnEffect() == false)
-	{
-		if (itemTank) {
-			img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, itemTankImg(4));
+	if (!isDestructionEffect) {
+		if (KeyManager::GetSingleton()->IsStayKeyDown(TANK_COLLIDER_DEBUG)) {
+			Rectangle(hdc,
+				shape.left,
+				shape.top,
+				shape.right,
+				shape.bottom);
 		}
-		else {
-			img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, 2);
+		if (SpawnEffect() == false)
+		{
+			if (itemTank) {
+				img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, itemTankImg(4));
+			}
+			else {
+				img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, 2);
+			}
 		}
 	}
-	else
-	{
-		spawnEffect->Render(hdc, pos.x, pos.y, spawnEffect->GetCurrFrameX(), 0);
+	else {
+		if (destructionEffectNum < 5)destructionEffect1->Render(hdc, pos.x, pos.y, destructionEffectNum, 0);
+		if (destructionEffectNum == 5) destructionEffect1->Render(hdc, pos.x, pos.y, 3, 0);
+		if (destructionEffectNum == 6) destructionEffect1->Render(hdc, pos.x, pos.y, 2, 0);
+		if (destructionEffectNum == 7) destructionEffect1->Render(hdc, pos.x, pos.y, 1, 0);
 	}
-
 }
 
 void FastShootEnemyTank::Release()
