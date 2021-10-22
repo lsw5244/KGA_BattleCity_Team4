@@ -53,18 +53,14 @@ void NormalEnemyTank::Render(HDC hdc)
 				shape.right,
 				shape.bottom);
 		}
-		if (SpawnEffect())
-		{
-			spawnEffect->Render(hdc, pos.x, pos.y, effectFrameX, 0);
+
+		if (itemTank) {
+			img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, itemTankImg(0));
 		}
 		else {
-			if (itemTank) {
-				img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, itemTankImg(0));
-			}
-			else {
-				img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, 2);
-			}
+			img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, 0);
 		}
+		
 	}
 	else {
 		if (destructionEffectNum < 5)destructionEffect1->Render(hdc, pos.x, pos.y, destructionEffectNum, 0);

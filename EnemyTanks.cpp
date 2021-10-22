@@ -125,70 +125,68 @@ void EnemyTanks::PosReset(MoveDir movedir)
 
 void EnemyTanks::TankUpdate()
 {
-    SpawnEffect();
-    if (SpawnEffect() == false)
-    {
-        if (spawnColl) {
-            bool check = true;
-            RECT rc;
-            for (vector<EnemyTanks*>::iterator it = vecEnemyTanks.begin();
-                it != vecEnemyTanks.end();
-                it++)
-            {
-                RECT enemyRect = (*it)->GetRect();
-                if (this != (*it)) {
-                    if (IntersectRect(&rc, &shape, &enemyRect) || IntersectRect(&rc, playerRect, &shape)) {
-                        check = false;
-                    }
+
+    if (spawnColl) {
+        bool check = true;
+        RECT rc;
+        for (vector<EnemyTanks*>::iterator it = vecEnemyTanks.begin();
+            it != vecEnemyTanks.end();
+            it++)
+        {
+            RECT enemyRect = (*it)->GetRect();
+            if (this != (*it)) {
+                if (IntersectRect(&rc, &shape, &enemyRect) || IntersectRect(&rc, playerRect, &shape)) {
+                    check = false;
                 }
             }
-            if (check) spawnColl = false;
         }
+        if (check) spawnColl = false;
+    }
 
-        time += TimerManager::GetSingleton()->GetDeltaTime();
-        if (time >= 0.3f) {
-            tuple<MoveDir, bool> result = AutoMove(movedir, pos);
-            if (get<0>(result) == movedir && get<1>(result)) {
-                time = 0;
-            }
-            else if (get<0>(result) != movedir && !get<1>(result)) {
-                movedir = get<0>(result);
-                time = 0;
-            }
+    time += TimerManager::GetSingleton()->GetDeltaTime();
+    if (time >= 0.3f) {
+        tuple<MoveDir, bool> result = AutoMove(movedir, pos);
+        if (get<0>(result) == movedir && get<1>(result)) {
+            time = 0;
         }
-
-        switch (movedir) {
-        case MoveDir::Up:
-            PosReset(MoveDir::Up);
-            CollisionAndMove(MoveDir::Up);
-            elapsedWay = 0;
-            elapsedCount++;
-            elapsedCount = CurrFrame(*img, &elapsedCount, 1);
-            break;
-        case MoveDir::Down:
-            PosReset(MoveDir::Down);
-            CollisionAndMove(MoveDir::Down);
-            elapsedWay = 4;
-            elapsedCount++;
-            elapsedCount = CurrFrame(*img, &elapsedCount, 5);
-            break;
-        case MoveDir::Right:
-            PosReset(MoveDir::Right);
-            CollisionAndMove(MoveDir::Right);
-            elapsedWay = 6;
-            elapsedCount++;
-            elapsedCount = CurrFrame(*img, &elapsedCount, 3);
-            break;
-        case MoveDir::Left:
-            PosReset(MoveDir::Left);
-            CollisionAndMove(MoveDir::Left);
-            elapsedWay = 2;
-            elapsedCount++;
-            elapsedCount = CurrFrame(*img, &elapsedCount, 7);
-            break;
+        else if (get<0>(result) != movedir && !get<1>(result)) {
+            movedir = get<0>(result);
+            time = 0;
         }
     }
-    
+
+    switch (movedir) {
+    case MoveDir::Up:
+        PosReset(MoveDir::Up);
+        CollisionAndMove(MoveDir::Up);
+        elapsedWay = 0;
+        elapsedCount++;
+        elapsedCount = CurrFrame(*img, &elapsedCount, 1);
+        break;
+    case MoveDir::Down:
+        PosReset(MoveDir::Down);
+        CollisionAndMove(MoveDir::Down);
+        elapsedWay = 4;
+        elapsedCount++;
+        elapsedCount = CurrFrame(*img, &elapsedCount, 5);
+        break;
+    case MoveDir::Right:
+        PosReset(MoveDir::Right);
+        CollisionAndMove(MoveDir::Right);
+        elapsedWay = 6;
+        elapsedCount++;
+        elapsedCount = CurrFrame(*img, &elapsedCount, 3);
+        break;
+    case MoveDir::Left:
+        PosReset(MoveDir::Left);
+        CollisionAndMove(MoveDir::Left);
+        elapsedWay = 2;
+        elapsedCount++;
+        elapsedCount = CurrFrame(*img, &elapsedCount, 7);
+        break;
+    }
+
+
 }
 
 int EnemyTanks::itemTankImg(int num)
@@ -380,47 +378,11 @@ tuple<MoveDir, bool> EnemyTanks::AutoMove(MoveDir moveDir, POINTFLOAT pos)
     return tuple<MoveDir, bool>(moveDir, false);
 }
 
-bool EnemyTanks::SpawnEffect()
-{
-    effectTime += TimerManager::GetSingleton()->GetDeltaTime();
-    if (effectTime >= 0.25)
-    {
-        if (effectCount != 12)
-        {
-            if (effectFrameX == 3)
-            {
-                frameUp = false;
-            }
-            else if (effectFrameX == 0)
-            {
-                frameUp = true;
-            }
-            switch(frameUp)
-            {
-            case true:
-                effectFrameX++;
-                break;
-            case false:
-                effectFrameX--;
-                break;
-        
-            }
-            effectCount++;
-        }
-        effectTime = 0;
-    }
-
-    if(effectCount == 12) return false;
-    return true;
-}
-
 HRESULT EnemyTanks::TankInit(int posX, bool item)
 {
-    spawnEffect = ImageManager::GetSingleton()->FindImage("Image/Effect/Spawn_Effect.bmp");
     destructionEffect1 = ImageManager::GetSingleton()->FindImage("Image/Effect/EnemyTankBoom.bmp");
     isItemDes = false;
     destructionEffectTime = 0;
-    effectTime = 0;
     timeStop = false;
     itemTank = item;
     spawnColl = true;
@@ -444,8 +406,6 @@ HRESULT EnemyTanks::TankInit(int posX, bool item)
     shape.top = pos.y - 8;
     shape.right = pos.x + 8;
     shape.bottom = pos.y + 8;
-    effectFrameX = 3;
-    effectCount = 0;
 
     isDestruction = false;
     isDestructionEffect = false;

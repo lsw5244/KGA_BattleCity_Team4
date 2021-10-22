@@ -76,7 +76,7 @@ HRESULT BattleScene::Init()
     itemManager->Init();
 
     stageManager = new StageManager;
-    stageManager->init();
+    stageManager->Init();
 
     uIManager = new UIManager;
     uIManager->Init(*playerTank, *enemyTankManager);
@@ -170,15 +170,13 @@ void BattleScene::Render(HDC hdc)
     }
     // 숲타일 제외 모두 렌더
 
-
     enemyTankManager->Render(hdc);
     playerTank->Render(hdc);
     ammoManager->Render(hdc);
 
-
     itemManager->Render(hdc);
     uIManager->Render(hdc);
-
+    stageManager->Render(hdc);
     for (int i = 0; i < TILE_COUNT; i++) {
         for (int j = 0; j < TILE_COUNT; j++) {
             for (int tileNumY = 0; tileNumY < 2; tileNumY++) {
