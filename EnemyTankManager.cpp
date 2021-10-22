@@ -42,6 +42,7 @@ void EnemyTankManager::BoomItemUse()
 		it++)
 	{
 		for (int i = 0; i < 4; i++)(*it)->isHit();
+		(*it)->SetItemDes(true);
 	}
 }
 
@@ -77,6 +78,7 @@ void EnemyTankManager::Update()
 	{
 		(*it)->Update();
 		if ((*it)->GetisDestruction()) {
+
 			SAFE_RELEASE((*it));
 			it = vecEnemyTank.erase(it);
 		}

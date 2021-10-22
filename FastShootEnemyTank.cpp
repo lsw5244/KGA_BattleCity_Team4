@@ -5,7 +5,7 @@
 HRESULT FastShootEnemyTank::Init()
 {
 	attackDelay = rand() % 3 + 1;
-
+	tankinfo = TankInfo::FastShoot;
 	if (itemTank) {
 		img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy_Item.bmp");
 		itemTime = 0.0f;

@@ -3,6 +3,7 @@
 
 HRESULT BigEnemyTank::Init()
 {
+	tankinfo = TankInfo::BigTank;
 	attackDelay = rand() % 3 + 1;
 	bigTankFrame = 5;
 	if (itemTank) {

@@ -421,7 +421,7 @@ HRESULT EnemyTanks::TankInit(int posX, bool item)
     spawnEffect = ImageManager::GetSingleton()->FindImage("Image/Effect/Spawn_Effect.bmp");
     ImageManager::GetSingleton()->AddImage("Image/Effect/EnemyTankBoom.bmp", 160, 32, 5, 1, true, RGB(255, 0, 255));
     destructionEffect1 = ImageManager::GetSingleton()->FindImage("Image/Effect/EnemyTankBoom.bmp");
-
+    isItemDes = false;
     destructionEffectTime = 0;
     timeStop = false;
     itemTank = item;

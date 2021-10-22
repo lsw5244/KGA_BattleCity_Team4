@@ -66,6 +66,8 @@ typedef struct tagTile
 	bool isDes[2][2];
 } TILE_INFO;
 
+enum class TankInfo { Normal, FastMove, FastShoot, BigTank };
+
 extern HWND g_hWnd;
 extern HINSTANCE g_hInstance;
 extern POINT g_ptMouse;
