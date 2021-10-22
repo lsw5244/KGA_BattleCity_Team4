@@ -9,6 +9,8 @@
 #include "ItemManager.h"
 #include "EnemyTankManager.h"
 #include "UIManager.h"
+#include "StageManager.h"
+
 #define POS 8
 #define NormalTank enemyTankFactory[0]->CreateEnemyTank()
 #define FastTank enemyTankFactory[1]->CreateEnemyTank()
@@ -26,7 +28,7 @@ HRESULT BattleScene::Init()
     // 맵 이미지 불러오기
 
     battleBackGround = ImageManager::GetSingleton()->AddImage("Image/background.bmp", WIN_SIZE_X, WIN_SIZE_Y);
-    Load();
+    int stageNum = Load();
     // 배틀신 배경 불러오기
 
     ImageManager::GetSingleton()->AddImage("Image/Player/Player3.bmp", 128, 76, 8, 4, true, RGB(255, 0, 255));
@@ -62,29 +64,35 @@ HRESULT BattleScene::Init()
     itemManager = new ItemManager;
     itemManager->Init();
 
+    stageManager = new StageManager;
+    stageManager->init();
+  
+
     uIManager = new UIManager;
     uIManager->Init(*playerTank, *enemyTankManager);
  
     itemManager->Setdata(*playerTank, *enemyTankManager, tileInfo);
     enemyTankManager->SetData(tileInfo, *playerTank, ammoMgr, itemManager);
+    stageManager->SetData(enemyTankManager, ammoMgr, stageNum - 1);
 
     itemManager->newItem();
 
 
-    enemyTankManager->NewEnemyTank(NormalTank, 1, false);
-    enemyTankManager->NewEnemyTank(FastTank, 2, false);
-    enemyTankManager->NewEnemyTank(ShootTank, 3, false);
-    enemyTankManager->NewEnemyTank(BigTank, 1, true);
-    ammoMgr->SetVecEnemyTank(enemyTankManager->GetVecEnemyTanks());
-    ammoMgr->Init();
+    //enemyTankManager->NewEnemyTank(NormalTank, 1, false);
+    //enemyTankManager->NewEnemyTank(FastTank, 2, false);
+    //enemyTankManager->NewEnemyTank(ShootTank, 3, false);
+    //enemyTankManager->NewEnemyTank(BigTank, 1, true);
+
 
     return S_OK;
 }
 
 void BattleScene::Update()
 {
+    stageManager->Update();
     playerTank->SetVecEnemyTank(enemyTankManager->GetVecEnemyTanks());
-    enemyTankManager->SetVecEnemyTank();
+
+
 
     enemyTankManager->Update();
     playerTank->Update();
@@ -170,7 +178,7 @@ void BattleScene::Release()
     SAFE_RELEASE(ammoMgr);
 }
 
-void BattleScene::Load()
+int BattleScene::Load()
 {
     {
         int loadIndex = 1;
@@ -195,5 +203,6 @@ void BattleScene::Load()
         }
 
         CloseHandle(hFile);
+        return loadIndex;
     }
 }

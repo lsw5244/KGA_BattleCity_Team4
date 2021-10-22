@@ -10,7 +10,7 @@ class Ammo : public GameObject
 {
 private:
 	MoveDir dir;
-	bool isAlive;
+	bool isAlive = false;
 	bool renderBoomEffect;
 	bool showCollider;
 

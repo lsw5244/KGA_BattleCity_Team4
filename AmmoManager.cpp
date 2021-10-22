@@ -101,6 +101,15 @@ void AmmoManager::Fire(MoveDir dir, POINTFLOAT pos, TankType type, bool isFastAm
 	}
 }
 
+void AmmoManager::SetTileInfoAndEnemyVec()
+{
+	for (int i = 0; i < PLAYER_MAX_AMMO_COUNT; i++)
+	{
+		playerAmmos[i]->SetPlayerTank(playerTank);
+		playerAmmos[i]->SetVecEnemyTank(vecEnemys);
+	}
+}
+
 void AmmoManager::SetPlayerTankDestroyIronBrick()
 {
 	for (int i = 0; i < PLAYER_MAX_AMMO_COUNT; i++)

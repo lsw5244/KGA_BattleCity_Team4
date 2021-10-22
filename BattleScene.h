@@ -11,6 +11,7 @@ class AmmoManager;
 class ItemManager;
 class EnemyTankManager;
 class UIManager;
+class StageManager;
 class BattleScene : public GameEntity
 {
 private:
@@ -28,6 +29,7 @@ private:
 
 	ItemManager* itemManager;
 
+	StageManager* stageManager;
 	EnemyTankManager* enemyTankManager;
 
 	TILE_INFO tileInfo[TILE_COUNT][TILE_COUNT];
@@ -44,6 +46,6 @@ public:
 	void Render(HDC hdc);	// 오버로딩
 	void Release();
 
-	void Load();
+	int Load();
 };
 
