@@ -5,8 +5,10 @@
 #include "ImageManager.h"
 #include <tuple>
 #include "PlayerTank.h"
+#include "ItemManager.h"
 
 class AmmoManager;
+class ItemManager;
 class EnemyTanks : public GameObject
 {
 private:
@@ -14,7 +16,7 @@ protected:
 	vector<EnemyTanks*> vecEnemyTanks;
 
 	AmmoManager* ammoMgr;
-
+	ItemManager* itemManager;
 	void CollisionAndMove(MoveDir moveDir);
 	void PosReset(MoveDir moveDir);
 	void TankUpdate();
@@ -53,6 +55,7 @@ protected:
 	int attackDelay = 1;
 
 public:
+	inline void SetItemManager(ItemManager* itemManager) { this->itemManager = itemManager; }
 	inline void SetTileInfo(TILE_INFO(*tileInfo)[TILE_COUNT]) { this->tileInfo = tileInfo; }
 	inline void SetPlyaerRect(PlayerTank& playerTank) { this->playerRect = playerTank.GetRect(); }
 	inline void SetAmmoMgr(AmmoManager* mgr) { ammoMgr = mgr; }

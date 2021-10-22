@@ -4,6 +4,7 @@
 class EnemyTanks;
 class PlayerTank;
 class AmmoManager;
+class ItemManager;
 class EnemyTankManager
 {
 private:
@@ -12,11 +13,18 @@ private:
 
 	bool stopTimeCheck;
 	float stopTime;
+
+	TILE_INFO(*tileInfo)[TILE_COUNT];
+	PlayerTank* playerTank;
+	AmmoManager* mgr;
+	ItemManager* itemManager;
+
 protected:
 public:
-	void NewEnemyTank(EnemyTanks* enemyTank, TILE_INFO(*tileInfo)[TILE_COUNT], PlayerTank& playerTank, int posX, AmmoManager* mgr, bool item = false);
+	void NewEnemyTank(EnemyTanks* enemyTank, int posX, bool item = false);
 	void SetVecEnemyTank();
-	
+	void SetData(TILE_INFO(*tileInfo)[TILE_COUNT], PlayerTank& playerTank, AmmoManager* mgr, ItemManager* itemManager);
+
 	void BoomItemUse();
 	inline void TimeItemUse() { this->stopTimeCheck = true; }
 	vector<EnemyTanks*> GetVecEnemyTanks() { return vecEnemyTank; }

@@ -31,7 +31,10 @@ void FastShootEnemyTank::Update()
 		destructionEffectTime += TimerManager::GetSingleton()->GetDeltaTime();
 		if (destructionEffectTime >= 0.05f) {
 			destructionEffectNum++;
-			if (destructionEffectNum >= 8)isDestruction = true;
+			if (destructionEffectNum >= 8) {
+				isDestruction = true;
+				if (itemTank)itemManager->newItem();
+			}
 			destructionEffectTime = 0;
 		}
 	}
