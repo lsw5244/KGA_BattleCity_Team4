@@ -197,6 +197,12 @@ HRESULT PlayerTank::Init()
     shieldEffect = ImageManager::GetSingleton()->FindImage("Image/Effect/Shield.bmp");
     shieldEffectDelay = 0.0f;
 
+    ImageManager::GetSingleton()->AddImage("Image/Effect/EnemyTankBoom.bmp", 160, 32, 5, 1, true, RGB(255, 0, 255));
+    deadEffect = ImageManager::GetSingleton()->FindImage("Image/Effect/EnemyTankBoom.bmp");
+    deadEffecttime = 0.0f;
+    deadEffectfreamX = 0;
+    isdead = false;
+
     moveDir = MoveDir::Up;
 
     moveSpeed = 50;
@@ -271,6 +277,30 @@ void PlayerTank::Update()
             }
         }
     }
+   
+    if (isdead == true)
+    {
+        deadEffecttime += TimerManager::GetSingleton()->GetDeltaTime();
+        cout << deadEffecttime;
+        if (deadEffecttime >= 0.05)
+        {
+            deadEffectfreamX++;
+            deadEffecttime = 0.0f;
+            if (deadEffectfreamX >= 5)
+            {
+                deadEffectfreamX = 0;
+                life--;
+                pos.x = 16 + 8;
+                pos.y = WIN_SIZE_Y - 16;
+                isdead = false;
+            }
+        }
+        
+   }
+    
+        
+        
+    
 }
 
 void PlayerTank::Render(HDC hdc)
@@ -283,19 +313,23 @@ void PlayerTank::Render(HDC hdc)
             shape.bottom);
     }
     if (SpawnEffect() == false)
-    {
-        playerTank->Render(hdc, pos.x, pos.y, playerTank->GetCurrFrameX(), Level);
-    }
-    else
-    {
-        spawnEffect->Render(hdc, pos.x, pos.y, spawnEffect->GetCurrFrameX(), 0);
-    }
+            {
+                 playerTank->Render(hdc, pos.x, pos.y, playerTank->GetCurrFrameX(), Level);
+            }
+     else
+          {
+                spawnEffect->Render(hdc, pos.x, pos.y, spawnEffect->GetCurrFrameX(), 0);
 
+          }
     if (ShieldEffect() == true && SpawnEffect() == false)
+             {
+                shieldEffect->Render(hdc, pos.x, pos.y, shieldEffect->GetCurrFrameX(), 0);
+             }
+    if (isdead == true)
     {
-        shieldEffect->Render(hdc, pos.x, pos.y, shieldEffect->GetCurrFrameX(), 0);
+        deadEffect->Render(hdc, pos.x, pos.y, deadEffectfreamX, 0);
     }
-   
+    
 }
 
 void PlayerTank::Release()

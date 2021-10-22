@@ -34,6 +34,11 @@ private:
 	int spawnEffectCount;
 	bool spawnFrameUp;
 
+	Image* deadEffect;
+	float deadEffecttime;
+	int deadEffectfreamX;
+	bool isdead;
+
 	bool SpawnEffect();
 	bool ShieldEffect();
 
@@ -46,6 +51,7 @@ public:
 	void LevelUp();
 	inline void LifeUp() { if(life < 2) this->life++; }
 	inline void ActiveBarrier() { this->shieldEffectTime = 0.0f; }
+	inline void Setisdead(bool isdead) { this->isdead = isdead;}
 
 	inline void SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank) { this->vecEnemyTank = vecEnemyTank; }
 	inline void SetTileInfo(TILE_INFO(*tileInfo)[TILE_COUNT]) { this->tileInfo = tileInfo; }
