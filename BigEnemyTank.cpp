@@ -4,7 +4,7 @@
 HRESULT BigEnemyTank::Init()
 {
 	attackDelay = rand() % 3 + 1;
-
+	bigTankFrame = 5;
 	if (itemTank) {
 		img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy_Item.bmp");
 		itemTime = 0.0f;
@@ -14,7 +14,9 @@ HRESULT BigEnemyTank::Init()
 	}
 	moveSpeed = 50;
 	hp = 4;
+	renderChange = true;
 	return S_OK;
+
 }
 
 void BigEnemyTank::Update()
@@ -41,6 +43,38 @@ void BigEnemyTank::Update()
 			destructionEffectTime = 0;
 		}
 	}
+
+	if (hp == 3 &&itemTank && renderChange) {
+		renderChange = false;
+		img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy.bmp");
+	}
+	if (hp == 1)bigTankFrame = 3;
+	if (hp == 2){
+		if (bigTankFrame >= 5) {
+			bigTankFrame = 4;
+		}
+		else {
+			bigTankFrame = 5;
+		}
+	}
+	if (hp == 3){
+		if (bigTankFrame >= 4) {
+			bigTankFrame = 3;
+		}
+		else {
+			bigTankFrame = 5;
+		}
+	}
+	if (hp == 4) {
+		if (bigTankFrame >= 4) {
+			bigTankFrame = 3;
+		}
+		else {
+			bigTankFrame = 4;
+		}
+	}
+
+
 }
 
 void BigEnemyTank::Render(HDC hdc)
@@ -56,10 +90,11 @@ void BigEnemyTank::Render(HDC hdc)
 		if (SpawnEffect() == false)
 		{
 			if (itemTank) {
-				img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, itemTankImg(6));
+				if(hp==4)img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, itemTankImg(6));
+				else img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, bigTankFrame);
 			}
 			else {
-				img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, 3);
+				img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, bigTankFrame);
 			}
 		}
 	}

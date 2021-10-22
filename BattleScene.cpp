@@ -71,9 +71,9 @@ HRESULT BattleScene::Init()
     itemManager->newItem();
 
 
-    enemyTankManager->NewEnemyTank(NormalTank, 1, true);
-    enemyTankManager->NewEnemyTank(FastTank, 2, true);
-    enemyTankManager->NewEnemyTank(ShootTank, 3, true);
+    //enemyTankManager->NewEnemyTank(NormalTank, 1, false);
+    //enemyTankManager->NewEnemyTank(FastTank, 2, false);
+    //enemyTankManager->NewEnemyTank(ShootTank, 3, false);
     enemyTankManager->NewEnemyTank(BigTank, 1, true);
     ammoMgr->SetVecEnemyTank(enemyTankManager->GetVecEnemyTanks());
     ammoMgr->Init();

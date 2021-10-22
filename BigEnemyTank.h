@@ -2,6 +2,9 @@
 #include "EnemyTanks.h"
 class BigEnemyTank : public EnemyTanks
 {
+private:
+	int bigTankFrame;
+	bool renderChange;
 public:
 	HRESULT Init() override;
 	void Update() override;
