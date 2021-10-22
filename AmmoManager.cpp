@@ -72,12 +72,12 @@ void AmmoManager::Release()
 	}
 }
 
-void AmmoManager::Fire(MoveDir dir, POINTFLOAT pos, TankType type, bool isFastAmmo)
+void AmmoManager::Fire(MoveDir dir, POINTFLOAT pos, TankType type, bool isFastAmmo, int maxAmmo)
 {
 	switch (type)
 	{
 	case TankType::Player:
-		for (int i = 0; i < PLAYER_MAX_AMMO_COUNT; i++)
+		for (int i = 0; i < maxAmmo; i++)
 		{
 			if (playerAmmos[i]->GetIsAlive() == false && playerAmmos[i]->GetRenderBoomEffect() == false)
 			{
