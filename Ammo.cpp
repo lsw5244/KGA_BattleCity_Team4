@@ -64,7 +64,7 @@ void Ammo::Update()
 
 	for (it = vecEnemys.begin(); it != vecEnemys.end(); it++)
 	{
-		if (CollisionEnter((*it)->GetRect(), shape) && type != TankType::Enemy && isAlive == true)
+		if (CollisionEnter((*it)->GetRect(), shape) && type != TankType::Enemy && isAlive == true && (*it)->GetHp() > 0)
 		{
 			DestroyAmmo();
 			(*it)->isHit();

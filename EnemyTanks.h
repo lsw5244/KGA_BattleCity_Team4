@@ -64,6 +64,7 @@ public:
 	inline bool GetisDestruction() {return this->isDestruction;}
 	inline void SetTimeStop(bool timeStop) {this->timeStop = timeStop;}
 	inline RECT GetRect() { return this->shape; }
+	inline int GetHp() { return hp; }
 	//void isDestruction();
 	
 	HRESULT TankInit(int posX, bool item);
