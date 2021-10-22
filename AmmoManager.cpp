@@ -95,3 +95,11 @@ void AmmoManager::PlayerFire(MoveDir dir, POINTFLOAT pos)
 		}
 	}
 }
+
+void AmmoManager::SetPlayerTankDestroyIronBrick()
+{
+	for (int i = 0; i < PLAYER_MAX_AMMO_COUNT; i++)
+	{
+		playerAmmos[i]->SetCanDestroyIronWall(true);		
+	}
+}
