@@ -67,6 +67,8 @@ void Ammo::Update()
 		if (CollisionEnter((*it)->GetRect(), shape) && type != TankType::Enemy)
 		{
 			DestroyAmmo();
+			(*it)->isHit();
+			break;
 		}
 	}
 
