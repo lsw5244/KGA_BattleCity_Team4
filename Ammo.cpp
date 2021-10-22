@@ -38,7 +38,7 @@ HRESULT Ammo::Init()
 	//isHit = false;
 	boomEffectFrameX = 0;
 
-	canDestroyIronWall = true;
+	canDestroyIronWall = false;
 	return S_OK;
 }
 
@@ -316,10 +316,7 @@ void Ammo::AmmoHitCheck()
 					}
 					else
 					{
-						if (canDestroyIronWall == true)
-						{
-							PowerAmmoDestroyWall(hitTile1);
-						}
+
 					}
 
 					// iron and brick
@@ -330,6 +327,7 @@ void Ammo::AmmoHitCheck()
 						if (canDestroyIronWall == true)
 						{
 							PowerAmmoDestroyWall(hitTile1, hitTile2);
+
 						}
 						else
 						{
@@ -344,6 +342,7 @@ void Ammo::AmmoHitCheck()
 						if (canDestroyIronWall == true)
 						{
 							PowerAmmoDestroyWall(hitTile1, hitTile2);
+
 						}
 						else
 						{
@@ -352,7 +351,14 @@ void Ammo::AmmoHitCheck()
 					}
 					else
 					{
-						DestroyAmmo();
+						if (canDestroyIronWall == true)
+						{
+							PowerAmmoDestroyWall(hitTile1);
+						}
+						else
+						{
+							DestroyAmmo();
+						}
 					}
 					return;
 				}
