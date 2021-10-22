@@ -40,6 +40,7 @@ private:
 
 	UIManager* uIManager;
 
+	int test = 0;
 public:
 	HRESULT Init();
 	void Update();
