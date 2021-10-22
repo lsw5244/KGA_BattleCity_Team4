@@ -208,6 +208,7 @@ HRESULT PlayerTank::Init()
     isdead = false;
 
     moveDir = MoveDir::Up;
+    type = TankType::Player;
 
     moveSpeed = 50;
     shape.left = pos.x - 8;
@@ -216,6 +217,7 @@ HRESULT PlayerTank::Init()
     shape.bottom = pos.y + 8;
 
     isBarrier = false;
+    fastAmmoReady = true;
     life = 2;
     Level = 0;
     return S_OK;
@@ -267,16 +269,16 @@ void PlayerTank::Update()
             switch (moveDir)
             {
             case MoveDir::Left:
-                ammoMgr->PlayerFire(moveDir, { (float)shape.left, pos.y });
+                ammoMgr->Fire(moveDir, { (float)shape.left, pos.y }, type, fastAmmoReady);
                 break;
             case MoveDir::Right:
-                ammoMgr->PlayerFire(moveDir, { (float)shape.right, pos.y });
+                ammoMgr->Fire(moveDir, { (float)shape.right, pos.y }, type, fastAmmoReady);
                 break;
             case MoveDir::Up:
-                ammoMgr->PlayerFire(moveDir, { pos.x, (float)shape.top });
+                ammoMgr->Fire(moveDir, { pos.x, (float)shape.top }, type, fastAmmoReady);
                 break;
             case MoveDir::Down:
-                ammoMgr->PlayerFire(moveDir, { pos.x, (float)shape.bottom });
+                ammoMgr->Fire(moveDir, { pos.x, (float)shape.bottom }, type, fastAmmoReady);
                 break;
             }
         }
@@ -327,7 +329,6 @@ void PlayerTank::Render(HDC hdc)
      else
           {
                 spawnEffect->Render(hdc, pos.x, pos.y, spawnEffect->GetCurrFrameX(), 0);
-
           }
     if (ShieldEffect() == true && SpawnEffect() == false)
              {
