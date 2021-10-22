@@ -19,7 +19,7 @@ HRESULT Item::Init(PlayerTank& playerTank, EnemyTankManager& enemyTankManager, I
 	itemNum = rand() % 6;
 	pos.x = 16 + ((rand() % 26) * 8);
 	pos.y = 8 + ((rand() % 26) * 8)+1;
-
+	itemNum = 0;
 	switch (itemNum) {
 	case 0:
 		itemState = ItemState::Barrier;
