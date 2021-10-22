@@ -72,30 +72,6 @@ void AmmoManager::Release()
 	}
 }
 
-void AmmoManager::EnemyFire(MoveDir dir, POINTFLOAT pos)
-{
-	for (it = vecEnemyAmmos.begin(); it != vecEnemyAmmos.end(); it++)
-	{
-		if ((*it)->GetIsAlive() == false && (*it)->GetRenderBoomEffect() == false)
-		{
-			(*it)->Fire(dir, pos);
-			break;
-		}
-	}
-}
-
-void AmmoManager::PlayerFire(MoveDir dir, POINTFLOAT pos)
-{
-	for (int i = 0; i < PLAYER_MAX_AMMO_COUNT; i++)
-	{
-		if (playerAmmos[i]->GetIsAlive() == false && playerAmmos[i]->GetRenderBoomEffect() == false)
-		{
-			playerAmmos[i]->Fire(dir, pos);
-			break;
-		}
-	}
-}
-
 void AmmoManager::Fire(MoveDir dir, POINTFLOAT pos, TankType type, bool isFastAmmo)
 {
 	switch (type)
