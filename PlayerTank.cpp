@@ -210,6 +210,8 @@ HRESULT PlayerTank::Init()
     moveDir = MoveDir::Up;
 
     moveSpeed = 50;
+    ammoSpeed = 100.0f;
+    maxAmmo = 1;
     shape.left = pos.x - 8;
     shape.top = pos.y - 8;
     shape.right = pos.x + 8;
@@ -295,10 +297,10 @@ void PlayerTank::Update()
                 if (life > 0)
                 {
                 deadEffectfreamX = 0;
-                    life--;
+                life--;
                  pos.x = 16 + 8;
-                    pos.y = WIN_SIZE_Y - 16;
-                    isdead = false;
+                 pos.y = WIN_SIZE_Y - 16;
+                 isdead = false;
                  spawnEffectTime = 0.0f;
                  spawnEffectFrameX = 0;
                  spawnEffectCount = 0;
@@ -350,8 +352,14 @@ void PlayerTank::Release()
 void PlayerTank::LevelUp()
 {
     if (Level < 3) Level++;
-    if (Level == 1);
-    if (Level == 2);
-    if (Level == 3);
+    if (Level == 1) {
+        ammoSpeed = 200.0f;
+    }
+    if (Level == 2) {
+        maxAmmo = 2;
+    }
+    if (Level == 3) {
+
+    }
 }
 

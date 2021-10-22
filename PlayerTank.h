@@ -9,7 +9,6 @@ class PlayerTank : public  GameObject
 private:
 	vector<EnemyTanks*> vecEnemyTank;
 	Image* playerTank;
-	int Level;
 	int elapsedCount;
 	bool isFire;
 
@@ -34,10 +33,17 @@ private:
 	int spawnEffectCount;
 	bool spawnFrameUp;
 
+	
 	Image* deadEffect;
 	float deadEffecttime;
 	int deadEffectfreamX;
 	bool isdead;
+
+	// 레벨업 관련
+	int Level;
+	int maxAmmo;
+	float ammoSpeed;
+
 
 	bool SpawnEffect();
 	bool ShieldEffect();

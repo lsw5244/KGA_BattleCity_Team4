@@ -49,6 +49,9 @@
     <Filter Include="MainGame\Item">
       <UniqueIdentifier>{61415956-bba1-4745-b0e6-8a4663ea85f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Stage">
+      <UniqueIdentifier>{769c39c7-1842-4162-a80d-c2ceeeb1e86f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -140,6 +143,9 @@
     </ClCompile>
     <ClCompile Include="UIManager.cpp">
       <Filter>MainGame\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="StageManager.cpp">
+      <Filter>MainGame\Stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -238,6 +244,9 @@
     </ClInclude>
     <ClInclude Include="UIManager.h">
       <Filter>MainGame\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="StageManager.h">
+      <Filter>MainGame\Stage</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
