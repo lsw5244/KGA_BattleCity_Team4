@@ -41,7 +41,6 @@ private:
 
 	int Level;
 	int maxAmmo;
-	float ammoSpeed;
 
 	bool fastAmmoReady;
 
@@ -56,6 +55,7 @@ public:
 	void Release();
 
 	void LevelUp();
+	void PlayerTankReset();
 	inline void LifeUp() { if(life < 2) this->life++; }
 	inline void ActiveBarrier() { this->shieldEffectTime = 0.0f; }
 	inline void Setisdead(bool isdead) { if(shieldEffectTime >= 10.0f)this->isdead = isdead;}

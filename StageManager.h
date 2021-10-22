@@ -1,9 +1,11 @@
 #pragma once
 class EnemyTankManager;
 class EnemyTankFactory;
+class AmmoManager;
 class StageManager
 {
 private:
+	AmmoManager* ammoManager;
 	EnemyTankManager* enemyTankManager;
 	EnemyTankFactory* enemyTankFactory[4];
 	enum class EnemyTankSpawnInfo {
@@ -20,7 +22,7 @@ private:
 	
 	float spawnDelay;
 public:
-	void SetData(EnemyTankManager* enemyTankManager, int num);
+	void SetData(EnemyTankManager* enemyTankManager, AmmoManager* ammoManager,int num);
 	void init();
 	void Update();
 };

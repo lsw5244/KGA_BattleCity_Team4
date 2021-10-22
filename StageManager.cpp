@@ -2,23 +2,29 @@
 #include "EnemyTankManager.h"
 #include "EnemyTankFactory.h"
 #include "TimerManager.h"
+#include "AmmoManager.h"
 #define NormalTank		enemyTankFactory[0]->CreateEnemyTank()
 #define FastTank		enemyTankFactory[1]->CreateEnemyTank()
 #define ShootTank		enemyTankFactory[2]->CreateEnemyTank()
 #define BigTank			enemyTankFactory[3]->CreateEnemyTank()
 
-void StageManager::SetData(EnemyTankManager* enemyTankManager, int num)
+void StageManager::SetData(EnemyTankManager* enemyTankManager, AmmoManager* ammoManager, int num)
 {
+	this->ammoManager = ammoManager;
 	this->enemyTankManager = enemyTankManager;
 	stageNum = num;
-	spawnDelay = 0.0f;
+	spawnDelay = 5.0f;
 	spawnNum = 0;
-	spawnPos = 0;
+	spawnPos = 1;
 	enemyTankFactory[0] = new NormalTankFactory;
-	enemyTankFactory[1] = new FastShootTankFactory;
-	enemyTankFactory[2] = new FastMoveTankFactory;
+	enemyTankFactory[1] = new FastMoveTankFactory;
+	enemyTankFactory[2] = new FastShootTankFactory;
 	enemyTankFactory[3] = new BigTankFactory;
 
+}
+
+void StageManager::init()
+{
 	{
 		enemyTankSpawnInfo[0][0] = EnemyTankSpawnInfo::NormalTankSpawm;
 		enemyTankSpawnInfo[0][1] = EnemyTankSpawnInfo::NormalTankSpawm;
@@ -42,43 +48,41 @@ void StageManager::SetData(EnemyTankManager* enemyTankManager, int num)
 		enemyTankSpawnInfo[0][19] = EnemyTankSpawnInfo::FastTankSpawm;
 	}
 	// 1스테이지 초기화
-
-}
-
-void StageManager::init()
-{
 }
 
 void StageManager::Update()
 {
 	spawnDelay += TimerManager::GetSingleton()->GetDeltaTime();
-	if (spawnDelay >= 5.0f) {
+	if (spawnDelay >= 3.0f && enemyTankManager->GetEnemyTankVecSize() < 4) {
 
 		switch (enemyTankSpawnInfo[stageNum][spawnNum]) {
 		case EnemyTankSpawnInfo::NormalTankSpawm:
-			enemyTankManager->NewEnemyTank(NormalTank, spawnPos, false);
-
+			if (spawnNum == 3 || spawnNum == 11 || spawnNum == 17) enemyTankManager->NewEnemyTank(NormalTank, spawnPos, true);
+			else enemyTankManager->NewEnemyTank(NormalTank, spawnPos, false);
 			break;
 		case EnemyTankSpawnInfo::FastTankSpawm:
-			enemyTankManager->NewEnemyTank(FastTank, spawnPos, false);
-
+			if (spawnNum == 3 || spawnNum == 11 || spawnNum == 17) enemyTankManager->NewEnemyTank(FastTank, spawnPos, true);
+			else enemyTankManager->NewEnemyTank(FastTank, spawnPos, false);
 			break;
 		case EnemyTankSpawnInfo::ShootTankSpawm:
-			enemyTankManager->NewEnemyTank(ShootTank, spawnPos, false);
-
+			if (spawnNum == 3 || spawnNum == 11 || spawnNum == 17) enemyTankManager->NewEnemyTank(ShootTank, spawnPos, true);
+			else enemyTankManager->NewEnemyTank(ShootTank, spawnPos, false);
 			break;
 		case EnemyTankSpawnInfo::BigTankSpawm:
-			enemyTankManager->NewEnemyTank(BigTank, spawnPos, false);
-
+			if (spawnNum == 3 || spawnNum == 11 || spawnNum == 17) enemyTankManager->NewEnemyTank(BigTank, spawnPos, true);
+			else enemyTankManager->NewEnemyTank(BigTank, spawnPos, false);
 			break;
 		}
+
+		ammoManager->SetVecEnemyTank(enemyTankManager->GetVecEnemyTanks());
+		ammoManager->SetTileInfoAndEnemyVec();
+		enemyTankManager->SetVecEnemyTank();
+
 		spawnNum++;
-
-
-
 		spawnDelay = 0;
 		spawnPos++;
-		if (spawnPos == 3) spawnPos = 2;
+		if (spawnPos == 4) spawnPos = 1;
 	}
+
 
 }

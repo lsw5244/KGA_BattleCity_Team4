@@ -1,5 +1,5 @@
 /*
-	ÁÖÀÇ ! : AmmoManager´Â InitÇÏ±â Àü¿¡ SetTileInfo¸¦ ¸ÕÀú ÇØ ÁÖ¾î¾ß ÇÔ !
+	ì£¼ì˜ ! : AmmoManagerëŠ” Inití•˜ê¸° ì „ì— SetTileInfoë¥¼ ë¨¼ì € í•´ ì£¼ì–´ì•¼ í•¨ !
 */
 
 #include "AmmoManager.h"
@@ -101,6 +101,17 @@ void AmmoManager::Fire(MoveDir dir, POINTFLOAT pos, TankType type, bool isFastAm
 	}
 }
 
+
+void AmmoManager::SetTileInfoAndEnemyVec()
+{
+	for (int i = 0; i < PLAYER_MAX_AMMO_COUNT; i++)
+	{
+		playerAmmos[i]->SetPlayerTank(playerTank);
+		playerAmmos[i]->SetVecEnemyTank(vecEnemys);
+	}
+}
+
+//void AmmoManager::SetPlayerTankDestroyIronBrick()
 void AmmoManager::PlayerAmmoPowerUp()
 {
 	for (int i = 0; i < PLAYER_MAX_AMMO_COUNT; i++)

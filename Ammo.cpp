@@ -12,7 +12,7 @@ HRESULT Ammo::Init()
 
 	ImageManager::GetSingleton()->AddImage("Image/Effect/Boom_Effect.bmp", 48, 16, 3, 1, true, RGB(255, 0, 255));
 	boomEffect = ImageManager::GetSingleton()->FindImage("Image/Effect/Boom_Effect.bmp");
-	isAlive = false;
+	isAlive;
 	//dir = MoveDir::Right;
 	renderBoomEffect = false;
 	showCollider = false;

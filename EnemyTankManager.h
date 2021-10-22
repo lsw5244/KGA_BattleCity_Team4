@@ -25,6 +25,7 @@ public:
 	void SetVecEnemyTank();
 	void SetData(TILE_INFO(*tileInfo)[TILE_COUNT], PlayerTank& playerTank, AmmoManager* mgr, ItemManager* itemManager);
 
+	inline int GetEnemyTankVecSize() { return vecEnemyTank.size(); }
 	void BoomItemUse();
 	inline void TimeItemUse() { this->stopTimeCheck = true; }
 	vector<EnemyTanks*> GetVecEnemyTanks() { return vecEnemyTank; }

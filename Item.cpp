@@ -17,9 +17,17 @@ HRESULT Item::Init(PlayerTank& playerTank, EnemyTankManager& enemyTankManager, I
 	collCheck = false;
 	aliveTime = renderTime = 0.0f;
 	itemNum = rand() % 6;
-	pos.x = 16 + ((rand() % 26) * 8);
-	pos.y = 8 + ((rand() % 26) * 8)+1;
-	itemNum = 0;
+
+	int posX;
+	int posY;
+	do {
+		posX = rand() % 25;
+		posY = rand() % 25;
+	} while ((10 > posX < 15) && posY > 22);
+	pos.x = 16 + ((posX + 1) * 8);
+	pos.y = 8 + ((posY + 1) * 8);
+
+	itemNum = 3;
 	switch (itemNum) {
 	case 0:
 		itemState = ItemState::Barrier;
