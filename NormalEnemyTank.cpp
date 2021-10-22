@@ -27,6 +27,10 @@ void NormalEnemyTank::Update()
 	}
 	else {
 		destructionEffectTime += TimerManager::GetSingleton()->GetDeltaTime();
+		shape.left = pos.x + 8;
+		shape.top = pos.y + 8;
+		shape.right = pos.x - 8;
+		shape.bottom = pos.y - 8;
 		if (destructionEffectTime >= 0.05f) {
 			destructionEffectNum++;
 			if (destructionEffectNum >= 8) {
