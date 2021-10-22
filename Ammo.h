@@ -38,13 +38,15 @@ private:
 	Ammo** playerAmmos;
 
 	bool canDestroyIronWall;
+
+	bool isFastAmmo = false;
 public:
 	virtual HRESULT Init();
 	virtual void Update();
 	virtual void Render(HDC hdc);
 	virtual void Release();
 
-	void Fire(MoveDir dir, POINTFLOAT pos);
+	void Fire(MoveDir dir, POINTFLOAT pos, bool isFastAmmo = false);
 	void DestroyAmmo();
 	void EraseAmmo();
 
