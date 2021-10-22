@@ -38,7 +38,7 @@ HRESULT Ammo::Init()
 	//isHit = false;
 	boomEffectFrameX = 0;
 
-	canDestroyIronWall = false;
+	canDestroyIronWall = true;
 	return S_OK;
 }
 
@@ -340,7 +340,7 @@ void Ammo::AmmoHitCheck()
 					else if (CollisionEnter(tileInfo[i][j + 1].selectRc, shape) &&
 						tileInfo[i][j + 1].terrain == Terrain::Brick)
 					{
-						hitTile2 = &tileInfo[i][j];
+						hitTile2 = &tileInfo[i][j + 1];
 						if (canDestroyIronWall == true)
 						{
 							PowerAmmoDestroyWall(hitTile1, hitTile2);

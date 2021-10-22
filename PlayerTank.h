@@ -42,6 +42,7 @@ private:
 	bool SpawnEffect();
 	bool ShieldEffect();
 
+	TankType type;
 public:
 	HRESULT Init();
 	void Update();

@@ -96,6 +96,35 @@ void AmmoManager::PlayerFire(MoveDir dir, POINTFLOAT pos)
 	}
 }
 
+void AmmoManager::Fire(MoveDir dir, POINTFLOAT pos, TankType type, bool isFastAmmo)
+{
+	switch (type)
+	{
+	case TankType::Player:
+		for (int i = 0; i < PLAYER_MAX_AMMO_COUNT; i++)
+		{
+			if (playerAmmos[i]->GetIsAlive() == false && playerAmmos[i]->GetRenderBoomEffect() == false)
+			{
+				playerAmmos[i]->Fire(dir, pos);
+				break;
+			}
+		}
+		break;
+	case TankType::Enemy:
+		for (it = vecEnemyAmmos.begin(); it != vecEnemyAmmos.end(); it++)
+		{
+			if ((*it)->GetIsAlive() == false && (*it)->GetRenderBoomEffect() == false)
+			{
+				(*it)->Fire(dir, pos);
+				break;
+			}
+		}
+		break;
+	default:
+		break;
+	}
+}
+
 void AmmoManager::SetPlayerTankDestroyIronBrick()
 {
 	for (int i = 0; i < PLAYER_MAX_AMMO_COUNT; i++)
