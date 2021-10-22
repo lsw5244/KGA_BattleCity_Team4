@@ -38,7 +38,7 @@ HRESULT Ammo::Init()
 	//isHit = false;
 	boomEffectFrameX = 0;
 
-	canDestroyIronWall = false	;
+	canDestroyIronWall = false;
 	return S_OK;
 }
 
@@ -64,7 +64,7 @@ void Ammo::Update()
 
 	for (it = vecEnemys.begin(); it != vecEnemys.end(); it++)
 	{
-		if (CollisionEnter((*it)->GetRect(), shape) && type != TankType::Enemy)
+		if (CollisionEnter((*it)->GetRect(), shape) && type != TankType::Enemy && isAlive == true && (*it)->GetHp() > 0)
 		{
 			DestroyAmmo();
 			(*it)->isHit();
@@ -197,7 +197,7 @@ void Ammo::AmmoHitCheck()
 		{
 			if (CollisionEnter(tileInfo[i][j].selectRc, shape))
 			{
-				//base hit
+				// base hit
 				if (tileInfo[i][j].terrain == Terrain::Base)
 				{
 					DestroyAmmo();
@@ -209,11 +209,11 @@ void Ammo::AmmoHitCheck()
 					CollisionEnter(tileInfo[i][j + 1].selectRc, shape) &&
 					tileInfo[i][j + 1].terrain == Terrain::Base)
 				{
+					DestroyAmmo();
 					DestroyBase();
 					return;
 				}
-
-
+				// brick and iron hit
 				if (tileInfo[i][j].terrain == Terrain::Brick)
 				{
 					hitTile1 = &tileInfo[i][j];
@@ -225,52 +225,100 @@ void Ammo::AmmoHitCheck()
 								tileInfo[i + 1][j].terrain == Terrain::IronBrick))
 						{
 							hitTile2 = &tileInfo[i + 1][j];
-							DestroyWall(hitTile1, hitTile2);
+							if (canDestroyIronWall == true)
+							{
+								PowerAmmoDestroyWall(hitTile1, hitTile2);
+							}
+							else
+							{
+								DestroyWall(hitTile1, hitTile2);
+							}
 						}
 						else if (CollisionEnter(tileInfo[i][j + 1].selectRc, shape) &&
 							(tileInfo[i][j + 1].terrain == Terrain::Brick ||
 								tileInfo[i][j + 1].terrain == Terrain::IronBrick))
 						{
 							hitTile2 = &tileInfo[i][j + 1];
-							DestroyWall(hitTile1, hitTile2);
+							if (canDestroyIronWall == true)
+							{
+								PowerAmmoDestroyWall(hitTile1, hitTile2);
+							}
+							else
+							{
+								DestroyWall(hitTile1, hitTile2);
+							}
 						}
 						else
 						{
-							DestroyWall(hitTile1);
+							if (canDestroyIronWall == true)
+							{
+								PowerAmmoDestroyWall(hitTile1);
+							}
+							else
+							{
+								DestroyWall(hitTile1);
+							}
 						}
 						return;
 					}
-
+					// iron and brick hit
 					if (CollisionEnter(tileInfo[i + 1][j].selectRc, shape) &&
 						tileInfo[i + 1][j].terrain == Terrain::IronBrick ||
 						(CollisionEnter(tileInfo[i][j + 1].selectRc, shape) &&
 							tileInfo[i][j + 1].terrain == Terrain::IronBrick))
 					{
-						IronWallHitDestroyWall(hitTile1);
+						if (canDestroyIronWall == true)
+						{
+							PowerAmmoDestroyWall(hitTile1);
+						}
+						else
+						{
+							IronWallHitDestroyWall(hitTile1);
+						}
+						
 					}
 					else if (CollisionEnter(tileInfo[i + 1][j].selectRc, shape) &&
 						tileInfo[i + 1][j].terrain == Terrain::Brick)
 					{
 						hitTile2 = &tileInfo[i + 1][j];
-						DestroyWall(hitTile1, hitTile2);
+						if (canDestroyIronWall == true)
+						{
+							PowerAmmoDestroyWall(hitTile1, hitTile2);
+						}
+						else
+						{
+							DestroyWall(hitTile1, hitTile2);
+						}
 					}
 					else if (CollisionEnter(tileInfo[i][j + 1].selectRc, shape) &&
 						tileInfo[i][j + 1].terrain == Terrain::Brick)
 					{
 						hitTile2 = &tileInfo[i][j + 1];
-						DestroyWall(hitTile1, hitTile2);
+						if (canDestroyIronWall == true)
+						{
+							PowerAmmoDestroyWall(hitTile1, hitTile2);
+						}
+						else
+						{
+							DestroyWall(hitTile1, hitTile2);
+						}
 					}
 					else
 					{
-						DestroyWall(hitTile1);
+						if (canDestroyIronWall == true)
+						{
+							PowerAmmoDestroyWall(hitTile1, hitTile2);
+						}
+						else
+						{
+							DestroyWall(hitTile1);
+						}
 					}
 					return;
 				}
-
+				// iron only hit
 				if (tileInfo[i][j].terrain == Terrain::IronBrick)
 				{
-
-
 					hitTile1 = &tileInfo[i][j];
 
 					if (canDestroyIronWall == true)
@@ -280,22 +328,25 @@ void Ammo::AmmoHitCheck()
 								tileInfo[i + 1][j].terrain == Terrain::IronBrick))
 						{
 							hitTile2 = &tileInfo[i + 1][j];
-							DestroyWall(hitTile1, hitTile2);
+							//DestroyWall(hitTile1, hitTile2);
+							PowerAmmoDestroyWall(hitTile1, hitTile2);
 						}
 						else if (CollisionEnter(tileInfo[i][j + 1].selectRc, shape) &&
 							(tileInfo[i][j + 1].terrain == Terrain::Brick ||
 								tileInfo[i][j + 1].terrain == Terrain::IronBrick))
 						{
 							hitTile2 = &tileInfo[i][j + 1];
-							DestroyWall(hitTile1, hitTile2);
+							//DestroyWall(hitTile1, hitTile2);
+							PowerAmmoDestroyWall(hitTile1, hitTile2);
 						}
 						else
 						{
-							DestroyWall(hitTile1);
+							//DestroyWall(hitTile1);
+							PowerAmmoDestroyWall(hitTile1);
 						}
 						return;
 					}
-
+					// brick only hit
 					if (CollisionEnter(tileInfo[i + 1][j].selectRc, shape) &&
 						tileInfo[i + 1][j].terrain == Terrain::Brick)
 					{
@@ -538,6 +589,121 @@ void Ammo::DestroyWall(TILE_INFO* tileInfo1, TILE_INFO* tileinfo2)
 			tileinfo2->isDes[0][0] = false;
 			tileinfo2->isDes[1][0] = false;
 		}
+		break;
+	}
+
+	hitTile1 = nullptr;
+	hitTile2 = nullptr;
+}
+
+void Ammo::PowerAmmoDestroyWall(TILE_INFO* tileInfo1, TILE_INFO* tileinfo2)
+{
+	if (isAlive == false)	return;
+
+	DestroyAmmo();
+
+	switch (dir)
+	{
+	case MoveDir::Down:
+			tileInfo1->isDes[1][0] = false;
+			tileInfo1->isDes[1][1] = false;
+			tileinfo2->isDes[1][0] = false;
+			tileinfo2->isDes[1][1] = false;
+
+			tileInfo1->isDes[0][0] = false;
+			tileInfo1->isDes[0][1] = false;
+			tileinfo2->isDes[0][0] = false;
+			tileinfo2->isDes[0][1] = false;
+		
+		break;
+
+	case MoveDir::Up:
+
+			tileInfo1->isDes[0][0] = false;
+			tileInfo1->isDes[0][1] = false;
+			tileinfo2->isDes[0][0] = false;
+			tileinfo2->isDes[0][1] = false;
+
+			tileInfo1->isDes[1][0] = false;
+			tileInfo1->isDes[1][1] = false;
+			tileinfo2->isDes[1][0] = false;
+			tileinfo2->isDes[1][1] = false;
+		
+		break;
+
+	case MoveDir::Left:
+
+			tileInfo1->isDes[0][0] = false;
+			tileInfo1->isDes[1][0] = false;
+			tileinfo2->isDes[0][0] = false;
+			tileinfo2->isDes[1][0] = false;
+
+			tileInfo1->isDes[0][1] = false;
+			tileInfo1->isDes[1][1] = false;
+			tileinfo2->isDes[0][1] = false;
+			tileinfo2->isDes[1][1] = false;
+		
+		break;
+
+	case MoveDir::Right:
+
+			tileInfo1->isDes[0][1] = false;
+			tileInfo1->isDes[1][1] = false;
+			tileinfo2->isDes[0][1] = false;
+			tileinfo2->isDes[1][1] = false;
+
+			tileInfo1->isDes[0][0] = false;
+			tileInfo1->isDes[1][0] = false;
+			tileinfo2->isDes[0][0] = false;
+			tileinfo2->isDes[1][0] = false;
+		break;
+	}
+
+	hitTile1 = nullptr;
+	hitTile2 = nullptr;
+}
+
+void Ammo::PowerAmmoDestroyWall(TILE_INFO* tileInfo1)
+{
+	if (isAlive == false)	return;
+
+	DestroyAmmo();
+
+	switch (dir)
+	{
+	case MoveDir::Down:
+		tileInfo1->isDes[1][0] = false;
+		tileInfo1->isDes[1][1] = false;
+
+		tileInfo1->isDes[0][0] = false;
+		tileInfo1->isDes[0][1] = false;
+
+		break;
+
+	case MoveDir::Up:
+		tileInfo1->isDes[0][0] = false;
+		tileInfo1->isDes[0][1] = false;
+
+		tileInfo1->isDes[1][0] = false;
+		tileInfo1->isDes[1][1] = false;
+		break;
+
+	case MoveDir::Left:
+		tileInfo1->isDes[0][0] = false;
+		tileInfo1->isDes[1][0] = false;
+
+		tileInfo1->isDes[0][1] = false;
+		tileInfo1->isDes[1][1] = false;
+
+		break;
+
+	case MoveDir::Right:
+		tileInfo1->isDes[0][1] = false;
+		tileInfo1->isDes[1][1] = false;
+
+		tileInfo1->isDes[0][0] = false;
+		tileInfo1->isDes[1][0] = false;
+
 		break;
 	}
 
