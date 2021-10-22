@@ -33,5 +33,7 @@ public:
 	void SetTileInfo(TILE_INFO(*info)[TILE_COUNT]) { this->tileInfo = info; }
 	inline void SetPlayerTank(PlayerTank* tank) { playerTank = tank; }
 	inline void SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank) { this->vecEnemys = vecEnemyTank; }
+
+	void SetPlayerTankDestroyIronBrick();
 };
 
