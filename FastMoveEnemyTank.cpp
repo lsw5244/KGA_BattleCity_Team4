@@ -80,7 +80,7 @@ void FastMoveEnemyTank::AutoFire()
 
 	if (attackDelayTime > attackDelay)
 	{
-		ammoMgr->Fire(movedir, pos, type, false);
+		ammoMgr->Fire(movedir, pos, type, true);
 
 		attackDelay = rand() % 3 + 1;
 

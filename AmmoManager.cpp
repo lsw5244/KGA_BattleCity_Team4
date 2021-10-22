@@ -91,7 +91,7 @@ void AmmoManager::Fire(MoveDir dir, POINTFLOAT pos, TankType type, bool isFastAm
 		{
 			if ((*it)->GetIsAlive() == false && (*it)->GetRenderBoomEffect() == false)
 			{
-				(*it)->Fire(dir, pos);
+				(*it)->Fire(dir, pos, isFastAmmo);
 				break;
 			}
 		}

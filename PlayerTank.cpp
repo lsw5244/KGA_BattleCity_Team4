@@ -217,7 +217,7 @@ HRESULT PlayerTank::Init()
     shape.bottom = pos.y + 8;
 
     isBarrier = false;
-    fastAmmoReady = false;
+    fastAmmoReady = true;
     life = 2;
     Level = 0;
     return S_OK;
