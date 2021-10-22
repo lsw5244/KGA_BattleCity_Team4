@@ -33,6 +33,8 @@ public:
 	inline void SetPlayerTank(PlayerTank* tank) { playerTank = tank; }
 	inline void SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank) { this->vecEnemys = vecEnemyTank; }
 
-	void SetPlayerTankDestroyIronBrick();
+	void PlayerAmmoPowerUp();
+	void PlayerAmmoPowerDown();
+
 };
 

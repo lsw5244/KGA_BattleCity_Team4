@@ -101,10 +101,18 @@ void AmmoManager::Fire(MoveDir dir, POINTFLOAT pos, TankType type, bool isFastAm
 	}
 }
 
-void AmmoManager::SetPlayerTankDestroyIronBrick()
+void AmmoManager::PlayerAmmoPowerUp()
 {
 	for (int i = 0; i < PLAYER_MAX_AMMO_COUNT; i++)
 	{
-		playerAmmos[i]->SetCanDestroyIronWall(true);		
+		playerAmmos[i]->SetCanDestroyIronWall(true);
+	}
+}
+
+void AmmoManager::PlayerAmmoPowerDown()
+{
+	for (int i = 0; i < PLAYER_MAX_AMMO_COUNT; i++)
+	{
+		playerAmmos[i]->SetCanDestroyIronWall(false);
 	}
 }
