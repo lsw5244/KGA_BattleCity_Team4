@@ -27,9 +27,6 @@ public:
 	void Render(HDC hdc);
 	void Release();
 
-	void EnemyFire(MoveDir dir, POINTFLOAT pos);
-	void PlayerFire(MoveDir dir, POINTFLOAT pos);
-
 	void Fire(MoveDir dir, POINTFLOAT pos, TankType type, bool isFastAmmo = false);
 
 	void SetTileInfo(TILE_INFO(*info)[TILE_COUNT]) { this->tileInfo = info; }

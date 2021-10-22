@@ -39,6 +39,8 @@ private:
 	int deadEffectfreamX;
 	bool isdead;
 
+	bool fastAmmoReady;
+
 	bool SpawnEffect();
 	bool ShieldEffect();
 
@@ -59,6 +61,7 @@ public:
 	inline RECT* GetRect() { return &shape; }
 	inline int GetLife() { return life; }
 	inline void SetAmmoMgr(AmmoManager* mgr) { ammoMgr = mgr; }
+	inline void SetFastAmmoReady(bool ready) { fastAmmoReady = ready; }
 
 };
 

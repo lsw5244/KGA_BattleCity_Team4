@@ -217,6 +217,7 @@ HRESULT PlayerTank::Init()
     shape.bottom = pos.y + 8;
 
     isBarrier = false;
+    fastAmmoReady = false;
     life = 2;
     Level = 0;
     return S_OK;
@@ -268,16 +269,16 @@ void PlayerTank::Update()
             switch (moveDir)
             {
             case MoveDir::Left:
-                ammoMgr->Fire(moveDir, { (float)shape.left, pos.y }, type);
+                ammoMgr->Fire(moveDir, { (float)shape.left, pos.y }, type, fastAmmoReady);
                 break;
             case MoveDir::Right:
-                ammoMgr->Fire(moveDir, { (float)shape.right, pos.y }, type);
+                ammoMgr->Fire(moveDir, { (float)shape.right, pos.y }, type, fastAmmoReady);
                 break;
             case MoveDir::Up:
-                ammoMgr->Fire(moveDir, { pos.x, (float)shape.top }, type);
+                ammoMgr->Fire(moveDir, { pos.x, (float)shape.top }, type, fastAmmoReady);
                 break;
             case MoveDir::Down:
-                ammoMgr->Fire(moveDir, { pos.x, (float)shape.bottom }, type);
+                ammoMgr->Fire(moveDir, { pos.x, (float)shape.bottom }, type, fastAmmoReady);
                 break;
             }
         }

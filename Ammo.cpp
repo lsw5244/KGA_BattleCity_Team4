@@ -130,6 +130,11 @@ void Ammo::Render(HDC hdc)
 				renderBoomEffect = false;
 				boomEffectFrameX = 0;
 				pos = { -10, -10 };
+				if (isFastAmmo == true)
+				{
+					moveSpeed /= 2;
+					isFastAmmo = false;
+				}
 			}
 		}
 	}
@@ -151,8 +156,13 @@ void Ammo::Release()
 {
 }
 
-void Ammo::Fire(MoveDir dir, POINTFLOAT pos)
+void Ammo::Fire(MoveDir dir, POINTFLOAT pos, bool isFastAmmo)
 {
+	if (isFastAmmo == true)
+	{
+		moveSpeed *= 2;
+		this->isFastAmmo = true;
+	}
 	isAlive = true;
 	this->pos = pos;
 	switch (dir)
@@ -179,7 +189,6 @@ void Ammo::Fire(MoveDir dir, POINTFLOAT pos)
 void Ammo::DestroyAmmo()
 {
 	isAlive = false;
-
 	renderBoomEffect = true;
 }
 
@@ -187,6 +196,11 @@ void Ammo::EraseAmmo()
 {
 	isAlive = false;
 	pos = { -10, -10 };
+	if (isFastAmmo == true)
+	{
+		moveSpeed /= 2;
+		isFastAmmo = false;
+	}
 }
 
 void Ammo::AmmoHitCheck()
