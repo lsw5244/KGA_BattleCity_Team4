@@ -37,6 +37,7 @@ private:
 
 	Ammo** playerAmmos;
 
+	bool canDestroyIronWall;
 public:
 	virtual HRESULT Init();
 	virtual void Update();
