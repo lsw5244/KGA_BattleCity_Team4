@@ -288,16 +288,20 @@ void PlayerTank::Update()
             deadEffecttime = 0.0f;
             if (deadEffectfreamX >= 5)
             {
+                if (life > 0)
+                {
                 deadEffectfreamX = 0;
-                life--;
-                pos.x = 16 + 8;
-                pos.y = WIN_SIZE_Y - 16;
-                isdead = false;
-                spawnEffectTime = 0.0f;
-                spawnEffectFrameX = 0;
-                spawnEffectCount = 0;
-                shieldEffectTime = 0.0f;
-                shieldEffectDelay = 0.0f;
+                    life--;
+                 pos.x = 16 + 8;
+                    pos.y = WIN_SIZE_Y - 16;
+                    isdead = false;
+                 spawnEffectTime = 0.0f;
+                 spawnEffectFrameX = 0;
+                    spawnEffectCount = 0;
+                 shieldEffectTime = 0.0f;
+                    shieldEffectDelay = 0.0f;
+                }
+                
             }
             
         }
