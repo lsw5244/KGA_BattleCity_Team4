@@ -63,6 +63,30 @@ void StageManager::Init()
 		enemyTankSpawnInfo[0][19] = EnemyTankSpawnInfo::FastTankSpawm;
 	}
 	// 1스테이지 초기화
+
+	{
+		enemyTankSpawnInfo[1][0] = EnemyTankSpawnInfo::BigTankSpawm;
+		enemyTankSpawnInfo[1][1] = EnemyTankSpawnInfo::BigTankSpawm;
+		enemyTankSpawnInfo[1][2] = EnemyTankSpawnInfo::FastTankSpawm;
+		enemyTankSpawnInfo[1][3] = EnemyTankSpawnInfo::FastTankSpawm;
+		enemyTankSpawnInfo[1][4] = EnemyTankSpawnInfo::FastTankSpawm;
+		enemyTankSpawnInfo[1][5] = EnemyTankSpawnInfo::FastTankSpawm;
+		enemyTankSpawnInfo[1][6] = EnemyTankSpawnInfo::NormalTankSpawm;
+		enemyTankSpawnInfo[1][7] = EnemyTankSpawnInfo::NormalTankSpawm;
+		enemyTankSpawnInfo[1][8] = EnemyTankSpawnInfo::NormalTankSpawm;
+		enemyTankSpawnInfo[1][9] = EnemyTankSpawnInfo::NormalTankSpawm;
+		enemyTankSpawnInfo[1][10] = EnemyTankSpawnInfo::NormalTankSpawm;
+		enemyTankSpawnInfo[1][11] = EnemyTankSpawnInfo::NormalTankSpawm;
+		enemyTankSpawnInfo[1][12] = EnemyTankSpawnInfo::NormalTankSpawm;
+		enemyTankSpawnInfo[1][13] = EnemyTankSpawnInfo::NormalTankSpawm;
+		enemyTankSpawnInfo[1][14] = EnemyTankSpawnInfo::NormalTankSpawm;
+		enemyTankSpawnInfo[1][15] = EnemyTankSpawnInfo::NormalTankSpawm;
+		enemyTankSpawnInfo[1][16] = EnemyTankSpawnInfo::NormalTankSpawm;
+		enemyTankSpawnInfo[1][17] = EnemyTankSpawnInfo::NormalTankSpawm;
+		enemyTankSpawnInfo[1][18] = EnemyTankSpawnInfo::NormalTankSpawm;
+		enemyTankSpawnInfo[1][19] = EnemyTankSpawnInfo::NormalTankSpawm;
+	}
+	// 2스테이지 초기화
 }
 
 void StageManager::Update()

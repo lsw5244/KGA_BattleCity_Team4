@@ -82,13 +82,9 @@ HRESULT BattleScene::Init()
     uIManager->Init(*playerTank, *enemyTankManager);
  
     itemManager->Setdata(*playerTank, *enemyTankManager, tileInfo);
-
-    playerTank->SetData(tileInfo, ammoManager);
+    playerTank->SetData(tileInfo, ammoManager, itemManager);
     enemyTankManager->SetData(tileInfo, *playerTank, ammoManager, itemManager);
     stageManager->SetData(enemyTankManager, playerTank, ammoManager, stageNum - 1);
-
-
-   
 
     return S_OK;
 }

@@ -4,6 +4,7 @@
 #include "EnemyTanks.h"
 #include "AmmoManager.h"
 #include "CommonFunction.h"
+#include "ItemManager.h"
 
 void PlayerTank::SetFrame()
 {
@@ -56,7 +57,7 @@ void PlayerTank::CollisionAndMove(MoveDir movedir)
 
     for (int i = GetPosCount(pos.y, -2, false); i < GetPosCount(pos.y, 2, false); i++) {
         for (int j = GetPosCount(pos.x, -2, true); j < GetPosCount(pos.x, 2, true); j++) {
-            if (!(tileInfo[i][j].terrain == Terrain::Empty) && IntersectRect(&rc, &shape, &tileInfo[i][j].selectRc)) {
+            if (!(tileInfo[i][j].terrain == Terrain::Empty || tileInfo[i][j].terrain == Terrain::Forest) && IntersectRect(&rc, &shape, &tileInfo[i][j].selectRc)) {
                 check = true;
             }
 
@@ -195,7 +196,6 @@ HRESULT PlayerTank::Init()
     pos.x = 16 + 72;
     pos.y = WIN_SIZE_Y - 16;
 
-
     shieldEffect = ImageManager::GetSingleton()->FindImage("Image/Effect/Shield.bmp");
     shieldEffectDelay = 0.0f;
 
@@ -216,6 +216,7 @@ HRESULT PlayerTank::Init()
 
     isBarrier = false;
     fastAmmoReady = false;
+    SuperPlayerMode = false;
     life = 2;
     Level = 0;
 
@@ -224,14 +225,23 @@ HRESULT PlayerTank::Init()
 
 void PlayerTank::Update()
 {
-    if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_PRIOR))
+    if (KeyManager::GetSingleton()->IsOnceKeyDown(SUPER_PLAYER_MODE))
     {
-        life++;
+        SuperPlayerMode = !SuperPlayerMode;
+        if (SuperPlayerMode) {
+            for (int i = 0; i < 4; i++)LevelUp();
+            moveSpeed = 150.0f;
+        }
+        else {
+            moveSpeed = 50.0f;
+            shieldEffectTime = 9.0f;
+        }
     }
-    else if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_NEXT))
-    {
-        life--;
+    if (SuperPlayerMode) {
+        itemManager->ActiveShove();
+        shieldEffectTime = 0;
     }
+
     RECT rc;
     SpawnEffect();
     if (SpawnEffect() == false)
@@ -366,9 +376,10 @@ void PlayerTank::PlayerTankReset()
     shieldEffectDelay = 0.0f;
 }
 
-void PlayerTank::SetData(TILE_INFO(*tileInfo)[TILE_COUNT], AmmoManager* ammoManager)
+void PlayerTank::SetData(TILE_INFO(*tileInfo)[TILE_COUNT], AmmoManager* ammoManager, ItemManager* itemManager)
 {
     this->tileInfo = tileInfo;
     this->ammoManager = ammoManager;
+    this->itemManager = itemManager;
 }
 

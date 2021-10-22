@@ -31,6 +31,7 @@ using namespace std;
 #define SAFE_DELETE(p)	{ if (p) { delete p; p = nullptr; } }
 
 #define TANK_COLLIDER_DEBUG '8'
+#define SUPER_PLAYER_MODE '1'
 
 enum class MoveDir { Left, Right, Up, Down };
 enum class TankType { Player, Enemy };

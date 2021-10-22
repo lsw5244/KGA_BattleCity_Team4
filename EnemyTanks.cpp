@@ -30,16 +30,19 @@ void EnemyTanks::CollisionAndMove(MoveDir movedir)
 
     for (int i = GetPosCount(pos.y, -2, false); i < GetPosCount(pos.y, 2, false); i++) {
         for (int j = GetPosCount(pos.x, -2, true); j < GetPosCount(pos.x, 2, true); j++) {
-            if ((!(tileInfo[i][j].terrain == Terrain::Empty) && IntersectRect(&rc, &shape, &tileInfo[i][j].selectRc)) ||
-                IntersectRect(&rc, playerRect, &shape)) {
+            if ((!(tileInfo[i][j].terrain == Terrain::Empty || tileInfo[i][j].terrain == Terrain::Forest)) && 
+                IntersectRect(&rc, &shape, &tileInfo[i][j].selectRc)) {
                 check = true;
             }
         }
     }
-    
+    // 해당 타일이 비어있거나 숲타일일 경우
+
+    if (!spawnColl) if (IntersectRect(&rc, playerRect, &shape))check = true;
+    // 스폰시 플레이어와 충돌할 경우
+
     for (vector<EnemyTanks*>::iterator it = vecEnemyTanks.begin();
-        it != vecEnemyTanks.end();
-        it++)
+        it != vecEnemyTanks.end(); it++)
     {
         RECT enemyRect = (*it)->GetRect();
         if (this != (*it)) {
@@ -48,6 +51,8 @@ void EnemyTanks::CollisionAndMove(MoveDir movedir)
             }
         }
     }
+    // 자신을 제외한 다른 플레이어와 충돌 체크
+
 
     if (movedir == MoveDir::Left) {
         if (pos.x <= 16 + 8) check = true;
@@ -135,11 +140,10 @@ void EnemyTanks::TankUpdate()
         {
             RECT enemyRect = (*it)->GetRect();
             if (this != (*it)) {
-                if (IntersectRect(&rc, &shape, &enemyRect) || IntersectRect(&rc, playerRect, &shape)) {
-                    check = false;
-                }
+                if (IntersectRect(&rc, &shape, &enemyRect)) check = false;
             }
         }
+        if (IntersectRect(&rc, playerRect, &shape)) check = false;
         if (check) spawnColl = false;
     }
 
@@ -291,26 +295,26 @@ tuple<MoveDir, bool> EnemyTanks::AutoMove(MoveDir moveDir, POINTFLOAT pos)
 
     for (int i = GetPosCount(pos.y, -2, false); i < GetPosCount(pos.y, 2, false); i++) {
         for (int j = GetPosCount(pos.x, -2, true); j < GetPosCount(pos.x, 2, true); j++) {
-            if (!(tileInfo[i][j].terrain == Terrain::Empty) && IntersectRect(&rc, &bufferRc1, &tileInfo[i][j].selectRc)) {
+            if (!(tileInfo[i][j].terrain == Terrain::Empty || tileInfo[i][j].terrain == Terrain::Forest) && IntersectRect(&rc, &bufferRc1, &tileInfo[i][j].selectRc)) {
                 check1 = false;
             }
-            if (!(tileInfo[i][j].terrain == Terrain::Empty) && IntersectRect(&rc, &bufferRc2, &tileInfo[i][j].selectRc)) {
+            if (!(tileInfo[i][j].terrain == Terrain::Empty || tileInfo[i][j].terrain == Terrain::Forest) && IntersectRect(&rc, &bufferRc2, &tileInfo[i][j].selectRc)) {
                 check2 = false;
             }
-            if (!(tileInfo[i][j].terrain == Terrain::Empty) && IntersectRect(&rc, &bufferRc3, &tileInfo[i][j].selectRc)) {
+            if (!(tileInfo[i][j].terrain == Terrain::Empty || tileInfo[i][j].terrain == Terrain::Forest) && IntersectRect(&rc, &bufferRc3, &tileInfo[i][j].selectRc)) {
                 check3 = false;
             }
         }
     }
-    if(IntersectRect(&rc, playerRect, &bufferRc3))check3 = false;
+
+    if (!spawnColl) if(IntersectRect(&rc, playerRect, &bufferRc3))check3 = false;
     for (int i = 0; i < 4; i++) {
         for (vector<EnemyTanks*>::iterator it = vecEnemyTanks.begin();
             it != vecEnemyTanks.end();
             it++)
         {
             RECT enemyRect = (*it)->GetRect();
-            if (enemyRect.left == shape.left && enemyRect.top == shape.top &&
-                enemyRect.right == shape.right && enemyRect.bottom == shape.bottom) continue;
+            if ((*it)==this) continue;
             if (IntersectRect(&rc, &bufferRc3, &enemyRect)) {
                 if (!spawnColl)check3 = false;
             }
