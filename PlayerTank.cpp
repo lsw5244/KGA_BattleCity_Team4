@@ -194,7 +194,7 @@ HRESULT PlayerTank::Init()
 
     ImageManager::GetSingleton()->AddImage("Image/Player/Player3.bmp", 128, 76, 8, 4, true, RGB(255, 0, 255));
     playerTank = ImageManager::GetSingleton()->FindImage("Image/Player/Player3.bmp");
-    pos.x = 16 + 8;
+    pos.x = 16 + 72;
     pos.y = WIN_SIZE_Y - 16;
 
     ImageManager::GetSingleton()->AddImage("Image/Effect/Shield.bmp", 32, 16, 2, 1, true, RGB(255, 0, 255));
@@ -285,7 +285,6 @@ void PlayerTank::Update()
     if (isdead == true)
     {
         deadEffecttime += TimerManager::GetSingleton()->GetDeltaTime();
-        cout << deadEffecttime;
         if (deadEffecttime >= 0.05)
         {
             deadEffectfreamX++;
@@ -294,16 +293,16 @@ void PlayerTank::Update()
             {
                 if (life > 0)
                 {
-                deadEffectfreamX = 0;
+                    deadEffectfreamX = 0;
                     life--;
-                 pos.x = 16 + 8;
+                    pos.x = 16 + 72;
                     pos.y = WIN_SIZE_Y - 16;
                     isdead = false;
-                 spawnEffectTime = 0.0f;
-                 spawnEffectFrameX = 0;
-                 spawnEffectCount = 0;
-                 shieldEffectTime = 0.0f;
-                 shieldEffectDelay = 0.0f;
+                    spawnEffectTime = 0.0f;
+                    spawnEffectFrameX = 0;
+                    spawnEffectCount = 0;
+                    shieldEffectTime = 0.0f;
+                    shieldEffectDelay = 0.0f;
                 }
                 
             }
@@ -321,21 +320,21 @@ void PlayerTank::Render(HDC hdc)
             shape.bottom);
     }
     if (SpawnEffect() == false)
-            {
-                 playerTank->Render(hdc, pos.x, pos.y, elapsedCount, Level);
-            }
-     else
-          {
-                spawnEffect->Render(hdc, pos.x, pos.y, spawnEffect->GetCurrFrameX(), 0);
+    {
+       playerTank->Render(hdc, pos.x, pos.y, elapsedCount, Level);
 
-          }
+    }
+    else
+    {
+       spawnEffect->Render(hdc, pos.x, pos.y, spawnEffect->GetCurrFrameX(), 0);
+
+    }
     if (ShieldEffect() == true && SpawnEffect() == false)
-             {
-                shieldEffect->Render(hdc, pos.x, pos.y, shieldEffect->GetCurrFrameX(), 0);
-             }
+    {
+       shieldEffect->Render(hdc, pos.x, pos.y, shieldEffect->GetCurrFrameX(), 0);
+    }
 
     if (isdead == true)
-
     {
         deadEffect->Render(hdc, pos.x, pos.y, deadEffectfreamX, 0);
     }
