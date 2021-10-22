@@ -1,5 +1,5 @@
 /*
-	ÁÖÀÇ ! : AmmoManager´Â InitÇÏ±â Àü¿¡ SetTileInfo¸¦ ¸ÕÀú ÇØ ÁÖ¾î¾ß ÇÔ !
+	ì£¼ì˜ ! : AmmoManagerëŠ” Inití•˜ê¸° ì „ì— SetTileInfoë¥¼ ë¨¼ì € í•´ ì£¼ì–´ì•¼ í•¨ !
 */
 
 #include "AmmoManager.h"
@@ -72,12 +72,12 @@ void AmmoManager::Release()
 	}
 }
 
-void AmmoManager::Fire(MoveDir dir, POINTFLOAT pos, TankType type, bool isFastAmmo)
+void AmmoManager::Fire(MoveDir dir, POINTFLOAT pos, TankType type, bool isFastAmmo, int maxAmmo)
 {
 	switch (type)
 	{
 	case TankType::Player:
-		for (int i = 0; i < PLAYER_MAX_AMMO_COUNT; i++)
+		for (int i = 0; i < maxAmmo; i++)
 		{
 			if (playerAmmos[i]->GetIsAlive() == false && playerAmmos[i]->GetRenderBoomEffect() == false)
 			{
@@ -101,6 +101,7 @@ void AmmoManager::Fire(MoveDir dir, POINTFLOAT pos, TankType type, bool isFastAm
 	}
 }
 
+
 void AmmoManager::SetTileInfoAndEnemyVec()
 {
 	for (int i = 0; i < PLAYER_MAX_AMMO_COUNT; i++)
@@ -110,10 +111,19 @@ void AmmoManager::SetTileInfoAndEnemyVec()
 	}
 }
 
-void AmmoManager::SetPlayerTankDestroyIronBrick()
+//void AmmoManager::SetPlayerTankDestroyIronBrick()
+void AmmoManager::PlayerAmmoPowerUp()
 {
 	for (int i = 0; i < PLAYER_MAX_AMMO_COUNT; i++)
 	{
-		playerAmmos[i]->SetCanDestroyIronWall(true);		
+		playerAmmos[i]->SetCanDestroyIronWall(true);
+	}
+}
+
+void AmmoManager::PlayerAmmoPowerDown()
+{
+	for (int i = 0; i < PLAYER_MAX_AMMO_COUNT; i++)
+	{
+		playerAmmos[i]->SetCanDestroyIronWall(false);
 	}
 }

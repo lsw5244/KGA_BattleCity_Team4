@@ -36,7 +36,7 @@ private:
 
 	HPEN pen, oPen;
 
-	AmmoManager* ammoMgr;
+	AmmoManager* ammoManager;
 
 	UIManager* uIManager;
 

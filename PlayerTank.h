@@ -17,7 +17,7 @@ private:
 	MoveDir moveDir;
 	TILE_INFO(*tileInfo)[TILE_COUNT];
 
-	AmmoManager* ammoMgr;
+	AmmoManager* ammoManager;
 
 	void SetFrame();
 	void CollisionAndMove(MoveDir movedir);
@@ -64,7 +64,7 @@ public:
 	inline void SetTileInfo(TILE_INFO(*tileInfo)[TILE_COUNT]) { this->tileInfo = tileInfo; }
 	inline RECT* GetRect() { return &shape; }
 	inline int GetLife() { return life; }
-	inline void SetAmmoMgr(AmmoManager* mgr) { ammoMgr = mgr; }
+	inline void SetAmmoMgr(AmmoManager* mgr) { ammoManager = mgr; }
 	inline void SetFastAmmoReady(bool ready) { fastAmmoReady = ready; }
 
 };
