@@ -311,10 +311,3 @@ void PlayerTank::LevelUp()
     if (Level == 3);
 }
 
-inline void PlayerTank::isHit()
-{
-    if (shieldEffectTime >= 7.0f) {
-
-    }
-
-}
