@@ -72,27 +72,32 @@ void AmmoManager::Release()
 	}
 }
 
-void AmmoManager::EnemyFire(MoveDir dir, POINTFLOAT pos)
+void AmmoManager::Fire(MoveDir dir, POINTFLOAT pos, TankType type, bool isFastAmmo)
 {
-	for (it = vecEnemyAmmos.begin(); it != vecEnemyAmmos.end(); it++)
+	switch (type)
 	{
-		if ((*it)->GetIsAlive() == false && (*it)->GetRenderBoomEffect() == false)
+	case TankType::Player:
+		for (int i = 0; i < PLAYER_MAX_AMMO_COUNT; i++)
 		{
-			(*it)->Fire(dir, pos);
-			break;
+			if (playerAmmos[i]->GetIsAlive() == false && playerAmmos[i]->GetRenderBoomEffect() == false)
+			{
+				playerAmmos[i]->Fire(dir, pos, isFastAmmo);
+				break;
+			}
 		}
-	}
-}
-
-void AmmoManager::PlayerFire(MoveDir dir, POINTFLOAT pos)
-{
-	for (int i = 0; i < PLAYER_MAX_AMMO_COUNT; i++)
-	{
-		if (playerAmmos[i]->GetIsAlive() == false && playerAmmos[i]->GetRenderBoomEffect() == false)
+		break;
+	case TankType::Enemy:
+		for (it = vecEnemyAmmos.begin(); it != vecEnemyAmmos.end(); it++)
 		{
-			playerAmmos[i]->Fire(dir, pos);
-			break;
+			if ((*it)->GetIsAlive() == false && (*it)->GetRenderBoomEffect() == false)
+			{
+				(*it)->Fire(dir, pos, isFastAmmo);
+				break;
+			}
 		}
+		break;
+	default:
+		break;
 	}
 }
 

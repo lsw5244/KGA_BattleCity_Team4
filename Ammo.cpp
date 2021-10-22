@@ -130,6 +130,11 @@ void Ammo::Render(HDC hdc)
 				renderBoomEffect = false;
 				boomEffectFrameX = 0;
 				pos = { -10, -10 };
+				if (isFastAmmo == true)
+				{
+					moveSpeed /= 2;
+					isFastAmmo = false;
+				}
 			}
 		}
 	}
@@ -151,8 +156,13 @@ void Ammo::Release()
 {
 }
 
-void Ammo::Fire(MoveDir dir, POINTFLOAT pos)
+void Ammo::Fire(MoveDir dir, POINTFLOAT pos, bool isFastAmmo)
 {
+	if (isFastAmmo == true)
+	{
+		moveSpeed *= 2;
+		this->isFastAmmo = true;
+	}
 	isAlive = true;
 	this->pos = pos;
 	switch (dir)
@@ -179,7 +189,6 @@ void Ammo::Fire(MoveDir dir, POINTFLOAT pos)
 void Ammo::DestroyAmmo()
 {
 	isAlive = false;
-
 	renderBoomEffect = true;
 }
 
@@ -187,6 +196,11 @@ void Ammo::EraseAmmo()
 {
 	isAlive = false;
 	pos = { -10, -10 };
+	if (isFastAmmo == true)
+	{
+		moveSpeed /= 2;
+		isFastAmmo = false;
+	}
 }
 
 void Ammo::AmmoHitCheck()
@@ -316,10 +330,7 @@ void Ammo::AmmoHitCheck()
 					}
 					else
 					{
-						if (canDestroyIronWall == true)
-						{
-							PowerAmmoDestroyWall(hitTile1);
-						}
+
 					}
 
 					// iron and brick
@@ -330,6 +341,7 @@ void Ammo::AmmoHitCheck()
 						if (canDestroyIronWall == true)
 						{
 							PowerAmmoDestroyWall(hitTile1, hitTile2);
+
 						}
 						else
 						{
@@ -340,10 +352,11 @@ void Ammo::AmmoHitCheck()
 					else if (CollisionEnter(tileInfo[i][j + 1].selectRc, shape) &&
 						tileInfo[i][j + 1].terrain == Terrain::Brick)
 					{
-						hitTile2 = &tileInfo[i][j];
+						hitTile2 = &tileInfo[i][j + 1];
 						if (canDestroyIronWall == true)
 						{
 							PowerAmmoDestroyWall(hitTile1, hitTile2);
+
 						}
 						else
 						{
@@ -352,7 +365,14 @@ void Ammo::AmmoHitCheck()
 					}
 					else
 					{
-						DestroyAmmo();
+						if (canDestroyIronWall == true)
+						{
+							PowerAmmoDestroyWall(hitTile1);
+						}
+						else
+						{
+							DestroyAmmo();
+						}
 					}
 					return;
 				}

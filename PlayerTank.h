@@ -39,15 +39,16 @@ private:
 	int deadEffectfreamX;
 	bool isdead;
 
-	// 레벨업 관련
 	int Level;
 	int maxAmmo;
 	float ammoSpeed;
 
+	bool fastAmmoReady;
 
 	bool SpawnEffect();
 	bool ShieldEffect();
 
+	TankType type;
 public:
 	HRESULT Init();
 	void Update();
@@ -64,6 +65,7 @@ public:
 	inline RECT* GetRect() { return &shape; }
 	inline int GetLife() { return life; }
 	inline void SetAmmoMgr(AmmoManager* mgr) { ammoMgr = mgr; }
+	inline void SetFastAmmoReady(bool ready) { fastAmmoReady = ready; }
 
 };
 
