@@ -38,13 +38,12 @@ HRESULT BattleScene::Init()
     ImageManager::GetSingleton()->AddImage("Image/Enemy/Enemy_Item.bmp", 128, 128, 8, 8, true, RGB(255, 0, 255));
     // 적 아이템 탱크 이미지 저장
 
-    ammoMgr = new AmmoManager;
-
+    ammoManager = new AmmoManager;
 
     playerTank = new PlayerTank;
     playerTank->Init();
     playerTank->SetTileInfo(tileInfo);
-    playerTank->SetAmmoMgr(ammoMgr);
+    playerTank->SetAmmoMgr(ammoManager);
 
     enemyTankFactory[0] = new NormalTankFactory;
     enemyTankFactory[1] = new FastShootTankFactory;
@@ -54,10 +53,10 @@ HRESULT BattleScene::Init()
     enemyTankManager = new EnemyTankManager;
     enemyTankManager->Init();
 
-    ammoMgr->SetTileInfo(tileInfo);
-    ammoMgr->SetVecEnemyTank(enemyTankManager->GetVecEnemyTanks());
-    ammoMgr->SetPlayerTank(playerTank);
-    ammoMgr->Init();
+    ammoManager->SetTileInfo(tileInfo);
+    ammoManager->SetVecEnemyTank(enemyTankManager->GetVecEnemyTanks());
+    ammoManager->SetPlayerTank(playerTank);
+    ammoManager->Init();
 
     itemManager = new ItemManager;
     itemManager->Init();
@@ -66,7 +65,7 @@ HRESULT BattleScene::Init()
     uIManager->Init(*playerTank, *enemyTankManager);
  
     itemManager->Setdata(*playerTank, *enemyTankManager, tileInfo);
-    enemyTankManager->SetData(tileInfo, *playerTank, ammoMgr, itemManager);
+    enemyTankManager->SetData(tileInfo, *playerTank, ammoManager, itemManager);
 
     itemManager->newItem();
 
@@ -75,8 +74,8 @@ HRESULT BattleScene::Init()
     enemyTankManager->NewEnemyTank(FastTank, 2, false);
     enemyTankManager->NewEnemyTank(ShootTank, 3, false);
     enemyTankManager->NewEnemyTank(BigTank, 1, true);
-    ammoMgr->SetVecEnemyTank(enemyTankManager->GetVecEnemyTanks());
-    ammoMgr->Init();
+    ammoManager->SetVecEnemyTank(enemyTankManager->GetVecEnemyTanks());
+    ammoManager->Init();
 
     return S_OK;
 }
@@ -88,7 +87,7 @@ void BattleScene::Update()
 
     enemyTankManager->Update();
     playerTank->Update();
-    ammoMgr->Update();
+    ammoManager->Update();
     itemManager->Update();
     uIManager->Update(*playerTank, *enemyTankManager);
 }
@@ -159,7 +158,7 @@ void BattleScene::Render(HDC hdc)
 
     enemyTankManager->Render(hdc);
     playerTank->Render(hdc);
-    ammoMgr->Render(hdc);
+    ammoManager->Render(hdc);
     itemManager->Render(hdc);
     uIManager->Render(hdc);
 }
@@ -167,7 +166,7 @@ void BattleScene::Render(HDC hdc)
 void BattleScene::Release()
 {
 
-    SAFE_RELEASE(ammoMgr);
+    SAFE_RELEASE(ammoManager);
 }
 
 void BattleScene::Load()

@@ -15,7 +15,7 @@ private:
 protected:
 	vector<EnemyTanks*> vecEnemyTanks;
 
-	AmmoManager* ammoMgr;
+	AmmoManager* ammoManager;
 	ItemManager* itemManager;
 
 
@@ -64,7 +64,7 @@ public:
 	inline void SetItemManager(ItemManager* itemManager) { this->itemManager = itemManager; }
 	inline void SetTileInfo(TILE_INFO(*tileInfo)[TILE_COUNT]) { this->tileInfo = tileInfo; }
 	inline void SetPlyaerRect(PlayerTank& playerTank) { this->playerRect = playerTank.GetRect(); }
-	inline void SetAmmoMgr(AmmoManager* mgr) { ammoMgr = mgr; }
+	inline void SetAmmoMgr(AmmoManager* mgr) { ammoManager = mgr; }
 	inline void SetItemDes(bool des) { this->isItemDes = des; }
 	inline bool GetItemDes() { return isItemDes; }
 	inline void isHit() { this->hp = hp-1; if (hp <= 0) isDestructionEffect = true; }
