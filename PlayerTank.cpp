@@ -211,6 +211,8 @@ HRESULT PlayerTank::Init()
     type = TankType::Player;
 
     moveSpeed = 50;
+    ammoSpeed = 100.0f;
+    maxAmmo = 1;
     shape.left = pos.x - 8;
     shape.top = pos.y - 8;
     shape.right = pos.x + 8;
@@ -295,6 +297,7 @@ void PlayerTank::Update()
             {
                 if (life > 0)
                 {
+
                     deadEffectfreamX = 0;
                     life--;
                     pos.x = 16 + 72;
@@ -306,7 +309,6 @@ void PlayerTank::Update()
                     shieldEffectTime = 0.0f;
                     shieldEffectDelay = 0.0f;
                 }
-                
             }
         }
    }
@@ -350,8 +352,14 @@ void PlayerTank::Release()
 void PlayerTank::LevelUp()
 {
     if (Level < 3) Level++;
-    if (Level == 1);
-    if (Level == 2);
-    if (Level == 3);
+    if (Level == 1) {
+        ammoSpeed = 200.0f;
+    }
+    if (Level == 2) {
+        maxAmmo = 2;
+    }
+    if (Level == 3) {
+
+    }
 }
 
