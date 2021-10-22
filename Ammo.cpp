@@ -38,7 +38,7 @@ HRESULT Ammo::Init()
 	//isHit = false;
 	boomEffectFrameX = 0;
 
-	canDestroyIronWall = true;
+	canDestroyIronWall = false;
 	return S_OK;
 }
 
