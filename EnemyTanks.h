@@ -17,6 +17,11 @@ protected:
 
 	AmmoManager* ammoMgr;
 	ItemManager* itemManager;
+
+
+	TankInfo tankinfo;
+	bool isItemDes;
+	
 	void CollisionAndMove(MoveDir moveDir);
 	void PosReset(MoveDir moveDir);
 	void TankUpdate();
@@ -55,10 +60,13 @@ protected:
 	int attackDelay = 1;
 
 public:
+	inline TankInfo GetTankInfo() { return this->tankinfo; }
 	inline void SetItemManager(ItemManager* itemManager) { this->itemManager = itemManager; }
 	inline void SetTileInfo(TILE_INFO(*tileInfo)[TILE_COUNT]) { this->tileInfo = tileInfo; }
 	inline void SetPlyaerRect(PlayerTank& playerTank) { this->playerRect = playerTank.GetRect(); }
 	inline void SetAmmoMgr(AmmoManager* mgr) { ammoMgr = mgr; }
+	inline void SetItemDes(bool des) { this->isItemDes = des; }
+	inline bool GetItemDes() { return isItemDes; }
 	inline void isHit() { this->hp = hp-1; if (hp <= 0) isDestructionEffect = true; }
 	inline void SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank) { this->vecEnemyTanks = vecEnemyTank; }
 	inline bool GetisDestruction() {return this->isDestruction;}

@@ -3,7 +3,7 @@
 HRESULT NormalEnemyTank::Init()
 {
 	attackDelay = rand() % 3 + 1;
-
+	tankinfo = TankInfo::Normal;
 	if (itemTank) {
 		img = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy_Item.bmp");
 		itemTime = 0.0f;
