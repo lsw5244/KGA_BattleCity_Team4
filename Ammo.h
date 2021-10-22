@@ -37,6 +37,7 @@ private:
 
 	Ammo** playerAmmos;
 
+	bool canDestroyIronWall;
 public:
 	virtual HRESULT Init();
 	virtual void Update();
@@ -54,6 +55,9 @@ public:
 	void DestroyWall(int i, int j);
 	void DestroyWall(TILE_INFO* tileInfo);
 	void DestroyWall(TILE_INFO* tileInfo1, TILE_INFO* tileinfo2);
+	void PowerAmmoDestroyWall(TILE_INFO* tileInfo1, TILE_INFO* tileinfo2);
+	void PowerAmmoDestroyWall(TILE_INFO* tileInfo1);
+
 	void IronWallHitDestroyWall(TILE_INFO* tileInfo);
 	void DestroyBase();
 
@@ -62,7 +66,7 @@ public:
 	inline void SetType(TankType type) { this->type = type; }
 	inline void SetPlayerTank(PlayerTank* tank) { playerTank = tank; }
 	inline void SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank) { this->vecEnemys = vecEnemyTank; }
-
+	inline void SetCanDestroyIronWall(bool canDestroyIronWall) { this->canDestroyIronWall = canDestroyIronWall; }
 	bool CollisionEnter(RECT rc1, RECT rc2);
 	RECT GetRect() { return shape; }
 };

@@ -10,6 +10,10 @@
 #include "EnemyTankManager.h"
 #include "UIManager.h"
 #define POS 8
+#define NormalTank enemyTankFactory[0]->CreateEnemyTank()
+#define FastTank enemyTankFactory[1]->CreateEnemyTank()
+#define ShootTank enemyTankFactory[2]->CreateEnemyTank()
+#define BigTank enemyTankFactory[3]->CreateEnemyTank()
 
 HRESULT BattleScene::Init()
 {
@@ -49,10 +53,6 @@ HRESULT BattleScene::Init()
 
     enemyTankManager = new EnemyTankManager;
     enemyTankManager->Init();
-    enemyTankManager->NewEnemyTank(enemyTankFactory[0]->CreateEnemyTank(), tileInfo, *playerTank, 1, ammoMgr, true);
-    enemyTankManager->NewEnemyTank(enemyTankFactory[1]->CreateEnemyTank(), tileInfo, *playerTank, 2, ammoMgr, true);
-    enemyTankManager->NewEnemyTank(enemyTankFactory[2]->CreateEnemyTank(), tileInfo, *playerTank, 3, ammoMgr, true);
-    enemyTankManager->NewEnemyTank(enemyTankFactory[3]->CreateEnemyTank(), tileInfo, *playerTank, 1, ammoMgr, true);
 
     ammoMgr->SetTileInfo(tileInfo);
     ammoMgr->SetVecEnemyTank(enemyTankManager->GetVecEnemyTanks());
@@ -60,10 +60,23 @@ HRESULT BattleScene::Init()
     ammoMgr->Init();
 
     itemManager = new ItemManager;
-    itemManager->newItem(*playerTank, *enemyTankManager,tileInfo);
+    itemManager->Init();
 
     uIManager = new UIManager;
     uIManager->Init(*playerTank, *enemyTankManager);
+ 
+    itemManager->Setdata(*playerTank, *enemyTankManager, tileInfo);
+    enemyTankManager->SetData(tileInfo, *playerTank, ammoMgr, itemManager);
+
+    itemManager->newItem();
+
+
+    enemyTankManager->NewEnemyTank(NormalTank, 1, true);
+    enemyTankManager->NewEnemyTank(FastTank, 2, true);
+    enemyTankManager->NewEnemyTank(ShootTank, 3, true);
+    enemyTankManager->NewEnemyTank(BigTank, 1, true);
+    ammoMgr->SetVecEnemyTank(enemyTankManager->GetVecEnemyTanks());
+    ammoMgr->Init();
 
     return S_OK;
 }

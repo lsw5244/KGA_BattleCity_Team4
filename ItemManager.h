@@ -9,14 +9,24 @@ class ItemManager : public  GameEntity
 private:
 	vector<Item*> vecItems;
 	vector<Item*>::iterator it;
-
+	ItemManager* itemManager;
 	int eraseCount;
-	TILE_INFO(*tileInfo)[TILE_COUNT];
 
+	TILE_INFO(*tileInfo)[TILE_COUNT];
+	PlayerTank* playerTank;
+	EnemyTankManager* enemyTankManager;
+
+	bool shovelUse;
+	float shovelTime;
+	void ActiveShoveItem();
+	void SetIronBrick(int x, int y);
+	void SetBrick(int x, int y);
 protected:
 
 public:
-	void newItem(PlayerTank& playerTank, EnemyTankManager& enemyTankManager, TILE_INFO(*tileInfo)[TILE_COUNT]);
+	void newItem();
+	void Setdata(PlayerTank& playerTank, EnemyTankManager& enemyTankManager, TILE_INFO(*tileInfo)[TILE_COUNT]);
+	void ActiveShove() { shovelUse = true, shovelTime = 0.0f; }
 	HRESULT Init();
 	void Update();
 	void Render(HDC hdc);

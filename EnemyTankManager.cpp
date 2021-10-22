@@ -4,14 +4,15 @@
 #include "AmmoManager.h"
 #include "TimerManager.h"
 
-void EnemyTankManager::NewEnemyTank(EnemyTanks* enemyTank,TILE_INFO(*tileInfo)[TILE_COUNT], PlayerTank& playerTank, int posX, AmmoManager* mgr, bool item)
+void EnemyTankManager::NewEnemyTank(EnemyTanks* enemyTank, int posX, bool item)
 {
 	vecEnemyTank.push_back(enemyTank);
 	vecEnemyTank.back()->TankInit(posX, item);
 	vecEnemyTank.back()->SetAmmoMgr(mgr);
 	vecEnemyTank.back()->Init();
 	vecEnemyTank.back()->SetTileInfo(tileInfo);
-	vecEnemyTank.back()->SetPlyaerRect(playerTank);
+	vecEnemyTank.back()->SetPlyaerRect(*playerTank);
+	vecEnemyTank.back()->SetItemManager(itemManager);
 }
 
 
@@ -23,6 +24,15 @@ void EnemyTankManager::SetVecEnemyTank()
 	{
 		(*it)->SetVecEnemyTank(vecEnemyTank);
 	}
+}
+
+void EnemyTankManager::SetData(TILE_INFO(*tileInfo)[TILE_COUNT], PlayerTank& playerTank, AmmoManager* mgr,ItemManager* itemManager)
+{
+	this->tileInfo = tileInfo;
+	this->playerTank = &playerTank;
+	this->mgr = mgr;
+	this->itemManager = itemManager;
+
 }
 
 void EnemyTankManager::BoomItemUse()
