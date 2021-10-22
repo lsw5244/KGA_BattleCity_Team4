@@ -27,12 +27,14 @@ public:
 	void Render(HDC hdc);
 	void Release();
 
-	void Fire(MoveDir dir, POINTFLOAT pos, TankType type, bool isFastAmmo = false);
+	void Fire(MoveDir dir, POINTFLOAT pos, TankType type, bool isFastAmmo = false, int maxAmmo = 1);
 
 	void SetTileInfo(TILE_INFO(*info)[TILE_COUNT]) { this->tileInfo = info; }
 	inline void SetPlayerTank(PlayerTank* tank) { playerTank = tank; }
 	inline void SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank) { this->vecEnemys = vecEnemyTank; }
 
-	void SetPlayerTankDestroyIronBrick();
+	void PlayerAmmoPowerUp();
+	void PlayerAmmoPowerDown();
+
 };
 
