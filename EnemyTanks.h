@@ -53,7 +53,7 @@ protected:
 
 	float attackDelayTime = 0.0f;
 	int attackDelay = 1;
-
+	TankType type = TankType::Enemy;
 public:
 	inline void SetItemManager(ItemManager* itemManager) { this->itemManager = itemManager; }
 	inline void SetTileInfo(TILE_INFO(*tileInfo)[TILE_COUNT]) { this->tileInfo = tileInfo; }

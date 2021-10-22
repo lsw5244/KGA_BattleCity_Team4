@@ -116,7 +116,7 @@ void BigEnemyTank::AutoFire()
 
 	if (attackDelayTime > attackDelay)
 	{
-		ammoMgr->EnemyFire(movedir, pos);
+		ammoMgr->Fire(movedir, pos, type, false);
 		attackDelay = rand() % 3 + 1;
 
 		attackDelayTime = 0.0f;
