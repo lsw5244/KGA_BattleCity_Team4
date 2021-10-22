@@ -20,7 +20,7 @@ private:
 
 	AmmoManager* ammoMgr;
 
-	int CurrFrame(Image playerTank, int elapsedCount, int setCurr);
+	void SetFrame();
 	void CollisionAndMove(MoveDir movedir);
 	void PosReset(MoveDir movedir);
 
@@ -51,7 +51,7 @@ public:
 	void LevelUp();
 	inline void LifeUp() { if(life < 2) this->life++; }
 	inline void ActiveBarrier() { this->shieldEffectTime = 0.0f; }
-	inline void Setisdead(bool isdead) { this->isdead = isdead;}
+	inline void Setisdead(bool isdead) { if(spawnEffectTime >= 7.0f)this->isdead = isdead;}
 
 	inline void SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank) { this->vecEnemyTank = vecEnemyTank; }
 	inline void SetTileInfo(TILE_INFO(*tileInfo)[TILE_COUNT]) { this->tileInfo = tileInfo; }

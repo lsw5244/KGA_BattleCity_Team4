@@ -5,21 +5,25 @@
 #include "AmmoManager.h"
 #include "CommonFunction.h"
 
-int PlayerTank::CurrFrame(Image playerTank, int elapsedCount, int setCurr)
+void PlayerTank::SetFrame()
 {
-    if (elapsedCount == 2)
-    {
-        if (playerTank.GetCurrFrameX() % 2 == 0)
-        {
-            playerTank.SetCurrFrameX(setCurr);
-        }
-        else if (playerTank.GetCurrFrameX() % 2 != 0)
-        {
-            playerTank.SetCurrFrameX(setCurr - 1);
-        }
-        return 0;
+    if (moveDir == MoveDir::Up) {
+        if (elapsedCount == 0) elapsedCount = 1;
+        else elapsedCount = 0;
     }
-    return elapsedCount;
+    if (moveDir == MoveDir::Left) {
+        if (elapsedCount == 2) elapsedCount = 3;
+        else elapsedCount = 2;
+    }
+    if (moveDir == MoveDir::Down) {
+        if (elapsedCount == 4) elapsedCount = 5;
+        else elapsedCount = 4;
+    }
+    if (moveDir == MoveDir::Right) {
+        if (elapsedCount == 6) elapsedCount = 7;
+        else elapsedCount = 6;
+    }
+
 }
 
 void PlayerTank::CollisionAndMove(MoveDir movedir)
@@ -237,25 +241,25 @@ void PlayerTank::Update()
             moveDir = MoveDir::Up;
             PosReset(MoveDir::Up);
             CollisionAndMove(MoveDir::Up);
-            elapsedCount = CurrFrame(*playerTank, ++elapsedCount, 1);
+            SetFrame();
         }
         else if (KeyManager::GetSingleton()->IsStayKeyDown(VK_DOWN)) {
             moveDir = MoveDir::Down;
             PosReset(MoveDir::Down);
             CollisionAndMove(MoveDir::Down);
-            elapsedCount = CurrFrame(*playerTank, ++elapsedCount, 5);
+            SetFrame();
         }
         else if (KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT)) {
             moveDir = MoveDir::Left;
             PosReset(MoveDir::Left);
             CollisionAndMove(MoveDir::Left);
-            elapsedCount = CurrFrame(*playerTank, ++elapsedCount, 3);
+            SetFrame();
         }
         else if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT)) {
             moveDir = MoveDir::Right;
             PosReset(MoveDir::Right);
             CollisionAndMove(MoveDir::Right);
-            elapsedCount = CurrFrame(*playerTank, ++elapsedCount, 7);
+            SetFrame();
         }
 
         if (KeyManager::GetSingleton()->IsOnceKeyDown('Z'))
@@ -288,7 +292,6 @@ void PlayerTank::Update()
             deadEffecttime = 0.0f;
             if (deadEffectfreamX >= 5)
             {
-
                 if (life > 0)
                 {
                 deadEffectfreamX = 0;
@@ -298,21 +301,14 @@ void PlayerTank::Update()
                     isdead = false;
                  spawnEffectTime = 0.0f;
                  spawnEffectFrameX = 0;
-                    spawnEffectCount = 0;
+                 spawnEffectCount = 0;
                  shieldEffectTime = 0.0f;
-                    shieldEffectDelay = 0.0f;
+                 shieldEffectDelay = 0.0f;
                 }
                 
             }
-            
-
         }
-        
    }
-    
-        
-        
-    
 }
 
 void PlayerTank::Render(HDC hdc)
@@ -326,7 +322,7 @@ void PlayerTank::Render(HDC hdc)
     }
     if (SpawnEffect() == false)
             {
-                 playerTank->Render(hdc, pos.x, pos.y, playerTank->GetCurrFrameX(), Level);
+                 playerTank->Render(hdc, pos.x, pos.y, elapsedCount, Level);
             }
      else
           {
