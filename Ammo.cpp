@@ -64,7 +64,7 @@ void Ammo::Update()
 
 	for (it = vecEnemys.begin(); it != vecEnemys.end(); it++)
 	{
-		if (CollisionEnter((*it)->GetRect(), shape) && type != TankType::Enemy)
+		if (CollisionEnter((*it)->GetRect(), shape) && type != TankType::Enemy && isAlive == true)
 		{
 			DestroyAmmo();
 			(*it)->isHit();
@@ -197,7 +197,7 @@ void Ammo::AmmoHitCheck()
 		{
 			if (CollisionEnter(tileInfo[i][j].selectRc, shape))
 			{
-				//base hit
+				// base hit
 				if (tileInfo[i][j].terrain == Terrain::Base)
 				{
 					DestroyAmmo();
@@ -209,10 +209,11 @@ void Ammo::AmmoHitCheck()
 					CollisionEnter(tileInfo[i][j + 1].selectRc, shape) &&
 					tileInfo[i][j + 1].terrain == Terrain::Base)
 				{
+					DestroyAmmo();
 					DestroyBase();
 					return;
 				}
-
+				// brick and iron hit
 				if (tileInfo[i][j].terrain == Terrain::Brick)
 				{
 					hitTile1 = &tileInfo[i][j];
@@ -260,7 +261,7 @@ void Ammo::AmmoHitCheck()
 						}
 						return;
 					}
-
+					// iron and brick hit
 					if (CollisionEnter(tileInfo[i + 1][j].selectRc, shape) &&
 						tileInfo[i + 1][j].terrain == Terrain::IronBrick ||
 						(CollisionEnter(tileInfo[i][j + 1].selectRc, shape) &&
@@ -315,7 +316,7 @@ void Ammo::AmmoHitCheck()
 					}
 					return;
 				}
-
+				// iron only hit
 				if (tileInfo[i][j].terrain == Terrain::IronBrick)
 				{
 					hitTile1 = &tileInfo[i][j];
@@ -345,7 +346,7 @@ void Ammo::AmmoHitCheck()
 						}
 						return;
 					}
-
+					// brick only hit
 					if (CollisionEnter(tileInfo[i + 1][j].selectRc, shape) &&
 						tileInfo[i + 1][j].terrain == Terrain::Brick)
 					{
