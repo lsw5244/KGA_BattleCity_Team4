@@ -277,7 +277,7 @@ void PlayerTank::Update()
             }
         }
     }
-   
+    
     if (isdead == true)
     {
         deadEffecttime += TimerManager::GetSingleton()->GetDeltaTime();
@@ -293,7 +293,13 @@ void PlayerTank::Update()
                 pos.x = 16 + 8;
                 pos.y = WIN_SIZE_Y - 16;
                 isdead = false;
+                spawnEffectTime = 0.0f;
+                spawnEffectFrameX = 0;
+                spawnEffectCount = 0;
+                shieldEffectTime = 0.0f;
+                shieldEffectDelay = 0.0f;
             }
+            
         }
         
    }
@@ -325,7 +331,7 @@ void PlayerTank::Render(HDC hdc)
              {
                 shieldEffect->Render(hdc, pos.x, pos.y, shieldEffect->GetCurrFrameX(), 0);
              }
-    if (isdead == true)
+    if (isdead == true )
     {
         deadEffect->Render(hdc, pos.x, pos.y, deadEffectfreamX, 0);
     }
