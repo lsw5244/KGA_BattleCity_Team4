@@ -52,8 +52,11 @@ void FastMoveEnemyTank::Render(HDC hdc)
 				shape.right,
 				shape.bottom);
 		}
-		if (SpawnEffect() == false)
+		if (SpawnEffect())
 		{
+			spawnEffect->Render(hdc, pos.x, pos.y, effectFrameX, 0);
+		}
+		else {
 			if (itemTank) {
 				img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, itemTankImg(2));
 			}

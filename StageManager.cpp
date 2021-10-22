@@ -3,15 +3,17 @@
 #include "EnemyTankFactory.h"
 #include "TimerManager.h"
 #include "AmmoManager.h"
+#include "PlayerTank.h"
 #define NormalTank		enemyTankFactory[0]->CreateEnemyTank()
 #define FastTank		enemyTankFactory[1]->CreateEnemyTank()
 #define ShootTank		enemyTankFactory[2]->CreateEnemyTank()
 #define BigTank			enemyTankFactory[3]->CreateEnemyTank()
 
-void StageManager::SetData(EnemyTankManager* enemyTankManager, AmmoManager* ammoManager, int num)
+void StageManager::SetData(EnemyTankManager* enemyTankManager, PlayerTank* playerTank, AmmoManager* ammoManager, int num)
 {
 	this->ammoManager = ammoManager;
 	this->enemyTankManager = enemyTankManager;
+	this->playerTank = playerTank;
 	stageNum = num;
 	spawnDelay = 5.0f;
 	spawnNum = 0;
@@ -77,6 +79,8 @@ void StageManager::Update()
 		ammoManager->SetVecEnemyTank(enemyTankManager->GetVecEnemyTanks());
 		ammoManager->SetTileInfoAndEnemyVec();
 		enemyTankManager->SetVecEnemyTank();
+		playerTank->SetVecEnemyTank(enemyTankManager->GetVecEnemyTanks());
+
 
 		spawnNum++;
 		spawnDelay = 0;

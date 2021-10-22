@@ -405,7 +405,6 @@ bool EnemyTanks::SpawnEffect()
                 break;
         
             }
-            spawnEffect->SetCurrFrameX(effectFrameX);
             effectCount++;
         }
         effectTime = 0;
@@ -417,18 +416,19 @@ bool EnemyTanks::SpawnEffect()
 
 HRESULT EnemyTanks::TankInit(int posX, bool item)
 {
-    ImageManager::GetSingleton()->AddImage("Image/Effect/Spawn_Effect.bmp", 64, 16, 4, 1, true, RGB(255, 0, 255));
     spawnEffect = ImageManager::GetSingleton()->FindImage("Image/Effect/Spawn_Effect.bmp");
-    ImageManager::GetSingleton()->AddImage("Image/Effect/EnemyTankBoom.bmp", 160, 32, 5, 1, true, RGB(255, 0, 255));
     destructionEffect1 = ImageManager::GetSingleton()->FindImage("Image/Effect/EnemyTankBoom.bmp");
     isItemDes = false;
     destructionEffectTime = 0;
+    effectTime = 0;
     timeStop = false;
     itemTank = item;
     spawnColl = true;
     movedir = MoveDir::Down;
     elapsedCount = 0;
     elapsedWay = 0;
+
+
     if (posX == 1) {
         pos.x = 16 + (8);
     }

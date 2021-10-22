@@ -187,21 +187,18 @@ bool PlayerTank::ShieldEffect()
 
 HRESULT PlayerTank::Init()
 {
-    ImageManager::GetSingleton()->AddImage("Image/Effect/Spawn_Effect.bmp", 64, 16, 4, 1, true, RGB(255, 0, 255));
     spawnEffect = ImageManager::GetSingleton()->FindImage("Image/Effect/Spawn_Effect.bmp");
     spawnEffectFrameX = 3;
     spawnEffectCount = 0;
 
-    ImageManager::GetSingleton()->AddImage("Image/Player/Player3.bmp", 128, 76, 8, 4, true, RGB(255, 0, 255));
     playerTank = ImageManager::GetSingleton()->FindImage("Image/Player/Player3.bmp");
     pos.x = 16 + 72;
     pos.y = WIN_SIZE_Y - 16;
 
-    ImageManager::GetSingleton()->AddImage("Image/Effect/Shield.bmp", 32, 16, 2, 1, true, RGB(255, 0, 255));
+
     shieldEffect = ImageManager::GetSingleton()->FindImage("Image/Effect/Shield.bmp");
     shieldEffectDelay = 0.0f;
 
-    ImageManager::GetSingleton()->AddImage("Image/Effect/EnemyTankBoom.bmp", 160, 32, 5, 1, true, RGB(255, 0, 255));
     deadEffect = ImageManager::GetSingleton()->FindImage("Image/Effect/EnemyTankBoom.bmp");
     deadEffecttime = 0.0f;
     deadEffectfreamX = 0;
@@ -367,5 +364,11 @@ void PlayerTank::PlayerTankReset()
     spawnEffectCount = 0;
     shieldEffectTime = 0.0f;
     shieldEffectDelay = 0.0f;
+}
+
+void PlayerTank::SetData(TILE_INFO(*tileInfo)[TILE_COUNT], AmmoManager* ammoManager)
+{
+    this->tileInfo = tileInfo;
+    this->ammoManager = ammoManager;
 }
 

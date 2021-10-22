@@ -2,10 +2,12 @@
 class EnemyTankManager;
 class EnemyTankFactory;
 class AmmoManager;
+class PlayerTank;
 class StageManager
 {
 private:
 	AmmoManager* ammoManager;
+	PlayerTank* playerTank;
 	EnemyTankManager* enemyTankManager;
 	EnemyTankFactory* enemyTankFactory[4];
 	enum class EnemyTankSpawnInfo {
@@ -22,7 +24,7 @@ private:
 	
 	float spawnDelay;
 public:
-	void SetData(EnemyTankManager* enemyTankManager, AmmoManager* ammoManager,int num);
+	void SetData(EnemyTankManager* enemyTankManager, PlayerTank* playerTank, AmmoManager* ammoManager, int num);
 	void init();
 	void Update();
 };

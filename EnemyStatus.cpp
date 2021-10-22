@@ -4,7 +4,6 @@
 
 HRESULT EnemyStatus::Init(EnemyTankManager& enemyTank)
 {
-	ImageManager::GetSingleton()->AddImage("Image/Icon/Icon_Enemy.bmp", 8, 8, true, RGB(255, 0, 255));
 	enemyNumIcon = ImageManager::GetSingleton()->FindImage("Image/Icon/Icon_Enemy.bmp");
 
 	SetEnemyTank(enemyTank);

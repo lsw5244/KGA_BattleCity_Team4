@@ -88,10 +88,12 @@ void BigEnemyTank::Render(HDC hdc)
 				shape.right,
 				shape.bottom);
 		}
-		if (SpawnEffect() == false)
+		if (SpawnEffect())
 		{
+			spawnEffect->Render(hdc, pos.x, pos.y, effectFrameX, 0);
+		} else {
 			if (itemTank) {
-				if(hp==4)img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, itemTankImg(6));
+				if (hp == 4)img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, itemTankImg(6));
 				else img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, bigTankFrame);
 			}
 			else {

@@ -19,6 +19,26 @@
 
 HRESULT BattleScene::Init()
 {
+    {
+        ImageManager::GetSingleton()->AddImage("Image/Player/Player3.bmp", 128, 76, 8, 4, true, RGB(255, 0, 255));
+        ImageManager::GetSingleton()->AddImage("Image/Enemy/Enemy.bmp", 128, 96, 8, 6, true, RGB(255, 0, 255));
+        ImageManager::GetSingleton()->AddImage("Image/Enemy/Enemy_Item.bmp", 128, 128, 8, 8, true, RGB(255, 0, 255));
+        ImageManager::GetSingleton()->AddImage("Image/Effect/Spawn_Effect.bmp", 64, 16, 4, 1, true, RGB(255, 0, 255));
+        ImageManager::GetSingleton()->AddImage("Image/Effect/Boom_Effect.bmp", 48, 16, 3, 1, true, RGB(255, 0, 255));
+        ImageManager::GetSingleton()->AddImage("Image/Effect/EnemyTankBoom.bmp", 160, 32, 5, 1, true, RGB(255, 0, 255));
+        ImageManager::GetSingleton()->AddImage("Image/Effect/Shield.bmp", 32, 16, 2, 1, true, RGB(255, 0, 255));
+        ImageManager::GetSingleton()->AddImage("Image/Bullet/Missile_Down.bmp", 3, 4, true, RGB(255, 0, 255));
+        ImageManager::GetSingleton()->AddImage("Image/Bullet/Missile_Left.bmp", 4, 3, true, RGB(255, 0, 255));
+        ImageManager::GetSingleton()->AddImage("Image/Bullet/Missile_Right.bmp", 4, 3, true, RGB(255, 0, 255));
+        ImageManager::GetSingleton()->AddImage("Image/Bullet/Missile_Up.bmp", 3, 4, true, RGB(255, 0, 255));
+        ImageManager::GetSingleton()->AddImage("Image/Icon/Icon_Enemy.bmp", 8, 8, true, RGB(255, 0, 255));
+        ImageManager::GetSingleton()->AddImage("Image/Icon/player1Life.bmp", 16, 16, true, RGB(255, 0, 255));
+        ImageManager::GetSingleton()->AddImage("Image/item/items.bmp", 96, 16, 6, 1, true, RGB(255, 0, 255));
+        ImageManager::GetSingleton()->AddImage("Image/Text/Number.bmp", 40, 14, 5, 2, true, RGB(255, 0, 255));
+        ImageManager::GetSingleton()->AddImage("Image/loading.bmp", WIN_SIZE_X, WIN_SIZE_Y);
+    }
+    //이미지 초기화
+
     SetWindowSize(300, 20, WIN_SIZE_X*4, WIN_SIZE_Y*4);
     windowX = WIN_SIZE_X , windowY = WIN_SIZE_Y;
     // 화면 비율 조정
@@ -31,21 +51,12 @@ HRESULT BattleScene::Init()
     int stageNum = Load();
     // 배틀신 배경 불러오기
 
-    ImageManager::GetSingleton()->AddImage("Image/Player/Player3.bmp", 128, 76, 8, 4, true, RGB(255, 0, 255));
     // 플레이어 이미지 저장
-
-    ImageManager::GetSingleton()->AddImage("Image/Enemy/Enemy.bmp", 128, 96, 8, 6, true, RGB(255, 0, 255));
-    // 적 탱크 이미지 저장
-
-    ImageManager::GetSingleton()->AddImage("Image/Enemy/Enemy_Item.bmp", 128, 128, 8, 8, true, RGB(255, 0, 255));
-    // 적 아이템 탱크 이미지 저장
 
     ammoManager = new AmmoManager;
 
     playerTank = new PlayerTank;
     playerTank->Init();
-    playerTank->SetTileInfo(tileInfo);
-    playerTank->SetAmmoMgr(ammoManager);
 
     enemyTankFactory[0] = new NormalTankFactory;
     enemyTankFactory[1] = new FastShootTankFactory;
@@ -55,9 +66,10 @@ HRESULT BattleScene::Init()
     enemyTankManager = new EnemyTankManager;
     enemyTankManager->Init();
 
+    ammoManager->AmmoImageInit();
     ammoManager->SetTileInfo(tileInfo);
-    ammoManager->SetVecEnemyTank(enemyTankManager->GetVecEnemyTanks());
     ammoManager->SetPlayerTank(playerTank);
+    ammoManager->SetVecEnemyTank(enemyTankManager->GetVecEnemyTanks());
     ammoManager->Init();
 
     itemManager = new ItemManager;
@@ -65,24 +77,18 @@ HRESULT BattleScene::Init()
 
     stageManager = new StageManager;
     stageManager->init();
-  
 
     uIManager = new UIManager;
     uIManager->Init(*playerTank, *enemyTankManager);
  
     itemManager->Setdata(*playerTank, *enemyTankManager, tileInfo);
 
+    playerTank->SetData(tileInfo, ammoManager);
     enemyTankManager->SetData(tileInfo, *playerTank, ammoManager, itemManager);
-    stageManager->SetData(enemyTankManager, ammoManager, stageNum - 1);
+    stageManager->SetData(enemyTankManager, playerTank, ammoManager, stageNum - 1);
 
 
-    itemManager->newItem();
-
-
-    //enemyTankManager->NewEnemyTank(NormalTank, 1, false);
-    //enemyTankManager->NewEnemyTank(FastTank, 2, false);
-    //enemyTankManager->NewEnemyTank(ShootTank, 3, false);
-    //enemyTankManager->NewEnemyTank(BigTank, 1, true);
+   
 
     return S_OK;
 }
@@ -90,10 +96,7 @@ HRESULT BattleScene::Init()
 void BattleScene::Update()
 {
     stageManager->Update();
-    playerTank->SetVecEnemyTank(enemyTankManager->GetVecEnemyTanks());
-
-
-
+    
     enemyTankManager->Update();
     playerTank->Update();
     ammoManager->Update();
@@ -107,14 +110,14 @@ void BattleScene::Render(HDC hdc)
     for (int i = 0; i < TILE_COUNT; i++) {
         for (int j = 0; j < TILE_COUNT; j++) {
 
-            if (tileInfo[i][j].isDes[0][0] == false &&
-                tileInfo[i][j].isDes[0][1] == false &&
-                tileInfo[i][j].isDes[1][0] == false &&
-                tileInfo[i][j].isDes[1][1] == false)
+            if (tileInfo[i][j].isDes[0][0] == false && tileInfo[i][j].isDes[0][1] == false &&
+                tileInfo[i][j].isDes[1][0] == false && tileInfo[i][j].isDes[1][1] == false)
                 tileInfo[i][j].terrain = Terrain::Empty;
+
             for (int tileNumY = 0; tileNumY < 2; tileNumY++) {
                 for (int tileNumX = 0; tileNumX < 2; tileNumX++) {
                     if (tileInfo[i][j].isDes[tileNumY][tileNumX]) {
+                        if (tileInfo[i][j].terrain != Terrain::Forest)
                         sampleImage->Render(hdc,
                             tileInfo[i][j].rc[tileNumY][tileNumX].left + (TILE_SIZE / 2),
                             tileInfo[i][j].rc[tileNumY][tileNumX].top + (TILE_SIZE / 2),
@@ -153,23 +156,44 @@ void BattleScene::Render(HDC hdc)
                             oPen = (HPEN)SelectObject(hdc, pen);
                             Rectangle(hdc,
                                 tileInfo[i][j].rc[tileNumY][tileNumX].left,
-                                tileInfo[i][j].rc[tileNumY][tileNumX].top ,
+                                tileInfo[i][j].rc[tileNumY][tileNumX].top,
                                 tileInfo[i][j].rc[tileNumY][tileNumX].right,
-                                tileInfo[i][j].rc[tileNumY][tileNumX].bottom );
+                                tileInfo[i][j].rc[tileNumY][tileNumX].bottom);
                             SelectObject(hdc, oPen);
                             DeleteObject(pen);
                         }
+
                     }
                 }
             }
         }
     }
+    // 숲타일 제외 모두 렌더
+
 
     enemyTankManager->Render(hdc);
     playerTank->Render(hdc);
     ammoManager->Render(hdc);
+
+
     itemManager->Render(hdc);
     uIManager->Render(hdc);
+
+    for (int i = 0; i < TILE_COUNT; i++) {
+        for (int j = 0; j < TILE_COUNT; j++) {
+            for (int tileNumY = 0; tileNumY < 2; tileNumY++) {
+                for (int tileNumX = 0; tileNumX < 2; tileNumX++) {
+                    if (tileInfo[i][j].terrain == Terrain::Forest)
+                    sampleImage->Render(hdc,
+                        tileInfo[i][j].rc[tileNumY][tileNumX].left + (TILE_SIZE / 2),
+                        tileInfo[i][j].rc[tileNumY][tileNumX].top + (TILE_SIZE / 2),
+                        tileInfo[i][j].frameX[tileNumX],
+                        tileInfo[i][j].frameY[tileNumY]);
+                }
+            }
+        }
+    }
+    // 숲타일 렌더
 }
 
 void BattleScene::Release()

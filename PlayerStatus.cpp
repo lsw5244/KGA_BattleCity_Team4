@@ -3,12 +3,11 @@
 
 HRESULT PlayerStatus::Init(PlayerTank& playerTank)
 {
-	ImageManager::GetSingleton()->AddImage("Image/Icon/player1Life.bmp", 16, 16, true, RGB(255, 0, 255));
+
 	player1LifeImage = ImageManager::GetSingleton()->FindImage("Image/Icon/player1Life.bmp");
 	//ImageManager::GetSingleton()->AddImage("Image/Icon/player2Life.bmp", 16, 16, true, RGB(255, 0, 255));
 	//player2LifeImage = ImageManager::GetSingleton()->FindImage("ImageIcon/player2Life.bmp");
 
-	ImageManager::GetSingleton()->AddImage("Image/Text/Number.bmp", 40, 14, 5, 2, true, RGB(255, 0, 255));
 	lifeNumImage = ImageManager::GetSingleton()->FindImage("Image/Text/Number.bmp");
 
 	SetPlayerTank(playerTank);
