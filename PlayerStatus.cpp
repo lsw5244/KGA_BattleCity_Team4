@@ -1,23 +1,22 @@
 #include "PlayerStatus.h"
 #include "Image.h"
 
-HRESULT PlayerStatus::Init(PlayerTank& playerTank)
+void PlayerStatus::SetData(PlayerTank* playerTank)
 {
+	this->playerTank = playerTank;
+}
 
+HRESULT PlayerStatus::Init()
+{
 	player1LifeImage = ImageManager::GetSingleton()->FindImage("Image/Icon/player1Life.bmp");
-	//ImageManager::GetSingleton()->AddImage("Image/Icon/player2Life.bmp", 16, 16, true, RGB(255, 0, 255));
-	//player2LifeImage = ImageManager::GetSingleton()->FindImage("ImageIcon/player2Life.bmp");
-
 	lifeNumImage = ImageManager::GetSingleton()->FindImage("Image/Text/Number.bmp");
-
-	SetPlayerTank(playerTank);
 
 	return S_OK;
 }
 
-void PlayerStatus::Update(PlayerTank& playerTank)
+void PlayerStatus::Update()
 {
-	ChangeLifeImage(playerTank.GetLife());
+	ChangeLifeImage(playerTank->GetLife());
 }
 
 void PlayerStatus::Render(HDC hdc)

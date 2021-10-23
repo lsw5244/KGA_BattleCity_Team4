@@ -39,6 +39,7 @@ private:
 
 public:
 	void SetData(EnemyTankManager* enemyTankManager, PlayerTank* playerTank, AmmoManager* ammoManager, TILE_INFO(*tileInfo)[TILE_COUNT]);
+	int GetSpawnNum() { return spawnNum; }
 	void Init();
 	void Update();
 	void Render(HDC hdc);

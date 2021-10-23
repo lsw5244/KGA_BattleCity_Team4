@@ -164,7 +164,7 @@ bool PlayerTank::SpawnEffect()
 
 bool PlayerTank::ShieldEffect()
 {
-   if (shieldEffectTime < 10.0f)
+   if (shieldEffectTime < 7.0f)
    {
        shieldEffectTime += TimerManager::GetSingleton()->GetDeltaTime();
        shieldEffectDelay += TimerManager::GetSingleton()->GetDeltaTime();
@@ -226,12 +226,12 @@ HRESULT PlayerTank::Init()
 
 void PlayerTank::Update()
 {
-    if (life == 0) return;
-
     if (loadDataCheck) {
         LoadData();
         loadDataCheck = false;
     }
+    if (life == 0) return;
+
     if (KeyManager::GetSingleton()->IsOnceKeyDown(SUPER_PLAYER_MODE))
     {
         SuperPlayerMode = !SuperPlayerMode;
@@ -241,7 +241,7 @@ void PlayerTank::Update()
         }
         else {
             moveSpeed = 50.0f;
-            shieldEffectTime = 9.0f;
+            shieldEffectTime = 6.0f;
         }
     }
     if (SuperPlayerMode) {

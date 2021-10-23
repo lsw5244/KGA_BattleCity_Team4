@@ -1,25 +1,25 @@
 #include "EnemyStatus.h"
 #include "Image.h"
 #include "EnemyTankManager.h"
+#include "StageManager.h"
 
-HRESULT EnemyStatus::Init(EnemyTankManager& enemyTank)
+HRESULT EnemyStatus::Init()
 {
 	enemyNumIcon = ImageManager::GetSingleton()->FindImage("Image/Icon/Icon_Enemy.bmp");
-
-	SetEnemyTank(enemyTank);
+	totalEnmey = 20;
 	return S_OK;
 }
 
-void EnemyStatus::Update(EnemyTankManager& enemyTank)
+void EnemyStatus::Update()
 {
-	totalEnmey = enemyTank.GetTotalEnemyNum();
+	totalEnmey = 20 - stageManager->GetSpawnNum();
 }
 
 void EnemyStatus::Render(HDC hdc)
 {
 	for (int i = 0; i < totalEnmey; i++)
 	{
-		enemyNumIcon->Render(hdc, 240 + (8 * (i % 2)), 16 + (8 * (i / 2)));
+		enemyNumIcon->Render(hdc, 235 + (8 * (i % 2)), 16 + (8 * (i / 2)));
 	}
 }
 

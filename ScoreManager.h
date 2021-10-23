@@ -9,7 +9,7 @@ class ScoreManager : public Singleton<ScoreManager>
 private:
 	PlayerTank* playerTank;
 	EnemyTankManager* enemyTanks;
-
+	TILE_INFO tileInfo[TILE_COUNT][TILE_COUNT] ;
 	int totalNormal;
 	int totalFastMove;
 	int totalFastShoot;
@@ -43,6 +43,8 @@ public:
 	inline bool GetPlayerIsDead() { return playerIsDead; }
 	inline void AddIsStage() { if(isStage<2)this->isStage++; }
 	inline int GetIsStage() { return isStage; }
+	inline void SetTileInfo(TILE_INFO tileInfo, int y, int x) { this->tileInfo[y][x] = tileInfo; }
+	inline TILE_INFO GetTileInfo(int y, int x) { return tileInfo[y][x]; }
 
 	inline int GetTotalNormal() { return totalNormal; }
 	inline int GetTotalFastMove() { return totalFastMove; }

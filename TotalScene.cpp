@@ -50,7 +50,8 @@ HRESULT TotalScene::Init()
 	test = new BattleScene;
 
 	nextSceneTime = 0;
-	
+
+
 	return S_OK;
 }
 
@@ -64,7 +65,8 @@ void TotalScene::Update()
 	totalScore = ScoreManager::GetSingleton()->GetTotalScore();
 	prevTotalScore = ScoreManager::GetSingleton()->GetPrevTotalScore();
 	nextSceneTime += TimerManager::GetSingleton()->GetDeltaTime();
-	
+
+
 	if (nextSceneTime > 3.0f) {
 		if (ScoreManager::GetSingleton()->GetPlayerIsDead()) {
 			SceneManager::GetSingleton()->ChangeScene("TitleScene");
@@ -72,6 +74,7 @@ void TotalScene::Update()
 			SceneManager::GetSingleton()->ChangeScene("BattleScene");
 		}
 	}
+
 }
 
 void TotalScene::Render(HDC hdc)
@@ -88,7 +91,7 @@ void TotalScene::Render(HDC hdc)
 	//wNumberImage[2]->Render(hdc, WIN_SIZE_X / 2 - 21, 116, 0, 0);	//빠른놈 잡은 수
 	//wNumberImage[3]->Render(hdc, WIN_SIZE_X / 2 - 21, 140, 0, 0);	//연사 잡은 수
 	//wNumberImage[4]->Render(hdc, WIN_SIZE_X / 2 - 21, 164, 0, 0);	//왕탱 잡은 수
-
+	//
 	//wNumberImage[5]->Render(hdc, WIN_SIZE_X / 2 - 76, 92, 0, 0);	//노멀 스코어
 	//wNumberImage[6]->Render(hdc, WIN_SIZE_X / 2 - 76, 116, 0, 0);	//빠른놈 스코어
 	//wNumberImage[7]->Render(hdc, WIN_SIZE_X / 2 - 76, 140, 0, 0);	//연사 스코어

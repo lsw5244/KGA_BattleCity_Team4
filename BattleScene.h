@@ -26,6 +26,18 @@ private:
 	Image* battleBackGround;
 	// 배경 이미지
 	Image* backGround;
+	
+
+	Image* grayBackGround1;
+	Image* grayBackGround2;
+	Image* stageNumImage;
+	Image* stage;
+	bool entryScene1;
+	bool entryScene2;
+	bool stageRender;
+	float stageTime;
+	float grayPosY1;
+	float grayPosY2;
 
 	ItemManager* itemManager;
 
@@ -33,6 +45,7 @@ private:
 	EnemyTankManager* enemyTankManager;
 
 	TILE_INFO tileInfo[TILE_COUNT][TILE_COUNT];
+	TILE_INFO bufferTileInfo[TILE_COUNT][TILE_COUNT];
 
 	HPEN pen, oPen;
 
@@ -47,6 +60,6 @@ public:
 	void Render(HDC hdc);	// 오버로딩
 	void Release();
 
-	int Load();
+	int Load(int num);
 };
 

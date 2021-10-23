@@ -115,7 +115,7 @@ void StageManager::Update()
 		spawnEffectTime += TimerManager::GetSingleton()->GetDeltaTime();
 		SpawnEffect();
 	}
-
+	
 	if (spawnCheck) {
 		switch (enemyTankSpawnInfo[stageNum-1][spawnNum]) {
 		case EnemyTankSpawnInfo::NormalTankSpawm:
@@ -145,8 +145,12 @@ void StageManager::Update()
 		spawnCheck = false;
 	}
 
-	if (spawnNum >= 1 && enemyTankManager->GetEnemyTankVecSize() == 0) {
-
+	if (spawnNum >= 20 && enemyTankManager->GetEnemyTankVecSize() == 0) {
+		for (int y = 0; y < TILE_COUNT; y++) {
+			for (int x = 0; x < TILE_COUNT; x++) {
+				ScoreManager::GetSingleton()->SetTileInfo(tileInfo[y][x], y, x);
+			}
+		}
 		ScoreManager::GetSingleton()->SetPlayerIsDead(false);
 		ScoreManager::GetSingleton()->AddIsStage();
 		ScoreManager::GetSingleton()->SetPlayerLevel(playerTank->GetLevel());

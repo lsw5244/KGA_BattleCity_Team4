@@ -12,10 +12,10 @@ private:
 
 	PlayerTank* playerTank;
 
-	inline void SetPlayerTank(PlayerTank& playerTank) { this->playerTank = &playerTank; }
 public:
-	HRESULT Init(PlayerTank& playerTank);
-	void Update(PlayerTank& playerTank);
+	void SetData(PlayerTank* playerTank);
+	HRESULT Init();
+	void Update();
 	void Render(HDC hdc);
 	void Release();
 
