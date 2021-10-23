@@ -10,6 +10,7 @@
 #include "EnemyTankManager.h"
 #include "UIManager.h"
 #include "StageManager.h"
+#include "ScoreManager.h"
 
 #define POS 8
 #define NormalTank enemyTankFactory[0]->CreateEnemyTank()
@@ -84,7 +85,11 @@ HRESULT BattleScene::Init()
     itemManager->Setdata(*playerTank, *enemyTankManager, tileInfo);
     playerTank->SetData(tileInfo, ammoManager, itemManager);
     enemyTankManager->SetData(tileInfo, *playerTank, ammoManager, itemManager);
+
     stageManager->SetData(enemyTankManager, playerTank, ammoManager, stageNum - 1);
+
+    ScoreManager::GetSingleton()->Init(*playerTank, *enemyTankManager);
+
 
     return S_OK;
 }
@@ -92,12 +97,16 @@ HRESULT BattleScene::Init()
 void BattleScene::Update()
 {
     stageManager->Update();
-    
+
     enemyTankManager->Update();
     playerTank->Update();
     ammoManager->Update();
     itemManager->Update();
     uIManager->Update(*playerTank, *enemyTankManager);
+
+    ScoreManager::GetSingleton()->Update(*playerTank, *enemyTankManager);
+    test++;
+    cout << test << endl;
 }
 
 void BattleScene::Render(HDC hdc)

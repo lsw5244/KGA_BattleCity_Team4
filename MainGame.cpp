@@ -5,6 +5,7 @@
 #include "LoadingScene.h"
 #include "TilemapToolScene.h"
 #include "AmmoDebugScene.h"
+#include "TotalScene.h"
 
 HRESULT MainGame::Init()
 {
@@ -17,6 +18,7 @@ HRESULT MainGame::Init()
 	SceneManager::GetSingleton()->AddScene("BattleScene", new BattleScene());
 	SceneManager::GetSingleton()->AddScene("TilemapToolScene", new TilemapToolScene());
 	SceneManager::GetSingleton()->AddScene("AmmoDebugScene", new AmmoDebugScene());
+	SceneManager::GetSingleton()->AddScene("TotalScene", new TotalScene());
 
 	SceneManager::GetSingleton()->AddLoadingScene("LoadingScene", new LoadingScene());
 
@@ -44,6 +46,11 @@ void MainGame::Update()
 {
 	TimerManager::GetSingleton()->Update();
 
+	if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_TAB))
+	{
+		SceneManager::GetSingleton()->ChangeScene("TotalScene");
+	}
+
 	SceneManager::GetSingleton()->Update();
 
 	InvalidateRect(g_hWnd, NULL, false);
@@ -53,7 +60,7 @@ void MainGame::Render(HDC hdc)
 {
 	HDC hBackBufferDC = backBuffer->GetMemDC();
 
-	PatBlt(hBackBufferDC, 0, 0, backBuffer->GetWidth(), backBuffer->GetHeight(), WHITENESS);
+	PatBlt(hBackBufferDC, 0, 0, backBuffer->GetWidth(), backBuffer->GetHeight(), BLACKNESS);
 
 	SceneManager::GetSingleton()->Render(hBackBufferDC);
 

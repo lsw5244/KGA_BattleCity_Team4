@@ -19,6 +19,11 @@ private:
 	AmmoManager* mgr;
 	ItemManager* itemManager;
 
+	int totalNormal;
+	int totalFastMove;
+	int totalFastShoot;
+	int totalBigTank;
+	int itemBonusPoint;
 protected:
 public:
 	void NewEnemyTank(EnemyTanks* enemyTank, int posX, bool item = false);
@@ -30,6 +35,11 @@ public:
 	inline void TimeItemUse() { this->stopTimeCheck = true; }
 	vector<EnemyTanks*> GetVecEnemyTanks() { return vecEnemyTank; }
 	inline int GetTotalEnemyNum() { return totalEnemyNum; }
+	inline int GetTotalNormal() { return totalNormal; }
+	inline int GetTotalFastMove() { return totalFastMove; }
+	inline int GetTotalFastShoot() { return totalFastShoot; }
+	inline int GetTotalBigTank() { return totalBigTank; }
+	inline int GetItemBonusPoint() { return itemBonusPoint; }
 
 	HRESULT Init();
 	void Update();
