@@ -36,6 +36,7 @@ HRESULT BattleScene::Init()
         ImageManager::GetSingleton()->AddImage("Image/Bullet/Missile_Up.bmp", 3, 4, true, RGB(255, 0, 255));
         ImageManager::GetSingleton()->AddImage("Image/Icon/Icon_Enemy.bmp", 8, 8, true, RGB(255, 0, 255));
         ImageManager::GetSingleton()->AddImage("Image/Icon/player1Life.bmp", 16, 16, true, RGB(255, 0, 255));
+        ImageManager::GetSingleton()->AddImage("Image/Icon/Point.bmp", 80, 16, 5, 1, true, RGB(255, 0, 255));
         ImageManager::GetSingleton()->AddImage("Image/item/items.bmp", 96, 16, 6, 1, true, RGB(255, 0, 255));
         ImageManager::GetSingleton()->AddImage("Image/Text/Number.bmp", 40, 14, 5, 2, true, RGB(255, 0, 255));
         ImageManager::GetSingleton()->AddImage("Image/loading.bmp", WIN_SIZE_X, WIN_SIZE_Y);
@@ -87,7 +88,6 @@ HRESULT BattleScene::Init()
     itemManager->Setdata(*playerTank, *enemyTankManager, tileInfo);
     playerTank->SetData(tileInfo, ammoManager, itemManager);
     enemyTankManager->SetData(tileInfo, *playerTank, ammoManager, itemManager);
-
     stageManager->SetData(enemyTankManager, playerTank, ammoManager, tileInfo);
 
     ScoreManager::GetSingleton()->SetData(*playerTank, *enemyTankManager);

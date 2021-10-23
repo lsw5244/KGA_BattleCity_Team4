@@ -140,6 +140,7 @@ void StageManager::Update()
 		enemyTankManager->SetVecEnemyTank();
 		playerTank->SetVecEnemyTank(enemyTankManager->GetVecEnemyTanks());
 		spawnNum++;
+		cout << spawnNum << endl;
 		spawnDelay = 0;
 		spawnCheck = false;
 	}
@@ -148,9 +149,13 @@ void StageManager::Update()
 
 		ScoreManager::GetSingleton()->SetPlayerIsDead(false);
 		ScoreManager::GetSingleton()->AddIsStage();
+		ScoreManager::GetSingleton()->SetPlayerLevel(playerTank->GetLevel());
+		ScoreManager::GetSingleton()->SetPlayerLife(playerTank->GetLife());
 		SceneManager::GetSingleton()->ChangeScene("TotalScene");
 	}
 	if (playerTank->GetLife() == 0 || tileInfo[25][12].terrain == Terrain::BaseDes) {
+		ScoreManager::GetSingleton()->SetPlayerLevel(0);
+		ScoreManager::GetSingleton()->SetPlayerLife(2);
 		ScoreManager::GetSingleton()->SetPlayerIsDead(true);
 		SceneManager::GetSingleton()->ChangeScene("TotalScene");
 		

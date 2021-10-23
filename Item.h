@@ -19,6 +19,9 @@ private:
 	int itemNum;
 	bool collCheck; 
 
+	Image* pointImage;
+	float pointImageTime;
+	bool pointImageRender;
 
 	inline void SetPlyaerRect(PlayerTank& playerTank) { this->playerRect = playerTank.GetRect(); }
 	inline void SetPlyaer(PlayerTank& playerTank) { this->playerTank = &playerTank; }

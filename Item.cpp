@@ -7,16 +7,17 @@
 HRESULT Item::Init(PlayerTank& playerTank, EnemyTankManager& enemyTankManager, ItemManager& itemManager)
 {
 	img = ImageManager::GetSingleton()->FindImage("Image/item/items.bmp");
+	pointImage = ImageManager::GetSingleton()->FindImage("Image/Icon/Point.bmp");
 	SetPlyaerRect(playerTank);
 	SetPlyaer(playerTank);
 	SetEnemyTankManager(enemyTankManager);
 	SetItemManager(itemManager);
 	srand((unsigned int)time(nullptr));
-
+	pointImageRender = 0;
 	collCheck = false;
 	aliveTime = renderTime = 0.0f;
 	itemNum = rand() % 6;
-
+	pointImageTime = 0.0f;
 	int posX;
 	int posY;
 	do {
@@ -26,7 +27,7 @@ HRESULT Item::Init(PlayerTank& playerTank, EnemyTankManager& enemyTankManager, I
 	pos.x = 16 + ((posX + 1) * 8);
 	pos.y = 8 + ((posY + 1) * 8);
 
-	itemNum = 3;
+	itemNum = 1;
 	switch (itemNum) {
 	case 0:
 		itemState = ItemState::Barrier;
@@ -86,18 +87,28 @@ bool Item::ItemUpdate()
 
 	}
 	if (aliveTime >= 20 || collCheck) {
-		Release();
-		return true;
+		pointImageRender = true;
+		pointImageTime += TimerManager::GetSingleton()->GetDeltaTime();
+		if (pointImageTime >= 0.4f) {
+			Release();
+			return true;
+		}
 	}
 	return false;
 }
 
 void Item::Render(HDC hdc)
 {
-	if (renderTime <= 0.1f) {
-		img->Render(hdc, pos.x, pos.y, itemNum, 0);
-		
-	} else if(renderTime >= 0.2f) renderTime = 0.0f;
+	if (!pointImageRender) {
+		if (renderTime <= 0.1f) img->Render(hdc, pos.x, pos.y, itemNum, 0);
+		else if (renderTime >= 0.2f) renderTime = 0.0f;
+	}
+	else {
+		if (pointImageTime < 0.4f) {
+			pointImage->Render(hdc, pos.x, pos.y, 4, 0);
+		}
+	}
+
 }
 
 void Item::Release()

@@ -49,6 +49,8 @@ protected:
 	bool isDestruction;
 	bool timeStop;
 
+	Image* pointImage;
+
 	float attackDelayTime = 0.0f;
 	int attackDelay = 1;
 	TankType type = TankType::Enemy;

@@ -19,8 +19,10 @@ private:
 	int totalScore;
 	int prevTotalScore;
 
-	bool playerIsDead;	// 플레이어가 패배했을 경우
+	bool playerIsDead;		// 플레이어가 패배했을 경우
 	int isStage = 1;		// 현재 스테이지
+	int playerLife = 2;		// 플레이어 라이프
+	int playerLevel = 0;	// 플레이어 레벨
 
 	inline void SetPlayerTank(PlayerTank& playerTank) { this->playerTank = &playerTank; }
 	inline void SetEnemyTank(EnemyTankManager& enemyTank) { this->enemyTanks = &enemyTank; }
@@ -32,6 +34,11 @@ public:
 
 	void SetData(PlayerTank& playerTank, EnemyTankManager& enemyTank);
 
+
+	inline void SetPlayerLife(int playerLife) { this->playerLife = playerLife; }
+	inline int GetPlayerLife() { return playerLife; }
+	inline void SetPlayerLevel(int playerLevel) { this->playerLevel = playerLevel; }
+	inline int GetPlayerLevel() { return playerLevel; }
 	inline void SetPlayerIsDead(bool playerIsDead) { this->playerIsDead = playerIsDead; }
 	inline bool GetPlayerIsDead() { return playerIsDead; }
 	inline void AddIsStage() { if(isStage<2)this->isStage++; }

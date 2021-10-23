@@ -397,6 +397,7 @@ tuple<MoveDir, bool> EnemyTanks::AutoMove(MoveDir moveDir, POINTFLOAT pos)
 HRESULT EnemyTanks::TankInit(int posX, bool item)
 {
     destructionEffect1 = ImageManager::GetSingleton()->FindImage("Image/Effect/EnemyTankBoom.bmp");
+    pointImage = ImageManager::GetSingleton()->FindImage("Image/Icon/Point.bmp");
     isItemDes = false;
     destructionEffectTime = 0;
     timeStop = false;

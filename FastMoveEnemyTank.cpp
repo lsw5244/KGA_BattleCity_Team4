@@ -33,7 +33,7 @@ void FastMoveEnemyTank::Update()
 		shape.bottom = pos.y - 8;
 		if (destructionEffectTime >= 0.05f) {
 			destructionEffectNum++;
-			if (destructionEffectNum >= 8) {
+			if (destructionEffectNum >= 16) {
 				isDestruction = true;
 				if (itemTank)itemManager->newItem();
 			}
@@ -65,6 +65,7 @@ void FastMoveEnemyTank::Render(HDC hdc)
 		if (destructionEffectNum == 5) destructionEffect1->Render(hdc, pos.x, pos.y, 3, 0);
 		if (destructionEffectNum == 6) destructionEffect1->Render(hdc, pos.x, pos.y, 2, 0);
 		if (destructionEffectNum == 7) destructionEffect1->Render(hdc, pos.x, pos.y, 1, 0);
+		if (destructionEffectNum >= 8) pointImage->Render(hdc, pos.x, pos.y, 1, 0);
 	}
 }
 

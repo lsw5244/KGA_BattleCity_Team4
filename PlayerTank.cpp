@@ -5,6 +5,7 @@
 #include "AmmoManager.h"
 #include "CommonFunction.h"
 #include "ItemManager.h"
+#include "ScoreManager.h"
 
 void PlayerTank::SetFrame()
 {
@@ -207,6 +208,7 @@ HRESULT PlayerTank::Init()
     moveDir = MoveDir::Up;
     type = TankType::Player;
 
+    Level = 0;
     moveSpeed = 50;
     maxAmmo = 1;
     shape.left = pos.x - 8;
@@ -214,22 +216,27 @@ HRESULT PlayerTank::Init()
     shape.right = pos.x + 8;
     shape.bottom = pos.y + 8;
 
+    loadDataCheck = true;
     isBarrier = false;
     fastAmmoReady = false;
     SuperPlayerMode = false;
-    life = 2;
-    Level = 0;
 
     return S_OK;
 }
 
 void PlayerTank::Update()
 {
+    if (life == 0) return;
+
+    if (loadDataCheck) {
+        LoadData();
+        loadDataCheck = false;
+    }
     if (KeyManager::GetSingleton()->IsOnceKeyDown(SUPER_PLAYER_MODE))
     {
         SuperPlayerMode = !SuperPlayerMode;
         if (SuperPlayerMode) {
-            for (int i = 0; i < 4; i++)LevelUp();
+            for (int i = 0; i < 3; i++)LevelUp();
             moveSpeed = 150.0f;
         }
         else {
@@ -313,6 +320,7 @@ void PlayerTank::Update()
 
 void PlayerTank::Render(HDC hdc)
 {
+    if (life == 0) return;
     if (KeyManager::GetSingleton()->IsStayKeyDown(TANK_COLLIDER_DEBUG)) {
         Rectangle(hdc,
             shape.left,
@@ -376,6 +384,12 @@ void PlayerTank::PlayerTankReset()
     shieldEffectDelay = 0.0f;
     maxAmmo = 1;
     ammoManager->PlayerAmmoPowerDown();
+}
+
+void PlayerTank::LoadData()
+{
+    life = ScoreManager::GetSingleton()->GetPlayerLife();
+    for (int i = 0; i < ScoreManager::GetSingleton()->GetPlayerLevel(); i++) LevelUp();
 }
 
 void PlayerTank::SetData(TILE_INFO(*tileInfo)[TILE_COUNT], AmmoManager* ammoManager, ItemManager* itemManager)
