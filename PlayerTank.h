@@ -4,6 +4,7 @@
 class EnemyTanks;
 class Image;
 class AmmoManager;
+class ItemManager;
 class PlayerTank : public  GameObject
 {
 private:
@@ -16,10 +17,9 @@ private:
 	bool isBarrier;
 	MoveDir moveDir;
 	TILE_INFO(*tileInfo)[TILE_COUNT];
-
+	ItemManager* itemManager;
 	AmmoManager* ammoManager;
 
-	void SetFrame();
 	void CollisionAndMove(MoveDir movedir);
 	void PosReset(MoveDir movedir);
 
@@ -44,9 +44,11 @@ private:
 
 	bool fastAmmoReady;
 
+	void SetFrame();
 	bool SpawnEffect();
 	bool ShieldEffect();
 
+	bool SuperPlayerMode;
 	TankType type;
 public:
 	HRESULT Init();
@@ -56,15 +58,15 @@ public:
 
 	void LevelUp();
 	void PlayerTankReset();
-	inline void LifeUp() { if(life < 2) this->life++; }
+	void SetData(TILE_INFO(*tileInfo)[TILE_COUNT], AmmoManager* mgr, ItemManager* itemManager);
+
+	inline void LifeUp() { if(life < 10) this->life++; }
 	inline void ActiveBarrier() { this->shieldEffectTime = 0.0f; }
 	inline void Setisdead(bool isdead) { if(shieldEffectTime >= 10.0f)this->isdead = isdead;}
 
 	inline void SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank) { this->vecEnemyTank = vecEnemyTank; }
-	inline void SetTileInfo(TILE_INFO(*tileInfo)[TILE_COUNT]) { this->tileInfo = tileInfo; }
 	inline RECT* GetRect() { return &shape; }
 	inline int GetLife() { return life; }
-	inline void SetAmmoMgr(AmmoManager* mgr) { ammoManager = mgr; }
 	inline void SetFastAmmoReady(bool ready) { fastAmmoReady = ready; }
 
 };

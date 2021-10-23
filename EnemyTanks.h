@@ -42,13 +42,6 @@ protected:
 	int elapsedCount;
 	float time;
 
-	Image* spawnEffect;
-	float effectTime;
-	int effectFrameX;
-	int effectCount;
-	bool frameUp;
-	bool SpawnEffect();
-
 	Image* destructionEffect1;
 	int destructionEffectNum;
 	float destructionEffectTime;
@@ -73,7 +66,6 @@ public:
 	inline void SetTimeStop(bool timeStop) {this->timeStop = timeStop;}
 	inline RECT GetRect() { return this->shape; }
 	inline int GetHp() { return hp; }
-	//void isDestruction();
 	
 	HRESULT TankInit(int posX, bool item);
 	virtual HRESULT Init() = 0;

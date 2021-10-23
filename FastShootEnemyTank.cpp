@@ -54,14 +54,12 @@ void FastShootEnemyTank::Render(HDC hdc)
 				shape.right,
 				shape.bottom);
 		}
-		if (SpawnEffect() == false)
-		{
-			if (itemTank) {
-				img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, itemTankImg(4));
-			}
-			else {
-				img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, 2);
-			}
+
+		if (itemTank) {
+			img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, itemTankImg(4));
+		}
+		else {
+			img->Render(hdc, pos.x, pos.y, elapsedCount + elapsedWay, 2);
 		}
 	}
 	else {

@@ -72,6 +72,11 @@ void AmmoManager::Release()
 	}
 }
 
+void AmmoManager::AmmoImageInit()
+{
+
+}
+
 void AmmoManager::Fire(MoveDir dir, POINTFLOAT pos, TankType type, bool isFastAmmo, int maxAmmo)
 {
 	switch (type)

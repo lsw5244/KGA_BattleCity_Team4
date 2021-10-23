@@ -48,6 +48,8 @@ void EnemyTankManager::BoomItemUse()
 
 HRESULT EnemyTankManager::Init()
 {
+
+
 	stopTimeCheck = false;
 	stopTime = 0.0f;
 	return S_OK;

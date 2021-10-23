@@ -6,7 +6,6 @@
 
 HRESULT Item::Init(PlayerTank& playerTank, EnemyTankManager& enemyTankManager, ItemManager& itemManager)
 {
-	ImageManager::GetSingleton()->AddImage("Image/item/items.bmp", 96, 16, 6, 1, true, RGB(255, 0, 255));
 	img = ImageManager::GetSingleton()->FindImage("Image/item/items.bmp");
 	SetPlyaerRect(playerTank);
 	SetPlyaer(playerTank);
