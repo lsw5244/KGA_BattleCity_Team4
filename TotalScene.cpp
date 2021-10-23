@@ -5,6 +5,8 @@
 #include "EnemyTankManager.h"
 #include "BattleScene.h"
 #include "ScoreManager.h"
+#include "TimerManager.h"
+#include "SceneManager.h"
 
 HRESULT TotalScene::Init()
 {
@@ -46,6 +48,8 @@ HRESULT TotalScene::Init()
 	enemyTanks = new EnemyTankManager;
 
 	test = new BattleScene;
+
+	nextSceneTime = 0;
 	
 	return S_OK;
 }
@@ -59,7 +63,15 @@ void TotalScene::Update()
 	totalDestroy = ScoreManager::GetSingleton()->GetTotalDestroy();
 	totalScore = ScoreManager::GetSingleton()->GetTotalScore();
 	prevTotalScore = ScoreManager::GetSingleton()->GetPrevTotalScore();
+	nextSceneTime += TimerManager::GetSingleton()->GetDeltaTime();
 	
+	if (nextSceneTime > 3.0f) {
+		if (ScoreManager::GetSingleton()->GetPlayerIsDead()) {
+			SceneManager::GetSingleton()->ChangeScene("TitleScene");
+		} else {
+			SceneManager::GetSingleton()->ChangeScene("BattleScene");
+		}
+	}
 }
 
 void TotalScene::Render(HDC hdc)

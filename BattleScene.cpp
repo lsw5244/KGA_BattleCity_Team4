@@ -21,6 +21,8 @@
 HRESULT BattleScene::Init()
 {
     {
+        ImageManager::GetSingleton()->AddImage("Image/SamlpTile.bmp", 88, 88, SAMPLE_TILE_COUNT, SAMPLE_TILE_COUNT, true, RGB(255, 0, 255));
+        ImageManager::GetSingleton()->AddImage("Image/background.bmp", WIN_SIZE_X, WIN_SIZE_Y);
         ImageManager::GetSingleton()->AddImage("Image/Player/Player3.bmp", 128, 76, 8, 4, true, RGB(255, 0, 255));
         ImageManager::GetSingleton()->AddImage("Image/Enemy/Enemy.bmp", 128, 96, 8, 6, true, RGB(255, 0, 255));
         ImageManager::GetSingleton()->AddImage("Image/Enemy/Enemy_Item.bmp", 128, 128, 8, 8, true, RGB(255, 0, 255));
@@ -44,17 +46,16 @@ HRESULT BattleScene::Init()
     windowX = WIN_SIZE_X , windowY = WIN_SIZE_Y;
     // 화면 비율 조정
 
-    sampleImage = ImageManager::GetSingleton()->AddImage("Image/SamlpTile.bmp",
-        88, 88, SAMPLE_TILE_COUNT, SAMPLE_TILE_COUNT, true, RGB(255, 0, 255));
+    sampleImage = ImageManager::GetSingleton()->FindImage("Image/SamlpTile.bmp");
     // 맵 이미지 불러오기
 
-    battleBackGround = ImageManager::GetSingleton()->AddImage("Image/background.bmp", WIN_SIZE_X, WIN_SIZE_Y);
-    int stageNum = Load();
+    battleBackGround = ImageManager::GetSingleton()->FindImage("Image/background.bmp");
     // 배틀신 배경 불러오기
 
     // 플레이어 이미지 저장
 
-    ammoManager = new AmmoManager;
+    ScoreManager::GetSingleton()->Init();
+    Load();
 
     playerTank = new PlayerTank;
     playerTank->Init();
@@ -67,6 +68,7 @@ HRESULT BattleScene::Init()
     enemyTankManager = new EnemyTankManager;
     enemyTankManager->Init();
 
+    ammoManager = new AmmoManager;
     ammoManager->AmmoImageInit();
     ammoManager->SetTileInfo(tileInfo);
     ammoManager->SetPlayerTank(playerTank);
@@ -86,18 +88,15 @@ HRESULT BattleScene::Init()
     playerTank->SetData(tileInfo, ammoManager, itemManager);
     enemyTankManager->SetData(tileInfo, *playerTank, ammoManager, itemManager);
 
-    stageManager->SetData(enemyTankManager, playerTank, ammoManager, stageNum - 1);
+    stageManager->SetData(enemyTankManager, playerTank, ammoManager, tileInfo);
 
-    ScoreManager::GetSingleton()->Init(*playerTank, *enemyTankManager);
-
+    ScoreManager::GetSingleton()->SetData(*playerTank, *enemyTankManager);
 
     return S_OK;
 }
 
 void BattleScene::Update()
 {
-    stageManager->Update();
-
     enemyTankManager->Update();
     playerTank->Update();
     ammoManager->Update();
@@ -105,8 +104,7 @@ void BattleScene::Update()
     uIManager->Update(*playerTank, *enemyTankManager);
 
     ScoreManager::GetSingleton()->Update(*playerTank, *enemyTankManager);
-    test++;
-    cout << test << endl;
+    stageManager->Update();
 }
 
 void BattleScene::Render(HDC hdc)
@@ -201,16 +199,13 @@ void BattleScene::Render(HDC hdc)
 
 void BattleScene::Release()
 {
-
     SAFE_RELEASE(ammoManager);
 }
 
 int BattleScene::Load()
 {
     {
-        int loadIndex = 1;
-        //cout << "로드할 맵의 번호를 입력하여 주십시오. : ";
-        //cin >> loadIndex;
+        int loadIndex = ScoreManager::GetSingleton()->GetIsStage();
         string loadFileName = "Save/saveMapData_" + to_string(loadIndex);
         loadFileName += ".map";
 

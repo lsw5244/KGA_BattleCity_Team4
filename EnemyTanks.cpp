@@ -306,6 +306,18 @@ tuple<MoveDir, bool> EnemyTanks::AutoMove(MoveDir moveDir, POINTFLOAT pos)
             }
         }
     }
+    if (movedir == MoveDir::Left) {
+        if (bufferPos3.x <= 16 + 8) check3 = false;
+    }
+    else if (movedir == MoveDir::Right) {
+        if (bufferPos3.x >= 208 + 9) check3 = false;
+    }
+    else if (movedir == MoveDir::Up) {
+        if (bufferPos3.y <= 16) check3 = false;
+    }
+    else if (movedir == MoveDir::Down) {
+        if (bufferPos3.y >= 208 + 1) check3 = false;
+    }
 
     if (!spawnColl) if(IntersectRect(&rc, playerRect, &bufferRc3))check3 = false;
     for (int i = 0; i < 4; i++) {
