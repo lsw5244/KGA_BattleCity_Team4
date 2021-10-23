@@ -384,6 +384,7 @@ void PlayerTank::PlayerTankReset()
     shieldEffectDelay = 0.0f;
     maxAmmo = 1;
     ammoManager->PlayerAmmoPowerDown();
+
 }
 
 void PlayerTank::LoadData()

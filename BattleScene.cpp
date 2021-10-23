@@ -20,7 +20,6 @@
 
 HRESULT BattleScene::Init()
 {
-
     SetWindowSize(300, 20, WIN_SIZE_X*4, WIN_SIZE_Y*4);
     windowX = WIN_SIZE_X , windowY = WIN_SIZE_Y;
     // 화면 비율 조정
@@ -30,6 +29,7 @@ HRESULT BattleScene::Init()
 
     battleBackGround = ImageManager::GetSingleton()->FindImage("Image/background.bmp");
     // 배틀신 배경 불러오기
+
 
     grayBackGround1 = ImageManager::GetSingleton()->FindImage("Image/Title/GrayBackGround.bmp");
     grayBackGround2 = ImageManager::GetSingleton()->FindImage("Image/Title/GrayBackGround.bmp");
@@ -52,6 +52,8 @@ HRESULT BattleScene::Init()
             }
         }
     }
+
+    ScoreManager::GetSingleton()->Init();
 
     playerTank = new PlayerTank;
     playerTank->Init();
@@ -86,6 +88,9 @@ HRESULT BattleScene::Init()
     stageManager->SetData(enemyTankManager, playerTank, ammoManager, tileInfo);
     uIManager->SetData(playerTank, stageManager);
 
+
+    stageManager->SetData(enemyTankManager, playerTank, ammoManager, tileInfo);
+
     ScoreManager::GetSingleton()->SetData(*playerTank, *enemyTankManager);
 
     return S_OK;
@@ -93,6 +98,7 @@ HRESULT BattleScene::Init()
 
 void BattleScene::Update()
 {
+
     if (entryScene1) {
         if (!entryScene2) {
             grayPosY1 += 100 * TimerManager::GetSingleton()->GetDeltaTime();
@@ -294,7 +300,9 @@ void BattleScene::Release()
 int BattleScene::Load(int num)
 {
     {
+
         string loadFileName = "Save/saveMapData_" + to_string(num);
+
         loadFileName += ".map";
 
         HANDLE hFile = CreateFile(loadFileName.c_str(),

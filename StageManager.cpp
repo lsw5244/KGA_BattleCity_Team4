@@ -65,7 +65,7 @@ void StageManager::Init()
 		enemyTankSpawnInfo[0][18] = EnemyTankSpawnInfo::FastTankSpawm;
 		enemyTankSpawnInfo[0][19] = EnemyTankSpawnInfo::FastTankSpawm;
 	}
-	// 1½ºÅ×ÀÌÁö ÃÊ±âÈ­
+	// 1ìŠ¤í…Œì´ì§€ ì´ˆê¸°í™”
 
 	{
 		enemyTankSpawnInfo[1][0] = EnemyTankSpawnInfo::BigTankSpawm;
@@ -89,7 +89,7 @@ void StageManager::Init()
 		enemyTankSpawnInfo[1][18] = EnemyTankSpawnInfo::NormalTankSpawm;
 		enemyTankSpawnInfo[1][19] = EnemyTankSpawnInfo::NormalTankSpawm;
 	}
-	// 2½ºÅ×ÀÌÁö ÃÊ±âÈ­
+	// 2ìŠ¤í…Œì´ì§€ ì´ˆê¸°í™”
 }
 
 void StageManager::Update()
@@ -145,6 +145,7 @@ void StageManager::Update()
 		spawnCheck = false;
 	}
 
+
 	if (spawnNum >= 20 && enemyTankManager->GetEnemyTankVecSize() == 0) {
 		for (int y = 0; y < TILE_COUNT; y++) {
 			for (int x = 0; x < TILE_COUNT; x++) {
@@ -160,9 +161,9 @@ void StageManager::Update()
 	if (playerTank->GetLife() == 0 || tileInfo[25][12].terrain == Terrain::BaseDes) {
 		ScoreManager::GetSingleton()->SetPlayerLevel(0);
 		ScoreManager::GetSingleton()->SetPlayerLife(2);
+
 		ScoreManager::GetSingleton()->SetPlayerIsDead(true);
 		SceneManager::GetSingleton()->ChangeScene("TotalScene");
-		
 	}
 }
 

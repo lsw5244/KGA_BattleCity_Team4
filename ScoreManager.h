@@ -19,10 +19,11 @@ private:
 	int totalScore;
 	int prevTotalScore;
 
-	bool playerIsDead;		// ÇÃ·¹ÀÌ¾î°¡ ÆÐ¹èÇßÀ» °æ¿ì
-	int isStage = 1;		// ÇöÀç ½ºÅ×ÀÌÁö
-	int playerLife = 2;		// ÇÃ·¹ÀÌ¾î ¶óÀÌÇÁ
-	int playerLevel = 0;	// ÇÃ·¹ÀÌ¾î ·¹º§
+
+	bool playerIsDead;		// í”Œë ˆì´ì–´ê°€ íŒ¨ë°°í–ˆì„ ê²½ìš°
+	int isStage = 1;		// í˜„ìž¬ ìŠ¤í…Œì´ì§€
+	int playerLife = 2;		// í”Œë ˆì´ì–´ ë¼ì´í”„
+	int playerLevel = 0;	// í”Œë ˆì´ì–´ ë ˆë²¨
 
 	inline void SetPlayerTank(PlayerTank& playerTank) { this->playerTank = &playerTank; }
 	inline void SetEnemyTank(EnemyTankManager& enemyTank) { this->enemyTanks = &enemyTank; }
@@ -39,12 +40,15 @@ public:
 	inline int GetPlayerLife() { return playerLife; }
 	inline void SetPlayerLevel(int playerLevel) { this->playerLevel = playerLevel; }
 	inline int GetPlayerLevel() { return playerLevel; }
+
 	inline void SetPlayerIsDead(bool playerIsDead) { this->playerIsDead = playerIsDead; }
 	inline bool GetPlayerIsDead() { return playerIsDead; }
 	inline void AddIsStage() { if(isStage<2)this->isStage++; }
 	inline int GetIsStage() { return isStage; }
+
 	inline void SetTileInfo(TILE_INFO tileInfo, int y, int x) { this->tileInfo[y][x] = tileInfo; }
 	inline TILE_INFO GetTileInfo(int y, int x) { return tileInfo[y][x]; }
+
 
 	inline int GetTotalNormal() { return totalNormal; }
 	inline int GetTotalFastMove() { return totalFastMove; }

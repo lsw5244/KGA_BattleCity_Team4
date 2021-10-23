@@ -74,4 +74,3 @@ void ScoreManager::SetData(PlayerTank& playerTank, EnemyTankManager& enemyTank)
 	SetPlayerTank(playerTank);
 	SetEnemyTank(enemyTank);
 }
-
