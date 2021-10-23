@@ -46,10 +46,10 @@ void MainGame::Update()
 {
 	TimerManager::GetSingleton()->Update();
 
-	if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_TAB))
-	{
-		SceneManager::GetSingleton()->ChangeScene("TotalScene");
-	}
+	//if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_TAB))
+	//{
+	//	SceneManager::GetSingleton()->ChangeScene("TotalScene");
+	//}
 
 	SceneManager::GetSingleton()->Update();
 

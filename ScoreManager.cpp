@@ -1,17 +1,15 @@
 #include "ScoreManager.h"
 #include "EnemyTankManager.h"
 
-void ScoreManager::Init(PlayerTank& playerTank, EnemyTankManager& enemyTank)
+void ScoreManager::Init()
 {
-	SetPlayerTank(playerTank);
-	SetEnemyTank(enemyTank);
-
 	totalNormal = 0;
 	totalFastMove = 0;
 	totalFastShoot = 0;
 	totalBigTank = 0;
 	totalDestroy = 0;
 	itemBonusPoint = 0;
+	playerIsDead = false;
 }
 
 void ScoreManager::Release()
@@ -20,11 +18,12 @@ void ScoreManager::Release()
 
 void ScoreManager::Update(PlayerTank& playerTank, EnemyTankManager& enemyTank)
 {
-	//totalNormal = enemyTank.GetTotalNormal();
-	//totalFastMove = enemyTank.GetTotalFastMove();
-	//totalFastShoot = enemyTank.GetTotalFastShoot();
-	//totalBigTank = enemyTank.GetTotalBigTank();
-	//itemBonusPoint = enemyTank.GetItemBonusPoint();
+	totalNormal = enemyTank.GetTotalNormal();
+	totalFastMove = enemyTank.GetTotalFastMove();
+	totalFastShoot = enemyTank.GetTotalFastShoot();
+	totalBigTank = enemyTank.GetTotalBigTank();
+	itemBonusPoint = enemyTank.GetItemBonusPoint();
+	std::cout << isStage << endl;
 
 	if (KeyManager::GetSingleton()->IsOnceKeyDown('M'))
 	{
@@ -61,11 +60,18 @@ void ScoreManager::Update(PlayerTank& playerTank, EnemyTankManager& enemyTank)
 	if (totalScore > 20000)		totalScore = totalScore - 20000;
 	if (prevTotalScore > 1000000) prevTotalScore = prevTotalScore - 1000000;
 
-	cout << totalNormal << " / " << totalFastMove << " / " << totalFastShoot << " / " 
-		<< totalBigTank << " / " << totalDestroy << " / "  << itemBonusPoint << " / " 
-		<< totalScore << " / " << prevTotalScore << endl;
+	//cout << totalNormal << " / " << totalFastMove << " / " << totalFastShoot << " / " 
+	//	<< totalBigTank << " / " << totalDestroy << " / "  << itemBonusPoint << " / " 
+	//	<< totalScore << " / " << prevTotalScore << endl;
+
 }
 
 void ScoreManager::Render(HDC hdc)
 {
+}
+
+void ScoreManager::SetData(PlayerTank& playerTank, EnemyTankManager& enemyTank)
+{
+	SetPlayerTank(playerTank);
+	SetEnemyTank(enemyTank);
 }

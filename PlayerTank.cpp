@@ -356,7 +356,7 @@ void PlayerTank::LevelUp()
         maxAmmo = 2;
     }
     if (Level == 3) {
-
+        ammoManager->PlayerAmmoPowerUp();
     }
 }
 
@@ -374,6 +374,8 @@ void PlayerTank::PlayerTankReset()
     spawnEffectCount = 0;
     shieldEffectTime = 0.0f;
     shieldEffectDelay = 0.0f;
+    maxAmmo = 1;
+    ammoManager->PlayerAmmoPowerDown();
 }
 
 void PlayerTank::SetData(TILE_INFO(*tileInfo)[TILE_COUNT], AmmoManager* ammoManager, ItemManager* itemManager)

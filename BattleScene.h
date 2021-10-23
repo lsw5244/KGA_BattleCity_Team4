@@ -40,7 +40,7 @@ private:
 
 	UIManager* uIManager;
 
-	int test = 0;
+	int stageNum;
 public:
 	HRESULT Init();
 	void Update();

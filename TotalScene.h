@@ -32,6 +32,8 @@ private:
 	int totalScore;
 	int prevTotalScore;
 
+	float nextSceneTime;
+
 	inline void SetPlayerTank(PlayerTank& playerTank) { this->playerTank = &playerTank; }
 	inline void SetEnemyTank(EnemyTankManager& enemyTank) { this->enemyTanks = &enemyTank; }
 

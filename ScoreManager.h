@@ -19,13 +19,23 @@ private:
 	int totalScore;
 	int prevTotalScore;
 
+	bool playerIsDead;	// 플레이어가 패배했을 경우
+	int isStage = 1;		// 현재 스테이지
+
 	inline void SetPlayerTank(PlayerTank& playerTank) { this->playerTank = &playerTank; }
 	inline void SetEnemyTank(EnemyTankManager& enemyTank) { this->enemyTanks = &enemyTank; }
 public:
-	void Init(PlayerTank& playerTank, EnemyTankManager& enemyTank);
+	void Init();
 	void Release();
 	void Update(PlayerTank& playerTank, EnemyTankManager& enemyTank);
 	void Render(HDC hdc);
+
+	void SetData(PlayerTank& playerTank, EnemyTankManager& enemyTank);
+
+	inline void SetPlayerIsDead(bool playerIsDead) { this->playerIsDead = playerIsDead; }
+	inline bool GetPlayerIsDead() { return playerIsDead; }
+	inline void AddIsStage() { if(isStage<2)this->isStage++; }
+	inline int GetIsStage() { return isStage; }
 
 	inline int GetTotalNormal() { return totalNormal; }
 	inline int GetTotalFastMove() { return totalFastMove; }

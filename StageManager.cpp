@@ -6,18 +6,21 @@
 #include "PlayerTank.h"
 #include "Image.h"
 #include "ImageManager.h"
+#include "SceneManager.h"
+#include "ScoreManager.h"
 
 #define NormalTank		enemyTankFactory[0]->CreateEnemyTank()
 #define FastTank		enemyTankFactory[1]->CreateEnemyTank()
 #define ShootTank		enemyTankFactory[2]->CreateEnemyTank()
 #define BigTank			enemyTankFactory[3]->CreateEnemyTank()
 
-void StageManager::SetData(EnemyTankManager* enemyTankManager, PlayerTank* playerTank, AmmoManager* ammoManager, int num)
+void StageManager::SetData(EnemyTankManager* enemyTankManager, PlayerTank* playerTank, AmmoManager* ammoManager, TILE_INFO(*tileInfo)[TILE_COUNT])
 {
+	this->tileInfo = tileInfo;
 	this->ammoManager = ammoManager;
 	this->enemyTankManager = enemyTankManager;
 	this->playerTank = playerTank;
-	stageNum = num;
+	stageNum = ScoreManager::GetSingleton()->GetIsStage();
 }
 
 void StageManager::Init()
@@ -114,7 +117,7 @@ void StageManager::Update()
 	}
 
 	if (spawnCheck) {
-		switch (enemyTankSpawnInfo[stageNum][spawnNum]) {
+		switch (enemyTankSpawnInfo[stageNum-1][spawnNum]) {
 		case EnemyTankSpawnInfo::NormalTankSpawm:
 			if (spawnNum == 3 || spawnNum == 11 || spawnNum == 17) enemyTankManager->NewEnemyTank(NormalTank, spawnPos, true);
 			else enemyTankManager->NewEnemyTank(NormalTank, spawnPos, false);
@@ -139,6 +142,18 @@ void StageManager::Update()
 		spawnNum++;
 		spawnDelay = 0;
 		spawnCheck = false;
+	}
+
+	if (spawnNum >= 1 && enemyTankManager->GetEnemyTankVecSize() == 0) {
+
+		ScoreManager::GetSingleton()->SetPlayerIsDead(false);
+		ScoreManager::GetSingleton()->AddIsStage();
+		SceneManager::GetSingleton()->ChangeScene("TotalScene");
+	}
+	if (playerTank->GetLife() == 0 || tileInfo[25][12].terrain == Terrain::BaseDes) {
+		ScoreManager::GetSingleton()->SetPlayerIsDead(true);
+		SceneManager::GetSingleton()->ChangeScene("TotalScene");
+		
 	}
 }
 

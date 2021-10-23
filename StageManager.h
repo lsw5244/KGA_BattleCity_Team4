@@ -1,6 +1,7 @@
 #pragma once
 #include "Config.h"
 
+
 class EnemyTankManager;
 class EnemyTankFactory;
 class AmmoManager;
@@ -20,7 +21,7 @@ private:
 		BigTankSpawm
 	};
 
-
+	TILE_INFO(*tileInfo)[TILE_COUNT];
 	POINTFLOAT pos;
 	EnemyTankSpawnInfo enemyTankSpawnInfo[5][20];
 	int stageNum;
@@ -37,7 +38,7 @@ private:
 	int spawnEffectCount;
 
 public:
-	void SetData(EnemyTankManager* enemyTankManager, PlayerTank* playerTank, AmmoManager* ammoManager, int num);
+	void SetData(EnemyTankManager* enemyTankManager, PlayerTank* playerTank, AmmoManager* ammoManager, TILE_INFO(*tileInfo)[TILE_COUNT]);
 	void Init();
 	void Update();
 	void Render(HDC hdc);
