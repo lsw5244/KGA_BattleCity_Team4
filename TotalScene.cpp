@@ -27,7 +27,7 @@ HRESULT TotalScene::Init()
 	arrow = ImageManager::GetSingleton()->FindImage("Image/Icon/Arrow.bmp");
 	totalScoreWord = ImageManager::GetSingleton()->FindImage("Image/Text/TotalScore.bmp");
 	gameOver = ImageManager::GetSingleton()->FindImage("Image/Title/ScoreGameOver.bmp");
-
+	gameClear = ImageManager::GetSingleton()->FindImage("Image/Title/GameClear.bmp");
 	playerTank = new PlayerTank;
 
 	enemyTanks = new EnemyTankManager;
@@ -35,8 +35,10 @@ HRESULT TotalScene::Init()
 	test = new BattleScene;
 
 	gameOverPos = WIN_SIZE_Y + (gameOver->GetHeight() / 2);
+	gameClearPos = WIN_SIZE_Y + (gameClear->GetHeight() / 2);
 	nextSceneTime = 0;
 	sceneChangeTime = 3;
+	stageNum = ScoreManager::GetSingleton()->GetIsStage();
 	return S_OK;
 }
 
@@ -49,29 +51,49 @@ void TotalScene::Update()
 	totalDestroy = ScoreManager::GetSingleton()->GetTotalDestroy();
 	totalScore = ScoreManager::GetSingleton()->GetTotalScore();
 	prevTotalScore = ScoreManager::GetSingleton()->GetPrevTotalScore();
+
+
 	nextSceneTime += TimerManager::GetSingleton()->GetDeltaTime();
-
-	
-	if (nextSceneTime > sceneChangeTime + 4) {
-		if (ScoreManager::GetSingleton()->GetPlayerIsDead()) {
-			SceneManager::GetSingleton()->ChangeScene("TitleScene");
+	if (ScoreManager::GetSingleton()->GetPlayerIsDead()) {	// 플레이어 사망시
+		if (nextSceneTime > sceneChangeTime) {
+			if (gameOverPos > WIN_SIZE_Y / 2) {
+				gameOverPos -= 80 * TimerManager::GetSingleton()->GetDeltaTime();
+			}
+		}
+		if (nextSceneTime > sceneChangeTime + 3) {
+			if (ScoreManager::GetSingleton()->GetPlayerIsDead()) {
+				ScoreManager::GetSingleton()->SetStage(1);
+				SceneManager::GetSingleton()->ChangeScene("TitleScene");
+			}
 		}
 	}
-	else if (nextSceneTime > sceneChangeTime) {
-		if (!ScoreManager::GetSingleton()->GetPlayerIsDead()) {
-			SceneManager::GetSingleton()->ChangeScene("BattleScene");
+	else if (!ScoreManager::GetSingleton()->GetPlayerIsDead()) {
+		if (stageNum != 11) {
+			if (nextSceneTime > sceneChangeTime) {		// 스테이지 클리어후 다음스테이지 전환
+				if (!ScoreManager::GetSingleton()->GetPlayerIsDead()) {
+					SceneManager::GetSingleton()->ChangeScene("BattleScene");
+				}
+			}
 		}
-		if (gameOverPos > WIN_SIZE_Y / 2) {
-			gameOverPos -= 80 * TimerManager::GetSingleton()->GetDeltaTime();
+		else {	// 10스테이지 클리어 했을 경우
+			if (nextSceneTime > sceneChangeTime) {
+				if (gameClearPos > WIN_SIZE_Y / 2) {
+					gameClearPos -= 80 * TimerManager::GetSingleton()->GetDeltaTime();
+				}
+			}
+			if (nextSceneTime > sceneChangeTime + 4) {	
+				ScoreManager::GetSingleton()->SetStage(1);
+				SceneManager::GetSingleton()->ChangeScene("TitleScene");
+			}
 		}
 	}
-
 }
 
 void TotalScene::Render(HDC hdc)
 {
 	if (nextSceneTime > sceneChangeTime) {
 		gameOver->Render(hdc, WIN_SIZE_X / 2, gameOverPos);
+		gameClear->Render(hdc, WIN_SIZE_X / 2, gameClearPos);
 		return;
 	}
 

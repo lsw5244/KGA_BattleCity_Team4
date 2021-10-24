@@ -45,7 +45,7 @@ public:
 	inline bool GetPlayerIsDead() { return playerIsDead; }
 	
 	inline void SetStage(int stageNum) { this->isStage = stageNum; }
-	inline void AddIsStage() { if(isStage<10)this->isStage++; }
+	inline void AddIsStage() { if(isStage<11)this->isStage++; }
 	inline int GetIsStage() { return isStage; }
 
 	inline void SetTileInfo(TILE_INFO tileInfo, int y, int x) { this->tileInfo[y][x] = tileInfo; }

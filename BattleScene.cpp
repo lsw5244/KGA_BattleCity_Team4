@@ -174,10 +174,13 @@ void BattleScene::Render(HDC hdc)
                 grayBackGround1->Render(hdc, WIN_SIZE_X / 2, grayPosY1);
                 grayBackGround2->Render(hdc, WIN_SIZE_X / 2, grayPosY2);
                 stage->Render(hdc, (WIN_SIZE_X / 2) - 10, (WIN_SIZE_Y / 2));
-                if (stageNum < 4) {
+                if (stageNum < 5) {
                     stageNumImage->Render(hdc, (WIN_SIZE_X / 2) + 17, (WIN_SIZE_Y / 2), stageNum, 0);
-                } else {
+                } else if(stageNum < 10){
                     stageNumImage->Render(hdc, (WIN_SIZE_X / 2) + 17, (WIN_SIZE_Y / 2), stageNum - 5, 1);
+                } else {
+                    stageNumImage->Render(hdc, (WIN_SIZE_X / 2) + 17, (WIN_SIZE_Y / 2), 1, 0);
+                    stageNumImage->Render(hdc, (WIN_SIZE_X / 2) + 24, (WIN_SIZE_Y / 2), 0, 0);
                 }
             }
             else {

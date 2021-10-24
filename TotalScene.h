@@ -24,8 +24,14 @@ private:
 	Image* gameOver;
 	float gameOverPos;
 	
+	Image* gameClear;
+	float gameClearPos;
+
+
 	BattleScene* test;
 	
+	int stageNum;
+
 	int totalNormal;
 	int totalFastMove;
 	int totalFastShoot;
