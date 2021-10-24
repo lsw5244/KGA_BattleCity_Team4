@@ -341,13 +341,12 @@ void StageManager::Update()
 		enemyTankManager->SetVecEnemyTank();
 		playerTank->SetVecEnemyTank(enemyTankManager->GetVecEnemyTanks());
 		spawnNum++;
-		cout << spawnNum << endl;
 		spawnDelay = 0;
 		spawnCheck = false;
 	}
 
 
-	if (spawnNum >= 1 && enemyTankManager->GetEnemyTankVecSize() == 0 && winCheck) {
+	if (spawnNum >= 20 && enemyTankManager->GetEnemyTankVecSize() == 0 && winCheck) {
 		deadCheck = false;
 		for (int y = 0; y < TILE_COUNT; y++) {
 			for (int x = 0; x < TILE_COUNT; x++) {
