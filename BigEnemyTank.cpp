@@ -16,6 +16,7 @@ HRESULT BigEnemyTank::Init()
 	moveSpeed = 50;
 	hp = 4;
 	renderChange = true;
+	pointImage = ImageManager::GetSingleton()->FindImage("Image/Icon/Point..bmp");
 	return S_OK;
 
 }

@@ -16,6 +16,7 @@ HRESULT FastShootEnemyTank::Init()
 	}
 	moveSpeed = 50;
 	hp = 1;
+	pointImage = ImageManager::GetSingleton()->FindImage("Image/Icon/Point..bmp");
 	return S_OK;
 }
 
