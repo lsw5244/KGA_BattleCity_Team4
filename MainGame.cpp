@@ -29,10 +29,18 @@ HRESULT MainGame::Init()
 		ImageManager::GetSingleton()->AddImage("Image/Icon/Icon_Enemy.bmp", 8, 8, true, RGB(255, 0, 255));
 		ImageManager::GetSingleton()->AddImage("Image/Icon/player1Life.bmp", 16, 16, true, RGB(255, 0, 255));
 		ImageManager::GetSingleton()->AddImage("Image/Icon/Point.bmp", 80, 16, 5, 1, true, RGB(255, 0, 255));
+		ImageManager::GetSingleton()->AddImage("Image/Icon/Arrow.bmp", 8, 7, true, RGB(255, 0, 255));
 		ImageManager::GetSingleton()->AddImage("Image/item/items.bmp", 96, 16, 6, 1, true, RGB(255, 0, 255));
 		ImageManager::GetSingleton()->AddImage("Image/Text/Number.bmp", 40, 14, 5, 2, true, RGB(255, 0, 255));
 		ImageManager::GetSingleton()->AddImage("Image/Text/Number1.bmp", 40, 14, 5, 2, true, RGB(255, 0, 255));
 		ImageManager::GetSingleton()->AddImage("Image/Text/Stage.bmp", 37, 7, 1, 1, true, RGB(255, 0, 255));
+		ImageManager::GetSingleton()->AddImage("Image/Text/Number_w.bmp", 40, 14, 5, 2, true, RGB(255, 0, 255));
+		ImageManager::GetSingleton()->AddImage("Image/Text/HISocre.bmp", 140, 7, true, RGB(255, 0, 255));
+		ImageManager::GetSingleton()->AddImage("Image/Text/Player1.bmp", 63, 7, true, RGB(255, 0, 255));
+		ImageManager::GetSingleton()->AddImage("Image/Text/PTS.bmp", 22, 7, true, RGB(255, 0, 255));
+		ImageManager::GetSingleton()->AddImage("Image/Text/TotalScore.bmp", 110, 10, true, RGB(255, 0, 255));
+		ImageManager::GetSingleton()->AddImage("Image/Text/ScoreNumber.bmp", 40, 14, 5, 2, true, RGB(255, 0, 255));
+		ImageManager::GetSingleton()->AddImage("Image/Text/Stage_w.bmp", 37, 7, true, RGB(255, 0, 255));
 		ImageManager::GetSingleton()->AddImage("Image/loading.bmp", WIN_SIZE_X, WIN_SIZE_Y);
 		ImageManager::GetSingleton()->AddImage("Image/Title/background.bmp", 256, 224);
 		ImageManager::GetSingleton()->AddImage("Image/Title/Title.bmp", 256, 224);
@@ -40,6 +48,7 @@ HRESULT MainGame::Init()
 		ImageManager::GetSingleton()->AddImage("Image/Title/BattleGameOver.bmp", 32, 15, true, RGB(255, 0, 255));
 		ImageManager::GetSingleton()->AddImage("Image/Title/GrayBackGround.bmp", 256, 112, true, RGB(255, 0, 255));
 		ImageManager::GetSingleton()->AddImage("Image/Title/ScoreGameOver.bmp", 124, 80, true, RGB(255, 0, 255));
+		ImageManager::GetSingleton()->AddImage("Image/Enemy/Enemy.bmp", 128, 96, 8, 6, true, RGB(255, 0, 255));
 	}
 	// 이미지 초기화
 	TimerManager::GetSingleton()->Init();

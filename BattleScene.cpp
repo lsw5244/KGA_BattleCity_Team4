@@ -30,7 +30,6 @@ HRESULT BattleScene::Init()
     battleBackGround = ImageManager::GetSingleton()->FindImage("Image/background.bmp");
     // 배틀신 배경 불러오기
 
-
     grayBackGround1 = ImageManager::GetSingleton()->FindImage("Image/Title/GrayBackGround.bmp");
     grayBackGround2 = ImageManager::GetSingleton()->FindImage("Image/Title/GrayBackGround.bmp");
     stageNumImage = ImageManager::GetSingleton()->FindImage("Image/Text/Number1.bmp");

@@ -43,6 +43,15 @@ void StageManager::Init()
 	spawnNum = 0;
 	pos.x = 16 + (8);
 	pos.y = 16;
+
+	gameOver = ImageManager::GetSingleton()->FindImage("Image/Title/BattleGameOver.bmp");
+	gameOverCheck = false;
+	gameOverTime = 0.0f;
+	gameOverPos = WIN_SIZE_Y + (gameOver->GetHeight() / 2);
+
+	winCheck = true;
+	deadCheck = true;
+
 	{
 		enemyTankSpawnInfo[0][0] = EnemyTankSpawnInfo::NormalTankSpawm;
 		enemyTankSpawnInfo[0][1] = EnemyTankSpawnInfo::NormalTankSpawm;
@@ -146,7 +155,8 @@ void StageManager::Update()
 	}
 
 
-	if (spawnNum >= 20 && enemyTankManager->GetEnemyTankVecSize() == 0) {
+	if (spawnNum >= 20 && enemyTankManager->GetEnemyTankVecSize() == 0 && winCheck) {
+		deadCheck = false;
 		for (int y = 0; y < TILE_COUNT; y++) {
 			for (int x = 0; x < TILE_COUNT; x++) {
 				ScoreManager::GetSingleton()->SetTileInfo(tileInfo[y][x], y, x);
@@ -158,12 +168,24 @@ void StageManager::Update()
 		ScoreManager::GetSingleton()->SetPlayerLife(playerTank->GetLife());
 		SceneManager::GetSingleton()->ChangeScene("TotalScene");
 	}
-	if (playerTank->GetLife() == 0 || tileInfo[25][12].terrain == Terrain::BaseDes) {
-		ScoreManager::GetSingleton()->SetPlayerLevel(0);
-		ScoreManager::GetSingleton()->SetPlayerLife(2);
+	if (playerTank->GetLife() == 0 || tileInfo[25][12].terrain == Terrain::BaseDes && deadCheck) {
+		winCheck = false;
+		if (gameOverPos > (WIN_SIZE_Y / 2)) {
+			gameOverPos -= 70 * TimerManager::GetSingleton()->GetDeltaTime();
+		} else {
+			gameOverPos = (WIN_SIZE_Y / 2);
+			gameOverTime += TimerManager::GetSingleton()->GetDeltaTime();
+			if(gameOverTime > 2.0f) gameOverCheck = true;
 
-		ScoreManager::GetSingleton()->SetPlayerIsDead(true);
-		SceneManager::GetSingleton()->ChangeScene("TotalScene");
+		}
+		if (gameOverCheck) {
+			ScoreManager::GetSingleton()->SetPlayerLevel(0);
+			ScoreManager::GetSingleton()->SetPlayerLife(2);
+			ScoreManager::GetSingleton()->SetStage(1);
+
+			ScoreManager::GetSingleton()->SetPlayerIsDead(true);
+			SceneManager::GetSingleton()->ChangeScene("TotalScene");
+		}
 	}
 }
 
@@ -173,6 +195,7 @@ void StageManager::Render(HDC hdc)
 	{
 		enemySpawnEffect->Render(hdc, pos.x, pos.y, spawnEffectFrame, 0);
 	}
+	gameOver->Render(hdc, (WIN_SIZE_X / 2)-7, gameOverPos);
 }
 
 void StageManager::SpawnEffect()

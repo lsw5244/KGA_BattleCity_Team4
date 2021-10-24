@@ -26,7 +26,6 @@ private:
 	Image* battleBackGround;
 	// 배경 이미지
 	Image* backGround;
-	
 
 	Image* grayBackGround1;
 	Image* grayBackGround2;

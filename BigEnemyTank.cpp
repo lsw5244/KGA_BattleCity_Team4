@@ -17,7 +17,6 @@ HRESULT BigEnemyTank::Init()
 	hp = 4;
 	renderChange = true;
 	return S_OK;
-
 }
 
 void BigEnemyTank::Update()

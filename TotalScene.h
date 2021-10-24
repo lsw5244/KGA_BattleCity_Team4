@@ -18,10 +18,13 @@ private:
 	Image* totalScoreWord;
 	Image* enemyTankImage;
 	Image* arrow;
-
 	PlayerTank* playerTank;
 	EnemyTankManager* enemyTanks;
 
+	Image* gameOver;
+	float gameOverPos;
+	
+	
 	BattleScene* test;
 	
 	int totalNormal;
@@ -33,6 +36,7 @@ private:
 	int prevTotalScore;
 
 	float nextSceneTime;
+	float sceneChangeTime;
 
 	inline void SetPlayerTank(PlayerTank& playerTank) { this->playerTank = &playerTank; }
 	inline void SetEnemyTank(EnemyTankManager& enemyTank) { this->enemyTanks = &enemyTank; }

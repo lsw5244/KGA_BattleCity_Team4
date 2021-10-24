@@ -13,35 +13,20 @@ HRESULT TotalScene::Init()
 	SetWindowSize(300, 20, WIN_SIZE_X * 4, WIN_SIZE_Y * 4);
 	windowX = WIN_SIZE_X, windowY = WIN_SIZE_Y;
 
-	ImageManager::GetSingleton()->AddImage("Image/Text/HISocre.bmp", 140, 7, true, RGB(255, 0, 255));
 	hiScore = ImageManager::GetSingleton()->FindImage("Image/Text/HISocre.bmp");
 
 	for (int i = 0; i < 10; i++)
 	{
-		ImageManager::GetSingleton()->AddImage("Image/Text/Number_w.bmp", 40, 14, 5, 2, true, RGB(255, 0, 255));
 		wNumberImage[i] = ImageManager::GetSingleton()->FindImage("Image/Text/Number_w.bmp");
 	}
-
-	ImageManager::GetSingleton()->AddImage("Image/Text/Player1.bmp", 63, 7, true, RGB(255, 0, 255));
 	player1 = ImageManager::GetSingleton()->FindImage("Image/Text/Player1.bmp");
-
-	ImageManager::GetSingleton()->AddImage("Image/Text/PTS.bmp", 22, 7, true, RGB(255, 0, 255));
 	points = ImageManager::GetSingleton()->FindImage("Image/Text/PTS.bmp");
-
-	ImageManager::GetSingleton()->AddImage("Image/Text/ScoreNumber.bmp", 40, 14, 5, 2, true, RGB(255, 0, 255));
 	scoreNumber = ImageManager::GetSingleton()->FindImage("Image/Text/ScoreNumber.bmp");
-
-	ImageManager::GetSingleton()->AddImage("Image/Text/Stage_w.bmp", 37, 7, true, RGB(255, 0, 255));
 	wStage = ImageManager::GetSingleton()->FindImage("Image/Text/Stage_w.bmp");
-
-	ImageManager::GetSingleton()->AddImage("Image/Enemy/Enemy.bmp", 128, 96, 8, 6, true, RGB(255, 0, 255));
 	enemyTankImage = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy.bmp");
-
-	ImageManager::GetSingleton()->AddImage("Image/Icon/Arrow.bmp", 8, 7, true, RGB(255, 0, 255));
 	arrow = ImageManager::GetSingleton()->FindImage("Image/Icon/Arrow.bmp");
-
-	ImageManager::GetSingleton()->AddImage("Image/Text/TotalScore.bmp", 110, 10, true, RGB(255, 0, 255));
 	totalScoreWord = ImageManager::GetSingleton()->FindImage("Image/Text/TotalScore.bmp");
+	gameOver = ImageManager::GetSingleton()->FindImage("Image/Title/ScoreGameOver.bmp");
 
 	playerTank = new PlayerTank;
 
@@ -49,7 +34,9 @@ HRESULT TotalScene::Init()
 
 	test = new BattleScene;
 
+	gameOverPos = WIN_SIZE_Y + (gameOver->GetHeight() / 2);
 	nextSceneTime = 0;
+	sceneChangeTime = 3;
 	return S_OK;
 }
 
@@ -62,13 +49,18 @@ void TotalScene::Update()
 	totalDestroy = ScoreManager::GetSingleton()->GetTotalDestroy();
 	totalScore = ScoreManager::GetSingleton()->GetTotalScore();
 	prevTotalScore = ScoreManager::GetSingleton()->GetPrevTotalScore();
-	nextSceneTime += TimerManager::GetSingleton()->GetDeltaTime();
 
-	if (nextSceneTime > 3.0f) {
+	nextSceneTime += TimerManager::GetSingleton()->GetDeltaTime();
+	if (nextSceneTime > sceneChangeTime + 4) {
 		if (ScoreManager::GetSingleton()->GetPlayerIsDead()) {
 			SceneManager::GetSingleton()->ChangeScene("TitleScene");
 		} else {
 			SceneManager::GetSingleton()->ChangeScene("BattleScene");
+		}
+	}
+	else if (nextSceneTime > sceneChangeTime) {
+		if (gameOverPos > WIN_SIZE_Y / 2) {
+			gameOverPos -= 80 * TimerManager::GetSingleton()->GetDeltaTime();
 		}
 	}
 
@@ -76,6 +68,11 @@ void TotalScene::Update()
 
 void TotalScene::Render(HDC hdc)
 {
+	if (nextSceneTime > sceneChangeTime) {
+		gameOver->Render(hdc, WIN_SIZE_X / 2, gameOverPos);
+		return;
+	}
+
 	hiScore->Render(hdc, WIN_SIZE_X / 2, 20);	//고정
 	wStage->Render(hdc, WIN_SIZE_X / 2 - 13, 36);	//고정
 	for (int i = 0; i < 10; i++)

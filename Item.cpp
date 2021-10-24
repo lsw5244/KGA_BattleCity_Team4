@@ -27,7 +27,6 @@ HRESULT Item::Init(PlayerTank& playerTank, EnemyTankManager& enemyTankManager, I
 	pos.x = 16 + ((posX + 1) * 8);
 	pos.y = 8 + ((posY + 1) * 8);
 
-	itemNum = 1;
 	switch (itemNum) {
 	case 0:
 		itemState = ItemState::Barrier;
