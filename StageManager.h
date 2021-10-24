@@ -23,7 +23,7 @@ private:
 
 	TILE_INFO(*tileInfo)[TILE_COUNT];
 	POINTFLOAT pos;
-	EnemyTankSpawnInfo enemyTankSpawnInfo[5][20];
+	EnemyTankSpawnInfo enemyTankSpawnInfo[10][20];
 	int stageNum;
 	int spawnNum;
 	int spawnPos;

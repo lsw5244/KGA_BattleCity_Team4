@@ -95,7 +95,7 @@ void TilemapToolScene::SetTerrain(TILE_INFO* tileInfo, int x, int y)
 
 HRESULT TilemapToolScene::Init()
 {
-    SetWindowSize(20, 20, TILEMAPTOOL_SIZE_X, TILEMAPTOOL_SIZE_Y);
+    SetWindowSize(20, 20, TILEMAPTOOL_SIZE_X*3, TILEMAPTOOL_SIZE_Y*3);
     windowX = TILEMAPTOOL_SIZE_X;
     windowY = TILEMAPTOOL_SIZE_Y;
     sampleImage = ImageManager::GetSingleton()->FindImage("Image/SamlpTile.bmp");

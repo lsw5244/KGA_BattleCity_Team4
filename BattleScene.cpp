@@ -13,10 +13,6 @@
 #include "ScoreManager.h"
 
 #define POS 8
-#define NormalTank enemyTankFactory[0]->CreateEnemyTank()
-#define FastTank enemyTankFactory[1]->CreateEnemyTank()
-#define ShootTank enemyTankFactory[2]->CreateEnemyTank()
-#define BigTank enemyTankFactory[3]->CreateEnemyTank()
 
 HRESULT BattleScene::Init()
 {

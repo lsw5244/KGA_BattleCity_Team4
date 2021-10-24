@@ -62,7 +62,7 @@ HRESULT MainGame::Init()
 
 	//SceneManager::GetSingleton()->AddLoadingScene("LoadingScene", new LoadingScene());
 
-	SceneManager::GetSingleton()->ChangeScene("TitleScene");
+	SceneManager::GetSingleton()->ChangeScene("TilemapToolScene");
 
 
 
