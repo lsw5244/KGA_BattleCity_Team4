@@ -52,6 +52,9 @@ protected:
 	float attackDelayTime = 0.0f;
 	int attackDelay = 1;
 	TankType type = TankType::Enemy;
+
+	Image* pointImage;
+	float pointRenderTime = 0.0f;
 public:
 	inline TankInfo GetTankInfo() { return this->tankinfo; }
 	inline void SetItemManager(ItemManager* itemManager) { this->itemManager = itemManager; }
