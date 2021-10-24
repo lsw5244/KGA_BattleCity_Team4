@@ -144,7 +144,7 @@ void StageManager::Update()
 		spawnCheck = false;
 	}
 
-	if (spawnNum >= 1 && enemyTankManager->GetEnemyTankVecSize() == 0) {
+	if (spawnNum >= 5 && enemyTankManager->GetEnemyTankVecSize() == 0) {
 
 		ScoreManager::GetSingleton()->SetPlayerIsDead(false);
 		ScoreManager::GetSingleton()->AddIsStage();

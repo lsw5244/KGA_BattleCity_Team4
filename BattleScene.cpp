@@ -39,7 +39,7 @@ HRESULT BattleScene::Init()
         ImageManager::GetSingleton()->AddImage("Image/item/items.bmp", 96, 16, 6, 1, true, RGB(255, 0, 255));
         ImageManager::GetSingleton()->AddImage("Image/Text/Number.bmp", 40, 14, 5, 2, true, RGB(255, 0, 255));
         ImageManager::GetSingleton()->AddImage("Image/loading.bmp", WIN_SIZE_X, WIN_SIZE_Y);
-        ImageManager::GetSingleton()->AddImage("Image/Icon/Point..bmp", 40, 14, 5, 2, true, RGB(255, 0, 255));
+        ImageManager::GetSingleton()->AddImage("Image/Icon/Point..bmp", 80, 16, 5, 1, true, RGB(255, 0, 255));
     }
     //이미지 초기화
 
