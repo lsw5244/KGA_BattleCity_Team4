@@ -37,6 +37,9 @@ HRESULT BattleScene::Init()
     grayPosY1 = ( 0 - (grayBackGround1->GetHeight() / 2));
     grayPosY2 = (WIN_SIZE_Y) + (grayBackGround2->GetHeight() / 2);
 
+    waterCheck = false;
+    waterTime = 0.0f;
+
     stageNum = ScoreManager::GetSingleton()->GetIsStage();
     Load(stageNum);
     
@@ -125,6 +128,12 @@ void BattleScene::Update()
         return;
     }
 
+    waterTime += TimerManager::GetSingleton()->GetDeltaTime();
+    if (waterTime >= 0.4f) {
+        waterTime = 0.0f;
+        waterCheck = !waterCheck;
+    }
+    
     enemyTankManager->Update();
     playerTank->Update();
     ammoManager->Update();
@@ -209,11 +218,21 @@ void BattleScene::Render(HDC hdc)
                 for (int tileNumX = 0; tileNumX < 2; tileNumX++) {
                     if (tileInfo[i][j].isDes[tileNumY][tileNumX]) {
                         if (tileInfo[i][j].terrain != Terrain::Forest)
-                        sampleImage->Render(hdc,
-                            tileInfo[i][j].rc[tileNumY][tileNumX].left + (TILE_SIZE / 2),
-                            tileInfo[i][j].rc[tileNumY][tileNumX].top + (TILE_SIZE / 2),
-                            tileInfo[i][j].frameX[tileNumX],
-                            tileInfo[i][j].frameY[tileNumY]);
+                            sampleImage->Render(hdc,
+                                tileInfo[i][j].rc[tileNumY][tileNumX].left + (TILE_SIZE / 2),
+                                tileInfo[i][j].rc[tileNumY][tileNumX].top + (TILE_SIZE / 2),
+                                tileInfo[i][j].frameX[tileNumX],
+                                tileInfo[i][j].frameY[tileNumY]);
+                        if (tileInfo[i][j].terrain == Terrain::Water) {
+                            if (waterCheck) {
+                                tileInfo[i][j].frameX[tileNumX] = 0 + tileNumX;
+                                tileInfo[i][j].frameY[tileNumY] = 12 + tileNumY;
+                            }
+                            else {
+                                tileInfo[i][j].frameX[tileNumX] = 4 + tileNumX;
+                                tileInfo[i][j].frameY[tileNumY] = 12 + tileNumY;
+                            }
+                        }
                         if (KeyManager::GetSingleton()->IsStayKeyDown('0') && tileInfo[i][j].terrain != Terrain::Empty) {
                             Rectangle(hdc,
                                 tileInfo[i][j].selectRc.left,

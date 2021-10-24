@@ -38,6 +38,9 @@ private:
 	float grayPosY1;
 	float grayPosY2;
 
+	bool waterCheck;
+	float waterTime;
+
 	ItemManager* itemManager;
 
 	StageManager* stageManager;
