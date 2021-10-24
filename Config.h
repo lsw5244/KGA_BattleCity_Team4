@@ -33,6 +33,8 @@ using namespace std;
 #define TANK_COLLIDER_DEBUG '8'
 #define SUPER_PLAYER_MODE '1'
 
+#define POINT_RENDER_TIME 0.1f
+
 enum class MoveDir { Left, Right, Up, Down };
 enum class TankType { Player, Enemy };
 enum class EnemyTankType { Normal, FastMove, QuickFire, Big, iNormal, iFastMove, iQuickFire, iBig, End };
