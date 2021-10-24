@@ -49,16 +49,18 @@ void TotalScene::Update()
 	totalDestroy = ScoreManager::GetSingleton()->GetTotalDestroy();
 	totalScore = ScoreManager::GetSingleton()->GetTotalScore();
 	prevTotalScore = ScoreManager::GetSingleton()->GetPrevTotalScore();
-
 	nextSceneTime += TimerManager::GetSingleton()->GetDeltaTime();
+
+	
 	if (nextSceneTime > sceneChangeTime + 4) {
 		if (ScoreManager::GetSingleton()->GetPlayerIsDead()) {
 			SceneManager::GetSingleton()->ChangeScene("TitleScene");
-		} else {
-			SceneManager::GetSingleton()->ChangeScene("BattleScene");
 		}
 	}
 	else if (nextSceneTime > sceneChangeTime) {
+		if (!ScoreManager::GetSingleton()->GetPlayerIsDead()) {
+			SceneManager::GetSingleton()->ChangeScene("BattleScene");
+		}
 		if (gameOverPos > WIN_SIZE_Y / 2) {
 			gameOverPos -= 80 * TimerManager::GetSingleton()->GetDeltaTime();
 		}

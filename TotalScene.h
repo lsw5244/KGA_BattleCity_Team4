@@ -24,7 +24,6 @@ private:
 	Image* gameOver;
 	float gameOverPos;
 	
-	
 	BattleScene* test;
 	
 	int totalNormal;
