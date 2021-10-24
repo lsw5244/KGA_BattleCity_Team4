@@ -226,7 +226,7 @@ int EnemyTanks::CurrFrame(Image enemyTank, int* elapsedCount, int setCurr)
 
 tuple<MoveDir, bool> EnemyTanks::AutoMove(MoveDir moveDir, POINTFLOAT pos)
 {
-    int randomValue = rand() % 3;
+    int randomValue = rand() % 7;
     RECT rc;
     RECT bufferRc1 = shape;
     RECT bufferRc2 = shape;
@@ -344,7 +344,7 @@ tuple<MoveDir, bool> EnemyTanks::AutoMove(MoveDir moveDir, POINTFLOAT pos)
 
     if (check1 || check2) {
         if (moveDir == MoveDir::Up || moveDir == MoveDir::Down) {
-            if (randomValue == 2 && check3) {
+            if (randomValue >= 2 && check3) {
                 return tuple<MoveDir, bool>(moveDir, true);
             }
 
@@ -362,7 +362,7 @@ tuple<MoveDir, bool> EnemyTanks::AutoMove(MoveDir moveDir, POINTFLOAT pos)
             }
         }
         else if (moveDir == MoveDir::Right || moveDir == MoveDir::Left) {
-            if (randomValue == 2 && check3) {
+            if (randomValue >= 2 && check3) {
                 return tuple<MoveDir, bool>(moveDir, true);
             }
 
@@ -373,6 +373,9 @@ tuple<MoveDir, bool> EnemyTanks::AutoMove(MoveDir moveDir, POINTFLOAT pos)
                 else if (randomValue == 1) {
                     return tuple<MoveDir, bool>(MoveDir::Down, false);
                 }
+                else {
+                    return tuple<MoveDir, bool>(moveDir, false);
+                }
             }
             else {
                 if (check1) return tuple<MoveDir, bool>(MoveDir::Up, false);
@@ -382,13 +385,13 @@ tuple<MoveDir, bool> EnemyTanks::AutoMove(MoveDir moveDir, POINTFLOAT pos)
     }
     else {
         if (!check3) {
-            if (moveDir == MoveDir::Up) return tuple<MoveDir, bool>(MoveDir::Down, false);
-            if (moveDir == MoveDir::Down) return tuple<MoveDir, bool>(MoveDir::Up, false);
+            if (moveDir == MoveDir::Up && randomValue >= 3) return tuple<MoveDir, bool>(MoveDir::Down, false);
+            if (moveDir == MoveDir::Down && randomValue >= 3) return tuple<MoveDir, bool>(MoveDir::Up, false);
         }
 
         if (!check3) {
-            if (moveDir == MoveDir::Right) return tuple<MoveDir, bool>(MoveDir::Left, false);
-            if (moveDir == MoveDir::Left) return tuple<MoveDir, bool>(MoveDir::Right, false);
+            if (moveDir == MoveDir::Right && randomValue >= 3) return tuple<MoveDir, bool>(MoveDir::Left, false);
+            if (moveDir == MoveDir::Left && randomValue >= 3) return tuple<MoveDir, bool>(MoveDir::Right, false);
         }
     }
     return tuple<MoveDir, bool>(moveDir, false);
@@ -397,6 +400,7 @@ tuple<MoveDir, bool> EnemyTanks::AutoMove(MoveDir moveDir, POINTFLOAT pos)
 HRESULT EnemyTanks::TankInit(int posX, bool item)
 {
     destructionEffect1 = ImageManager::GetSingleton()->FindImage("Image/Effect/EnemyTankBoom.bmp");
+    pointImage = ImageManager::GetSingleton()->FindImage("Image/Icon/Point.bmp");
     isItemDes = false;
     destructionEffectTime = 0;
     timeStop = false;

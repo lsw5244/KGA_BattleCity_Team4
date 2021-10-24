@@ -43,6 +43,15 @@ void StageManager::Init()
 	spawnNum = 0;
 	pos.x = 16 + (8);
 	pos.y = 16;
+
+	gameOver = ImageManager::GetSingleton()->FindImage("Image/Title/BattleGameOver.bmp");
+	gameOverCheck = false;
+	gameOverTime = 0.0f;
+	gameOverPos = WIN_SIZE_Y + (gameOver->GetHeight() / 2);
+
+	winCheck = true;
+	deadCheck = true;
+
 	{
 		enemyTankSpawnInfo[0][0] = EnemyTankSpawnInfo::NormalTankSpawm;
 		enemyTankSpawnInfo[0][1] = EnemyTankSpawnInfo::NormalTankSpawm;
@@ -65,7 +74,7 @@ void StageManager::Init()
 		enemyTankSpawnInfo[0][18] = EnemyTankSpawnInfo::FastTankSpawm;
 		enemyTankSpawnInfo[0][19] = EnemyTankSpawnInfo::FastTankSpawm;
 	}
-	// 1½ºÅ×ÀÌÁö ÃÊ±âÈ­
+	// 1ìŠ¤í…Œì´ì§€ ì´ˆê¸°í™”
 
 	{
 		enemyTankSpawnInfo[1][0] = EnemyTankSpawnInfo::BigTankSpawm;
@@ -89,7 +98,7 @@ void StageManager::Init()
 		enemyTankSpawnInfo[1][18] = EnemyTankSpawnInfo::NormalTankSpawm;
 		enemyTankSpawnInfo[1][19] = EnemyTankSpawnInfo::NormalTankSpawm;
 	}
-	// 2½ºÅ×ÀÌÁö ÃÊ±âÈ­
+	// 2ìŠ¤í…Œì´ì§€ ì´ˆê¸°í™”
 }
 
 void StageManager::Update()
@@ -115,7 +124,7 @@ void StageManager::Update()
 		spawnEffectTime += TimerManager::GetSingleton()->GetDeltaTime();
 		SpawnEffect();
 	}
-
+	
 	if (spawnCheck) {
 		switch (enemyTankSpawnInfo[stageNum-1][spawnNum]) {
 		case EnemyTankSpawnInfo::NormalTankSpawm:
@@ -140,20 +149,43 @@ void StageManager::Update()
 		enemyTankManager->SetVecEnemyTank();
 		playerTank->SetVecEnemyTank(enemyTankManager->GetVecEnemyTanks());
 		spawnNum++;
+		cout << spawnNum << endl;
 		spawnDelay = 0;
 		spawnCheck = false;
 	}
 
-	if (spawnNum >= 1 && enemyTankManager->GetEnemyTankVecSize() == 0) {
 
+	if (spawnNum >= 1 && enemyTankManager->GetEnemyTankVecSize() == 0 && winCheck) {
+		deadCheck = false;
+		for (int y = 0; y < TILE_COUNT; y++) {
+			for (int x = 0; x < TILE_COUNT; x++) {
+				ScoreManager::GetSingleton()->SetTileInfo(tileInfo[y][x], y, x);
+			}
+		}
 		ScoreManager::GetSingleton()->SetPlayerIsDead(false);
 		ScoreManager::GetSingleton()->AddIsStage();
+		ScoreManager::GetSingleton()->SetPlayerLevel(playerTank->GetLevel());
+		ScoreManager::GetSingleton()->SetPlayerLife(playerTank->GetLife());
 		SceneManager::GetSingleton()->ChangeScene("TotalScene");
 	}
-	if (playerTank->GetLife() == 0 || tileInfo[25][12].terrain == Terrain::BaseDes) {
-		ScoreManager::GetSingleton()->SetPlayerIsDead(true);
-		SceneManager::GetSingleton()->ChangeScene("TotalScene");
-		
+	if (playerTank->GetLife() == 0 || tileInfo[25][12].terrain == Terrain::BaseDes && deadCheck) {
+		winCheck = false;
+		if (gameOverPos > (WIN_SIZE_Y / 2)) {
+			gameOverPos -= 70 * TimerManager::GetSingleton()->GetDeltaTime();
+		} else {
+			gameOverPos = (WIN_SIZE_Y / 2);
+			gameOverTime += TimerManager::GetSingleton()->GetDeltaTime();
+			if(gameOverTime > 2.0f) gameOverCheck = true;
+
+		}
+		if (gameOverCheck) {
+			ScoreManager::GetSingleton()->SetPlayerLevel(0);
+			ScoreManager::GetSingleton()->SetPlayerLife(2);
+			ScoreManager::GetSingleton()->SetStage(1);
+
+			ScoreManager::GetSingleton()->SetPlayerIsDead(true);
+			SceneManager::GetSingleton()->ChangeScene("TotalScene");
+		}
 	}
 }
 
@@ -163,6 +195,7 @@ void StageManager::Render(HDC hdc)
 	{
 		enemySpawnEffect->Render(hdc, pos.x, pos.y, spawnEffectFrame, 0);
 	}
+	gameOver->Render(hdc, (WIN_SIZE_X / 2)-7, gameOverPos);
 }
 
 void StageManager::SpawnEffect()

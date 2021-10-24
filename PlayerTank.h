@@ -43,7 +43,7 @@ private:
 	int maxAmmo;
 
 	bool fastAmmoReady;
-
+	bool loadDataCheck;
 	void SetFrame();
 	bool SpawnEffect();
 	bool ShieldEffect();
@@ -57,16 +57,19 @@ public:
 	void Release();
 
 	void LevelUp();
+	inline int GetLevel() { return this->Level; }
+	inline void LifeUp() { if(life < 10) this->life++; }
+	inline int GetLife() { return this->life; }
+	
 	void PlayerTankReset();
+	void LoadData();
 	void SetData(TILE_INFO(*tileInfo)[TILE_COUNT], AmmoManager* mgr, ItemManager* itemManager);
 
-	inline void LifeUp() { if(life < 10) this->life++; }
 	inline void ActiveBarrier() { this->shieldEffectTime = 0.0f; }
 	inline void Setisdead(bool isdead) { if(shieldEffectTime >= 10.0f)this->isdead = isdead;}
 
 	inline void SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank) { this->vecEnemyTank = vecEnemyTank; }
 	inline RECT* GetRect() { return &shape; }
-	inline int GetLife() { return life; }
 	inline void SetFastAmmoReady(bool ready) { fastAmmoReady = ready; }
 
 };

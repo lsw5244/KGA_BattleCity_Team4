@@ -23,7 +23,6 @@ void ScoreManager::Update(PlayerTank& playerTank, EnemyTankManager& enemyTank)
 	totalFastShoot = enemyTank.GetTotalFastShoot();
 	totalBigTank = enemyTank.GetTotalBigTank();
 	itemBonusPoint = enemyTank.GetItemBonusPoint();
-	std::cout << isStage << endl;
 
 	if (KeyManager::GetSingleton()->IsOnceKeyDown('M'))
 	{

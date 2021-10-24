@@ -5,6 +5,7 @@ class PlayerStatus;
 class PlayerTank;
 class EnemyStatus;
 class EnemyTankManager;
+class StageManager;
 class UIManager
 {
 private:
@@ -12,8 +13,9 @@ private:
 	EnemyStatus* enmeyStatus;
 
 public:
-	HRESULT Init(PlayerTank& playerTank, EnemyTankManager& enemyTank);
-	void Update(PlayerTank& playerTank, EnemyTankManager& enemyTank);
+	HRESULT Init();
+	void SetData(PlayerTank* playerTank, StageManager* stageManager);
+	void Update();
 	void Render(HDC hdc);
 	void Release();
 };

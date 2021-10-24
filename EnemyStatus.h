@@ -3,18 +3,18 @@
 
 class Image;
 class EnemyTankManager;
+class StageManager;
 class EnemyStatus
 {
 private:
 	Image* enemyNumIcon;
-
-	EnemyTankManager* enemyTanks;
+	StageManager* stageManager;
 
 	int totalEnmey;
-	inline void SetEnemyTank(EnemyTankManager& enemyTank) { this->enemyTanks = &enemyTank; }
 public:
-	HRESULT Init(EnemyTankManager& enemyTank);
-	void Update(EnemyTankManager& enemyTank);
+	inline void SetData(StageManager* stageManager) { this->stageManager = stageManager; }
+	HRESULT Init();
+	void Update();
 	void Render(HDC hdc);
 	void Release();
 };

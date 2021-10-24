@@ -1,21 +1,27 @@
 #include "UIManager.h"
 #include "PlayerStatus.h"
 #include "EnemyStatus.h"
+#include "Config.h"
 
-HRESULT UIManager::Init(PlayerTank& playerTank, EnemyTankManager& enemyTank)
+HRESULT UIManager::Init()
 {
     playerStatus = new PlayerStatus;
-    playerStatus->Init(playerTank);
-
+    playerStatus->Init();
     enmeyStatus = new EnemyStatus;
-    enmeyStatus->Init(enemyTank);
+    enmeyStatus->Init();
     return S_OK;
 }
 
-void UIManager::Update(PlayerTank& playerTank, EnemyTankManager& enemyTank)
+void UIManager::SetData(PlayerTank* playerTank, StageManager* stageManager)
 {
-    playerStatus->Update(playerTank);
-    enmeyStatus->Update(enemyTank);
+    playerStatus->SetData(playerTank);
+    enmeyStatus->SetData(stageManager);
+}
+
+void UIManager::Update()
+{
+    playerStatus->Update();
+    enmeyStatus->Update();
 }
 
 void UIManager::Render(HDC hdc)
@@ -26,4 +32,6 @@ void UIManager::Render(HDC hdc)
 
 void UIManager::Release()
 {
+    SAFE_DELETE(playerStatus);
+    SAFE_DELETE(enmeyStatus);
 }

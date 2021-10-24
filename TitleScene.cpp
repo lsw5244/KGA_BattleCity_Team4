@@ -1,19 +1,19 @@
 #include "TitleScene.h"
 #include "Config.h"
+#include "CommonFunction.h"
 #include "Image.h"
 HRESULT TitleScene::Init()
 {
+	SetWindowSize(300, 20, WIN_SIZE_X * 4, WIN_SIZE_Y * 4);
+	windowX = WIN_SIZE_X, windowY = WIN_SIZE_Y;
 	// 타이틀씬에서 사용할 UI 이미지도 로드해놓자.
-	ImageManager::GetSingleton()->AddImage("Image/Title/background.bmp", 256, 224);
 	backGround = ImageManager::GetSingleton()->FindImage("Image/Title/background.bmp");
 
-	ImageManager::GetSingleton()->AddImage("Image/Title/Title.bmp", 256, 224);
 	titleBackGround = ImageManager::GetSingleton()->FindImage("Image/Title/Title.bmp");
 
-	ImageManager::GetSingleton()->AddImage("Image/Title/PlayerSelect.bmp", 30, 15, 2, 1, true, RGB(255,0,255));
 	plyaerSelect = ImageManager::GetSingleton()->FindImage("Image/Title/PlayerSelect.bmp");
 	arg = new ArgumentFuncPtr;
-	arg->sceneName = "전투씬";
+	arg->sceneName = "BattleScene";
 	arg->loadingSceneName = "로딩씬";
 	
 	Player_1p = true;
@@ -54,7 +54,7 @@ void TitleScene::Update()
 			Player_1p = !Player_1p;
 		}
 		if (KeyManager::GetSingleton()->IsOnceKeyDown('Z')) {
-			SceneManager::GetSingleton()->ChangeScene("전투씬", "로딩씬");
+			SceneManager::GetSingleton()->ChangeScene("BattleScene");
 			return;
 		}
 	}

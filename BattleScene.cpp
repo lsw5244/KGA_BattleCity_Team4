@@ -20,28 +20,6 @@
 
 HRESULT BattleScene::Init()
 {
-    {
-        ImageManager::GetSingleton()->AddImage("Image/SamlpTile.bmp", 88, 88, SAMPLE_TILE_COUNT, SAMPLE_TILE_COUNT, true, RGB(255, 0, 255));
-        ImageManager::GetSingleton()->AddImage("Image/background.bmp", WIN_SIZE_X, WIN_SIZE_Y);
-        ImageManager::GetSingleton()->AddImage("Image/Player/Player3.bmp", 128, 76, 8, 4, true, RGB(255, 0, 255));
-        ImageManager::GetSingleton()->AddImage("Image/Enemy/Enemy.bmp", 128, 96, 8, 6, true, RGB(255, 0, 255));
-        ImageManager::GetSingleton()->AddImage("Image/Enemy/Enemy_Item.bmp", 128, 128, 8, 8, true, RGB(255, 0, 255));
-        ImageManager::GetSingleton()->AddImage("Image/Effect/Spawn_Effect.bmp", 64, 16, 4, 1, true, RGB(255, 0, 255));
-        ImageManager::GetSingleton()->AddImage("Image/Effect/Boom_Effect.bmp", 48, 16, 3, 1, true, RGB(255, 0, 255));
-        ImageManager::GetSingleton()->AddImage("Image/Effect/EnemyTankBoom.bmp", 160, 32, 5, 1, true, RGB(255, 0, 255));
-        ImageManager::GetSingleton()->AddImage("Image/Effect/Shield.bmp", 32, 16, 2, 1, true, RGB(255, 0, 255));
-        ImageManager::GetSingleton()->AddImage("Image/Bullet/Missile_Down.bmp", 3, 4, true, RGB(255, 0, 255));
-        ImageManager::GetSingleton()->AddImage("Image/Bullet/Missile_Left.bmp", 4, 3, true, RGB(255, 0, 255));
-        ImageManager::GetSingleton()->AddImage("Image/Bullet/Missile_Right.bmp", 4, 3, true, RGB(255, 0, 255));
-        ImageManager::GetSingleton()->AddImage("Image/Bullet/Missile_Up.bmp", 3, 4, true, RGB(255, 0, 255));
-        ImageManager::GetSingleton()->AddImage("Image/Icon/Icon_Enemy.bmp", 8, 8, true, RGB(255, 0, 255));
-        ImageManager::GetSingleton()->AddImage("Image/Icon/player1Life.bmp", 16, 16, true, RGB(255, 0, 255));
-        ImageManager::GetSingleton()->AddImage("Image/item/items.bmp", 96, 16, 6, 1, true, RGB(255, 0, 255));
-        ImageManager::GetSingleton()->AddImage("Image/Text/Number.bmp", 40, 14, 5, 2, true, RGB(255, 0, 255));
-        ImageManager::GetSingleton()->AddImage("Image/loading.bmp", WIN_SIZE_X, WIN_SIZE_Y);
-    }
-    //이미지 초기화
-
     SetWindowSize(300, 20, WIN_SIZE_X*4, WIN_SIZE_Y*4);
     windowX = WIN_SIZE_X , windowY = WIN_SIZE_Y;
     // 화면 비율 조정
@@ -52,10 +30,29 @@ HRESULT BattleScene::Init()
     battleBackGround = ImageManager::GetSingleton()->FindImage("Image/background.bmp");
     // 배틀신 배경 불러오기
 
-    // 플레이어 이미지 저장
+    grayBackGround1 = ImageManager::GetSingleton()->FindImage("Image/Title/GrayBackGround.bmp");
+    grayBackGround2 = ImageManager::GetSingleton()->FindImage("Image/Title/GrayBackGround.bmp");
+    stageNumImage = ImageManager::GetSingleton()->FindImage("Image/Text/Number1.bmp");
+    stage = ImageManager::GetSingleton()->FindImage("Image/Text/Stage.bmp");
+    entryScene1 = true;
+    entryScene2 = false;
+    stageRender = false;
+    stageTime = 0.0f;
+    grayPosY1 = ( 0 - (grayBackGround1->GetHeight() / 2));
+    grayPosY2 = (WIN_SIZE_Y) + (grayBackGround2->GetHeight() / 2);
+
+    stageNum = ScoreManager::GetSingleton()->GetIsStage();
+    Load(stageNum);
+    
+    if (ScoreManager::GetSingleton()->GetIsStage() != 1) {
+        for (int y = 0; y < TILE_COUNT; y++) {
+            for (int x = 0; x < TILE_COUNT; x++) {
+                bufferTileInfo[y][x] = ScoreManager::GetSingleton()->GetTileInfo(y,x);
+            }
+        }
+    }
 
     ScoreManager::GetSingleton()->Init();
-    Load();
 
     playerTank = new PlayerTank;
     playerTank->Init();
@@ -82,11 +79,14 @@ HRESULT BattleScene::Init()
     stageManager->Init();
 
     uIManager = new UIManager;
-    uIManager->Init(*playerTank, *enemyTankManager);
+    uIManager->Init();
  
     itemManager->Setdata(*playerTank, *enemyTankManager, tileInfo);
     playerTank->SetData(tileInfo, ammoManager, itemManager);
     enemyTankManager->SetData(tileInfo, *playerTank, ammoManager, itemManager);
+    stageManager->SetData(enemyTankManager, playerTank, ammoManager, tileInfo);
+    uIManager->SetData(playerTank, stageManager);
+
 
     stageManager->SetData(enemyTankManager, playerTank, ammoManager, tileInfo);
 
@@ -97,11 +97,43 @@ HRESULT BattleScene::Init()
 
 void BattleScene::Update()
 {
+
+    if (entryScene1) {
+        if (!entryScene2) {
+            grayPosY1 += 100 * TimerManager::GetSingleton()->GetDeltaTime();
+            grayPosY2 -= 100 * TimerManager::GetSingleton()->GetDeltaTime();
+            if (KeyManager::GetSingleton()->IsOnceKeyDown('Z')) {
+                grayPosY1 = (WIN_SIZE_Y / 2) - (grayBackGround1->GetHeight() / 2);
+                grayPosY2 = (WIN_SIZE_Y / 2) + (grayBackGround2->GetHeight() / 2);
+            }
+            if (grayPosY1 >= (WIN_SIZE_Y / 2) - (grayBackGround1->GetHeight() / 2)) {
+                grayPosY1 = (WIN_SIZE_Y / 2) - (grayBackGround1->GetHeight() / 2);
+                grayPosY2 = (WIN_SIZE_Y / 2) + (grayBackGround2->GetHeight() / 2);
+                entryScene2 = true;
+            }
+        }
+        else {
+            if (stageTime < 2.0f) {
+                stageTime += TimerManager::GetSingleton()->GetDeltaTime();
+                if (KeyManager::GetSingleton()->IsOnceKeyDown('Z')) stageTime = 2.0f;
+            }
+            else {
+                grayPosY1 -= 100 * TimerManager::GetSingleton()->GetDeltaTime();
+                grayPosY2 += 100 * TimerManager::GetSingleton()->GetDeltaTime();
+                if (KeyManager::GetSingleton()->IsOnceKeyDown('Z')) grayPosY1 = 0 - (grayBackGround1->GetHeight() / 2);
+                if (grayPosY1 < 0 - (grayBackGround1->GetHeight() / 2)) {
+                    entryScene1 = false;
+                }
+            }
+        }
+        return;
+    }
+
     enemyTankManager->Update();
     playerTank->Update();
     ammoManager->Update();
     itemManager->Update();
-    uIManager->Update(*playerTank, *enemyTankManager);
+    uIManager->Update();
 
     ScoreManager::GetSingleton()->Update(*playerTank, *enemyTankManager);
     stageManager->Update();
@@ -109,6 +141,66 @@ void BattleScene::Update()
 
 void BattleScene::Render(HDC hdc)
 {
+    if (entryScene1) {
+        if (!entryScene2) {
+            if (stageNum != 1) {
+                battleBackGround->Render(hdc, battleBackGround->GetWidth() / 2, battleBackGround->GetHeight() / 2);
+                for (int i = 0; i < TILE_COUNT; i++) {
+                    for (int j = 0; j < TILE_COUNT; j++) {
+                        for (int tileNumY = 0; tileNumY < 2; tileNumY++) {
+                            for (int tileNumX = 0; tileNumX < 2; tileNumX++) {
+                                if (bufferTileInfo[i][j].isDes[tileNumY][tileNumX]) {
+                                    sampleImage->Render(hdc,
+                                        bufferTileInfo[i][j].rc[tileNumY][tileNumX].left + (TILE_SIZE / 2),
+                                        bufferTileInfo[i][j].rc[tileNumY][tileNumX].top + (TILE_SIZE / 2),
+                                        bufferTileInfo[i][j].frameX[tileNumX],
+                                        bufferTileInfo[i][j].frameY[tileNumY]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            grayBackGround1->Render(hdc, WIN_SIZE_X / 2, grayPosY1);
+            grayBackGround2->Render(hdc, WIN_SIZE_X / 2, grayPosY2);
+        }
+        else {
+            if (stageTime < 2.0f) {
+                grayBackGround1->Render(hdc, WIN_SIZE_X / 2, grayPosY1);
+                grayBackGround2->Render(hdc, WIN_SIZE_X / 2, grayPosY2);
+                stage->Render(hdc, (WIN_SIZE_X / 2) - 10, (WIN_SIZE_Y / 2));
+                if (stageNum < 4) {
+                    stageNumImage->Render(hdc, (WIN_SIZE_X / 2) + 17, (WIN_SIZE_Y / 2), stageNum, 0);
+                } else {
+                    stageNumImage->Render(hdc, (WIN_SIZE_X / 2) + 17, (WIN_SIZE_Y / 2), stageNum - 5, 1);
+                }
+            }
+            else {
+                battleBackGround->Render(hdc, battleBackGround->GetWidth() / 2, battleBackGround->GetHeight() / 2);
+                for (int i = 0; i < TILE_COUNT; i++) {
+                    for (int j = 0; j < TILE_COUNT; j++) {
+                        for (int tileNumY = 0; tileNumY < 2; tileNumY++) {
+                            for (int tileNumX = 0; tileNumX < 2; tileNumX++) {
+                                if (tileInfo[i][j].isDes[tileNumY][tileNumX]) {
+                                    sampleImage->Render(hdc,
+                                        tileInfo[i][j].rc[tileNumY][tileNumX].left + (TILE_SIZE / 2),
+                                        tileInfo[i][j].rc[tileNumY][tileNumX].top + (TILE_SIZE / 2),
+                                        tileInfo[i][j].frameX[tileNumX],
+                                        tileInfo[i][j].frameY[tileNumY]);
+                                }
+                            }
+                        }
+                    }
+                }
+                grayBackGround1->Render(hdc, WIN_SIZE_X / 2, grayPosY1);
+                grayBackGround2->Render(hdc, WIN_SIZE_X / 2, grayPosY2);
+            }
+        }
+        return;
+
+    }
+
+
     battleBackGround->Render(hdc, battleBackGround->GetWidth() / 2, battleBackGround->GetHeight() / 2);
     for (int i = 0; i < TILE_COUNT; i++) {
         for (int j = 0; j < TILE_COUNT; j++) {
@@ -195,6 +287,8 @@ void BattleScene::Render(HDC hdc)
         }
     }
     // 숲타일 렌더
+
+
 }
 
 void BattleScene::Release()
@@ -202,11 +296,12 @@ void BattleScene::Release()
     SAFE_RELEASE(ammoManager);
 }
 
-int BattleScene::Load()
+int BattleScene::Load(int num)
 {
     {
-        int loadIndex = ScoreManager::GetSingleton()->GetIsStage();
-        string loadFileName = "Save/saveMapData_" + to_string(loadIndex);
+
+        string loadFileName = "Save/saveMapData_" + to_string(num);
+
         loadFileName += ".map";
 
         HANDLE hFile = CreateFile(loadFileName.c_str(),
@@ -225,6 +320,6 @@ int BattleScene::Load()
         }
 
         CloseHandle(hFile);
-        return loadIndex;
+        return num;
     }
 }

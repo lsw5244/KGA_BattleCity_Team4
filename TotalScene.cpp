@@ -13,35 +13,20 @@ HRESULT TotalScene::Init()
 	SetWindowSize(300, 20, WIN_SIZE_X * 4, WIN_SIZE_Y * 4);
 	windowX = WIN_SIZE_X, windowY = WIN_SIZE_Y;
 
-	ImageManager::GetSingleton()->AddImage("Image/Text/HISocre.bmp", 140, 7, true, RGB(255, 0, 255));
 	hiScore = ImageManager::GetSingleton()->FindImage("Image/Text/HISocre.bmp");
 
 	for (int i = 0; i < 10; i++)
 	{
-		ImageManager::GetSingleton()->AddImage("Image/Text/Number_w.bmp", 40, 14, 5, 2, true, RGB(255, 0, 255));
 		wNumberImage[i] = ImageManager::GetSingleton()->FindImage("Image/Text/Number_w.bmp");
 	}
-
-	ImageManager::GetSingleton()->AddImage("Image/Text/Player1.bmp", 63, 7, true, RGB(255, 0, 255));
 	player1 = ImageManager::GetSingleton()->FindImage("Image/Text/Player1.bmp");
-
-	ImageManager::GetSingleton()->AddImage("Image/Text/PTS.bmp", 22, 7, true, RGB(255, 0, 255));
 	points = ImageManager::GetSingleton()->FindImage("Image/Text/PTS.bmp");
-
-	ImageManager::GetSingleton()->AddImage("Image/Text/ScoreNumber.bmp", 40, 14, 5, 2, true, RGB(255, 0, 255));
 	scoreNumber = ImageManager::GetSingleton()->FindImage("Image/Text/ScoreNumber.bmp");
-
-	ImageManager::GetSingleton()->AddImage("Image/Text/Stage_w.bmp", 37, 7, true, RGB(255, 0, 255));
 	wStage = ImageManager::GetSingleton()->FindImage("Image/Text/Stage_w.bmp");
-
-	ImageManager::GetSingleton()->AddImage("Image/Enemy/Enemy.bmp", 128, 96, 8, 6, true, RGB(255, 0, 255));
 	enemyTankImage = ImageManager::GetSingleton()->FindImage("Image/Enemy/Enemy.bmp");
-
-	ImageManager::GetSingleton()->AddImage("Image/Icon/Arrow.bmp", 8, 7, true, RGB(255, 0, 255));
 	arrow = ImageManager::GetSingleton()->FindImage("Image/Icon/Arrow.bmp");
-
-	ImageManager::GetSingleton()->AddImage("Image/Text/TotalScore.bmp", 110, 10, true, RGB(255, 0, 255));
 	totalScoreWord = ImageManager::GetSingleton()->FindImage("Image/Text/TotalScore.bmp");
+	gameOver = ImageManager::GetSingleton()->FindImage("Image/Title/ScoreGameOver.bmp");
 
 	playerTank = new PlayerTank;
 
@@ -49,8 +34,9 @@ HRESULT TotalScene::Init()
 
 	test = new BattleScene;
 
+	gameOverPos = WIN_SIZE_Y + (gameOver->GetHeight() / 2);
 	nextSceneTime = 0;
-	
+	sceneChangeTime = 3;
 	return S_OK;
 }
 
@@ -64,38 +50,51 @@ void TotalScene::Update()
 	totalScore = ScoreManager::GetSingleton()->GetTotalScore();
 	prevTotalScore = ScoreManager::GetSingleton()->GetPrevTotalScore();
 	nextSceneTime += TimerManager::GetSingleton()->GetDeltaTime();
+
 	
-	if (nextSceneTime > 3.0f) {
+	if (nextSceneTime > sceneChangeTime + 4) {
 		if (ScoreManager::GetSingleton()->GetPlayerIsDead()) {
 			SceneManager::GetSingleton()->ChangeScene("TitleScene");
-		} else {
-			SceneManager::GetSingleton()->ChangeScene("BattleScene");
 		}
 	}
+	else if (nextSceneTime > sceneChangeTime) {
+		if (!ScoreManager::GetSingleton()->GetPlayerIsDead()) {
+			SceneManager::GetSingleton()->ChangeScene("BattleScene");
+		}
+		if (gameOverPos > WIN_SIZE_Y / 2) {
+			gameOverPos -= 80 * TimerManager::GetSingleton()->GetDeltaTime();
+		}
+	}
+
 }
 
 void TotalScene::Render(HDC hdc)
 {
-	hiScore->Render(hdc, WIN_SIZE_X / 2, 20);	//°íÁ¤
-	wStage->Render(hdc, WIN_SIZE_X / 2 - 13, 36);	//°íÁ¤
+	if (nextSceneTime > sceneChangeTime) {
+		gameOver->Render(hdc, WIN_SIZE_X / 2, gameOverPos);
+		return;
+	}
+
+	hiScore->Render(hdc, WIN_SIZE_X / 2, 20);	//ê³ ì •
+	wStage->Render(hdc, WIN_SIZE_X / 2 - 13, 36);	//ê³ ì •
 	for (int i = 0; i < 10; i++)
 	{
 		ScoreRender(hdc, i);
 	}
-	//wNumberImage[0]->Render(hdc, WIN_SIZE_X / 2 + 31, 36, 0, 0);	//½ºÅ×ÀÌÁö ¿¬°á
+	//wNumberImage[0]->Render(hdc, WIN_SIZE_X / 2 + 31, 36, 0, 0);	//ìŠ¤í…Œì´ì§€ ì—°ê²°
 	//
-	//wNumberImage[1]->Render(hdc, WIN_SIZE_X / 2 - 21, 92, 0, 0);	//³ë¸Ö ÀâÀº ¼ö
-	//wNumberImage[2]->Render(hdc, WIN_SIZE_X / 2 - 21, 116, 0, 0);	//ºü¸¥³ğ ÀâÀº ¼ö
-	//wNumberImage[3]->Render(hdc, WIN_SIZE_X / 2 - 21, 140, 0, 0);	//¿¬»ç ÀâÀº ¼ö
-	//wNumberImage[4]->Render(hdc, WIN_SIZE_X / 2 - 21, 164, 0, 0);	//¿ÕÅÊ ÀâÀº ¼ö
-
-	//wNumberImage[5]->Render(hdc, WIN_SIZE_X / 2 - 76, 92, 0, 0);	//³ë¸Ö ½ºÄÚ¾î
-	//wNumberImage[6]->Render(hdc, WIN_SIZE_X / 2 - 76, 116, 0, 0);	//ºü¸¥³ğ ½ºÄÚ¾î
-	//wNumberImage[7]->Render(hdc, WIN_SIZE_X / 2 - 76, 140, 0, 0);	//¿¬»ç ½ºÄÚ¾î
-	//wNumberImage[8]->Render(hdc, WIN_SIZE_X / 2 - 76, 164, 0, 0);	//¿ÕÅÊ ½ºÄÚ¾î
+	//wNumberImage[1]->Render(hdc, WIN_SIZE_X / 2 - 21, 92, 0, 0);	//ë…¸ë©€ ì¡ì€ ìˆ˜
+	//wNumberImage[2]->Render(hdc, WIN_SIZE_X / 2 - 21, 116, 0, 0);	//ë¹ ë¥¸ë†ˆ ì¡ì€ ìˆ˜
+	//wNumberImage[3]->Render(hdc, WIN_SIZE_X / 2 - 21, 140, 0, 0);	//ì—°ì‚¬ ì¡ì€ ìˆ˜
+	//wNumberImage[4]->Render(hdc, WIN_SIZE_X / 2 - 21, 164, 0, 0);	//ì™•íƒ± ì¡ì€ ìˆ˜
+	//
+	//wNumberImage[5]->Render(hdc, WIN_SIZE_X / 2 - 76, 92, 0, 0);	//ë…¸ë©€ ìŠ¤ì½”ì–´
+	//wNumberImage[6]->Render(hdc, WIN_SIZE_X / 2 - 76, 116, 0, 0);	//ë¹ ë¥¸ë†ˆ ìŠ¤ì½”ì–´
+	//wNumberImage[7]->Render(hdc, WIN_SIZE_X / 2 - 76, 140, 0, 0);	//ì—°ì‚¬ ìŠ¤ì½”ì–´
+	//wNumberImage[8]->Render(hdc, WIN_SIZE_X / 2 - 76, 164, 0, 0);	//ì™•íƒ± ìŠ¤ì½”ì–´
 	player1->Render(hdc, WIN_SIZE_X / 2 - 74, 52);
 	totalScoreWord->Render(hdc, WIN_SIZE_X / 2 - 25, 177);
-	//wNumberImage[9]->Render(hdc, WIN_SIZE_X / 2 - 21, 178, 0, 0);	//Á¾ÇÕ ÀâÀº ¼ö
+	//wNumberImage[9]->Render(hdc, WIN_SIZE_X / 2 - 21, 178, 0, 0);	//ì¢…í•© ì¡ì€ ìˆ˜
 
 	for (int i = 0; i < 4; i++)
 	{
