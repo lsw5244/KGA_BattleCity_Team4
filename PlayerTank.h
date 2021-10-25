@@ -38,6 +38,7 @@ private:
 	float deadEffecttime;
 	int deadEffectfreamX;
 	bool isdead;
+	const float shieldEffectMaxTime = 7.0f;
 
 	int Level;
 	int maxAmmo;
@@ -58,7 +59,7 @@ public:
 
 	void LevelUp();
 	inline int GetLevel() { return this->Level; }
-	inline void LifeUp() { if(life < 10) this->life++; }
+	inline void LifeUp() { if(life < 9) this->life++; }
 	inline int GetLife() { return this->life; }
 	
 	void PlayerTankReset();
@@ -66,7 +67,7 @@ public:
 	void SetData(TILE_INFO(*tileInfo)[TILE_COUNT], AmmoManager* mgr, ItemManager* itemManager);
 
 	inline void ActiveBarrier() { this->shieldEffectTime = 0.0f; }
-	inline void Setisdead(bool isdead) { if(shieldEffectTime >= 10.0f)this->isdead = isdead;}
+	inline void SetIsDead(bool isdead) { if(shieldEffectTime >= shieldEffectMaxTime)this->isdead = isdead;}
 
 	inline void SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank) { this->vecEnemyTank = vecEnemyTank; }
 	inline RECT* GetRect() { return &shape; }

@@ -389,6 +389,14 @@ void StageManager::Render(HDC hdc)
 	gameOver->Render(hdc, (WIN_SIZE_X / 2)-7, gameOverPos);
 }
 
+void StageManager::Release()
+{
+	SAFE_DELETE(enemyTankFactory[0]);
+	SAFE_DELETE(enemyTankFactory[1]);
+	SAFE_DELETE(enemyTankFactory[2]);
+	SAFE_DELETE(enemyTankFactory[3]);
+}
+
 void StageManager::SpawnEffect()
 {
 	if (spawnEffectTime >= 0.1) {

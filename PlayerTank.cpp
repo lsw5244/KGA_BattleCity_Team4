@@ -164,7 +164,7 @@ bool PlayerTank::SpawnEffect()
 
 bool PlayerTank::ShieldEffect()
 {
-   if (shieldEffectTime < 7.0f)
+   if (shieldEffectTime < shieldEffectMaxTime)
    {
        shieldEffectTime += TimerManager::GetSingleton()->GetDeltaTime();
        shieldEffectDelay += TimerManager::GetSingleton()->GetDeltaTime();

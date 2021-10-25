@@ -289,7 +289,6 @@ void BattleScene::Render(HDC hdc)
 
     itemManager->Render(hdc);
     uIManager->Render(hdc);
-    stageManager->Render(hdc);
     for (int i = 0; i < TILE_COUNT; i++) {
         for (int j = 0; j < TILE_COUNT; j++) {
             for (int tileNumY = 0; tileNumY < 2; tileNumY++) {
@@ -304,9 +303,8 @@ void BattleScene::Render(HDC hdc)
             }
         }
     }
+    stageManager->Render(hdc);
     // 숲타일 렌더
-
-
 }
 
 void BattleScene::Release()
