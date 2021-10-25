@@ -1,6 +1,6 @@
 #include "ScoreManager.h"
 #include "EnemyTankManager.h"
-
+#include "Config.h"
 void ScoreManager::Init()
 {
 	totalNormal = 0;
@@ -14,6 +14,7 @@ void ScoreManager::Init()
 
 void ScoreManager::Release()
 {
+
 }
 
 void ScoreManager::Update(PlayerTank& playerTank, EnemyTankManager& enemyTank)

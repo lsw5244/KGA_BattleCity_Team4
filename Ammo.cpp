@@ -54,7 +54,7 @@ void Ammo::Update()
 
 	if (CollisionEnter(*(playerTank->GetRect()), shape) && type != TankType::Player)
 	{
-		playerTank->Setisdead(true);
+		playerTank->SetIsDead(true);
 		DestroyAmmo();
 	}
 

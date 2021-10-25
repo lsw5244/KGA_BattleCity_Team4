@@ -129,8 +129,8 @@ void MainGame::Release()
 	SceneManager::GetSingleton()->Release();
 	SceneManager::GetSingleton()->ReleaseSingleton();
 
-	SceneManager::GetSingleton()->Release();
-	SceneManager::GetSingleton()->ReleaseSingleton();
+	//SceneManager::GetSingleton()->Release();
+	//SceneManager::GetSingleton()->ReleaseSingleton();
 
 	// 타이머 객체 삭제
 	KillTimer(g_hWnd, 0);

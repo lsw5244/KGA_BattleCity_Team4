@@ -2,12 +2,16 @@
 #include <Windows.h>
 #include "CommonFunction.h"
 #include "MainGame.h"
+#define _CRTDBG_MAP_ALLOC
+#include <stdio.h>
+#include <crtdbg.h>
 
 #ifdef UNICODE
 #pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
 #else
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
 #endif
+
 
 // 전역변수
 POINT		g_ptMouse;
@@ -75,6 +79,9 @@ int APIENTRY WinMain(HINSTANCE _hInstance, HINSTANCE _hPrevInstance,
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
+#ifdef _DEBUG
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
 	HDC hdc;
 	PAINTSTRUCT ps;
 
@@ -117,4 +124,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	}
 
 	return g_mainGame.MainProc(hWnd, iMessage, wParam, lParam);
+#endif // _DEBUG
 }
+
+
