@@ -12,9 +12,9 @@ HRESULT TitleScene::Init()
 	titleBackGround = ImageManager::GetSingleton()->FindImage("Image/Title/Title.bmp");
 
 	plyaerSelect = ImageManager::GetSingleton()->FindImage("Image/Title/PlayerSelect.bmp");
-	arg = new ArgumentFuncPtr;
-	arg->sceneName = "BattleScene";
-	arg->loadingSceneName = "·Îµù¾À";
+	//arg = new ArgumentFuncPtr;
+	//arg->sceneName = "BattleScene";
+	//arg->loadingSceneName = "·Îµù¾À";
 	
 	Player_1p = true;
 	selectFrame = 0;
@@ -71,6 +71,5 @@ void TitleScene::Render(HDC hdc)
 
 void TitleScene::Release()
 {
-	SAFE_DELETE(btnFunction);
-	SAFE_DELETE(arg);
+	//SAFE_DELETE(arg);
 }
