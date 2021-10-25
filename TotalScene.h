@@ -18,17 +18,12 @@ private:
 	Image* totalScoreWord;
 	Image* enemyTankImage;
 	Image* arrow;
-	PlayerTank* playerTank;
-	EnemyTankManager* enemyTanks;
 
 	Image* gameOver;
 	float gameOverPos;
 	
 	Image* gameClear;
 	float gameClearPos;
-
-
-	BattleScene* test;
 	
 	int stageNum;
 
@@ -43,8 +38,6 @@ private:
 	float nextSceneTime;
 	float sceneChangeTime;
 
-	inline void SetPlayerTank(PlayerTank& playerTank) { this->playerTank = &playerTank; }
-	inline void SetEnemyTank(EnemyTankManager& enemyTank) { this->enemyTanks = &enemyTank; }
 
 public:
 	virtual HRESULT Init();

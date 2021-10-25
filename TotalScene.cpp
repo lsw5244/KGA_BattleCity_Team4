@@ -1,9 +1,6 @@
 #include "TotalScene.h"
 #include "CommonFunction.h"
 #include "Image.h"
-#include "PlayerTank.h"
-#include "EnemyTankManager.h"
-#include "BattleScene.h"
 #include "ScoreManager.h"
 #include "TimerManager.h"
 #include "SceneManager.h"
@@ -28,11 +25,6 @@ HRESULT TotalScene::Init()
 	totalScoreWord = ImageManager::GetSingleton()->FindImage("Image/Text/TotalScore.bmp");
 	gameOver = ImageManager::GetSingleton()->FindImage("Image/Title/ScoreGameOver.bmp");
 	gameClear = ImageManager::GetSingleton()->FindImage("Image/Title/GameClear.bmp");
-	playerTank = new PlayerTank;
-
-	enemyTanks = new EnemyTankManager;
-
-	test = new BattleScene;
 
 	gameOverPos = WIN_SIZE_Y + (gameOver->GetHeight() / 2);
 	gameClearPos = WIN_SIZE_Y + (gameClear->GetHeight() / 2);
