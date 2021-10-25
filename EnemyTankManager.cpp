@@ -82,25 +82,26 @@ void EnemyTankManager::Update()
 		if ((*it)->GetisDestruction()) {
 			if (!(*it)->GetItemDes())
 			{
+				checkScore = true;
 				switch ((*it)->GetTankInfo())
 				{
 				case TankInfo::Normal:
 					totalNormal++;
+					returnScore = 100;
 					break;
 				case TankInfo::FastMove:
 					totalFastMove++;
+					returnScore = 200;
 					break;
 				case TankInfo::FastShoot:
 					totalFastShoot++;
+					returnScore = 300;
 					break;
 				case TankInfo::BigTank:
 					totalBigTank++;
+					returnScore = 400;
 					break;
 				}
-			}
-			else if ((*it)->GetItemDes())
-			{
-				itemBonusPoint++;
 			}
 			SAFE_RELEASE((*it));
 			it = vecEnemyTank.erase(it);

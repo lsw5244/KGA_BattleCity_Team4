@@ -220,6 +220,7 @@ HRESULT PlayerTank::Init()
     isBarrier = false;
     fastAmmoReady = false;
     SuperPlayerMode = false;
+    getItem = false;
 
     return S_OK;
 }

@@ -28,17 +28,25 @@ HRESULT TotalScene::Init()
 	totalScoreWord = ImageManager::GetSingleton()->FindImage("Image/Text/TotalScore.bmp");
 	gameOver = ImageManager::GetSingleton()->FindImage("Image/Title/ScoreGameOver.bmp");
 	gameClear = ImageManager::GetSingleton()->FindImage("Image/Title/GameClear.bmp");
-	playerTank = new PlayerTank;
-
-	enemyTanks = new EnemyTankManager;
-
-	test = new BattleScene;
 
 	gameOverPos = WIN_SIZE_Y + (gameOver->GetHeight() / 2);
 	gameClearPos = WIN_SIZE_Y + (gameClear->GetHeight() / 2);
 	nextSceneTime = 0;
 	sceneChangeTime = 3;
 	stageNum = ScoreManager::GetSingleton()->GetIsStage();
+
+	normal = 0;
+	fastMove = 0;
+	fastShoot = 0;
+	bigTank = 0;
+
+	normalScoreRender = false;
+	fastMoveScoreRender = false;
+	fastShootScoreRender = false;
+	bigTankScoreRender = false;
+	totalDestroyScoreRender = false;
+
+	textAnimateEnd = false;
 	return S_OK;
 }
 
@@ -52,40 +60,90 @@ void TotalScene::Update()
 	totalScore = ScoreManager::GetSingleton()->GetTotalScore();
 	prevTotalScore = ScoreManager::GetSingleton()->GetPrevTotalScore();
 
+	scoreTextTic1 += TimerManager::GetSingleton()->GetDeltaTime();
+	scoreTextTic2 += TimerManager::GetSingleton()->GetDeltaTime();
 
-	nextSceneTime += TimerManager::GetSingleton()->GetDeltaTime();
-	if (ScoreManager::GetSingleton()->GetPlayerIsDead()) {	// 플레이어 사망시
-		if (nextSceneTime > sceneChangeTime) {
-			if (gameOverPos > WIN_SIZE_Y / 2) {
-				gameOverPos -= 80 * TimerManager::GetSingleton()->GetDeltaTime();
+	if (scoreTextTic2 > 0.5)
+	{
+		if((normal == totalNormal) && normalScoreRender)
+		{
+			if((fastMove == totalFastMove) && fastMoveScoreRender)
+			{
+				if ((fastShoot == totalFastShoot) && fastShootScoreRender)
+				{
+					if ((bigTank == totalBigTank) && bigTankScoreRender) totalDestroyScoreRender = true;
+					bigTankScoreRender = true;
+				}
+				fastShootScoreRender = true;
+
 			}
+			fastMoveScoreRender = true;
 		}
-		if (nextSceneTime > sceneChangeTime + 3) {
-			if (ScoreManager::GetSingleton()->GetPlayerIsDead()) {
-				ScoreManager::GetSingleton()->SetStage(1);
-				SceneManager::GetSingleton()->ChangeScene("TitleScene");
-			}
-		}
+		normalScoreRender = true;
+		scoreTextTic2 = 0;
 	}
-	else if (!ScoreManager::GetSingleton()->GetPlayerIsDead()) {
-		if (stageNum != 11) {
-			if (nextSceneTime > sceneChangeTime) {		// 스테이지 클리어후 다음스테이지 전환
-				if (!ScoreManager::GetSingleton()->GetPlayerIsDead()) {
-					SceneManager::GetSingleton()->ChangeScene("BattleScene");
-				}
-			}
-		}
-		else {	// 10스테이지 클리어 했을 경우
+	if ((scoreTextTic1 > 0.15) && (normal < totalNormal) && normalScoreRender)
+	{
+		normal++;
+		scoreTextTic1 = 0;
+	}
+	if ((scoreTextTic1 > 0.15) && (fastMove < totalFastMove) && fastMoveScoreRender)
+	{
+		fastMove++;
+		scoreTextTic1 = 0;
+	}
+	if ((scoreTextTic1 > 0.15) && (fastShoot < totalFastShoot) && fastShootScoreRender)
+	{
+		fastShoot++;
+		scoreTextTic1 = 0;
+	}
+	if ((scoreTextTic1 > 0.15) && (bigTank < totalBigTank) && bigTankScoreRender)
+	{
+		bigTank++;
+		scoreTextTic1 = 0;
+	}
+	if (bigTank == totalBigTank && totalDestroyScoreRender)
+	{
+		textAnimateEnd = true;
+	}
+
+	if (textAnimateEnd == true)
+	{
+		nextSceneTime += TimerManager::GetSingleton()->GetDeltaTime();
+		if (ScoreManager::GetSingleton()->GetPlayerIsDead()) {	// 플레이어 사망시
 			if (nextSceneTime > sceneChangeTime) {
-				if (gameClearPos > WIN_SIZE_Y / 2) {
-					gameClearPos -= 80 * TimerManager::GetSingleton()->GetDeltaTime();
+				if (gameOverPos > WIN_SIZE_Y / 2) {
+					gameOverPos -= 80 * TimerManager::GetSingleton()->GetDeltaTime();
 				}
 			}
-			if (nextSceneTime > sceneChangeTime + 4) {	
-				ScoreManager::GetSingleton()->SetStage(1);
-				SceneManager::GetSingleton()->ChangeScene("TitleScene");
+			if (nextSceneTime > sceneChangeTime + 3) {
+				if (ScoreManager::GetSingleton()->GetPlayerIsDead()) {
+					ScoreManager::GetSingleton()->SetStage(1);
+					SceneManager::GetSingleton()->ChangeScene("TitleScene");
+				}
 			}
 		}
+		else if (!ScoreManager::GetSingleton()->GetPlayerIsDead()) {
+			if (stageNum != 11) {
+				if (nextSceneTime > sceneChangeTime) {		// 스테이지 클리어후 다음스테이지 전환
+					if (!ScoreManager::GetSingleton()->GetPlayerIsDead()) {
+						SceneManager::GetSingleton()->ChangeScene("BattleScene");
+					}
+				}
+			}
+			else {	// 10스테이지 클리어 했을 경우
+				if (nextSceneTime > sceneChangeTime) {
+					if (gameClearPos > WIN_SIZE_Y / 2) {
+						gameClearPos -= 80 * TimerManager::GetSingleton()->GetDeltaTime();
+					}
+				}
+				if (nextSceneTime > sceneChangeTime + 4) {	
+					ScoreManager::GetSingleton()->SetStage(1);
+					SceneManager::GetSingleton()->ChangeScene("TitleScene");
+				}
+			}
+		}
+
 	}
 }
 
@@ -103,20 +161,10 @@ void TotalScene::Render(HDC hdc)
 	{
 		ScoreRender(hdc, i);
 	}
-	//wNumberImage[0]->Render(hdc, WIN_SIZE_X / 2 + 31, 36, 0, 0);	//스테이지 연결
-	//
-	//wNumberImage[1]->Render(hdc, WIN_SIZE_X / 2 - 21, 92, 0, 0);	//노멀 잡은 수
-	//wNumberImage[2]->Render(hdc, WIN_SIZE_X / 2 - 21, 116, 0, 0);	//빠른놈 잡은 수
-	//wNumberImage[3]->Render(hdc, WIN_SIZE_X / 2 - 21, 140, 0, 0);	//연사 잡은 수
-	//wNumberImage[4]->Render(hdc, WIN_SIZE_X / 2 - 21, 164, 0, 0);	//왕탱 잡은 수
-	//
-	//wNumberImage[5]->Render(hdc, WIN_SIZE_X / 2 - 76, 92, 0, 0);	//노멀 스코어
-	//wNumberImage[6]->Render(hdc, WIN_SIZE_X / 2 - 76, 116, 0, 0);	//빠른놈 스코어
-	//wNumberImage[7]->Render(hdc, WIN_SIZE_X / 2 - 76, 140, 0, 0);	//연사 스코어
-	//wNumberImage[8]->Render(hdc, WIN_SIZE_X / 2 - 76, 164, 0, 0);	//왕탱 스코어
+
 	player1->Render(hdc, WIN_SIZE_X / 2 - 74, 52);
 	totalScoreWord->Render(hdc, WIN_SIZE_X / 2 - 25, 177);
-	//wNumberImage[9]->Render(hdc, WIN_SIZE_X / 2 - 21, 178, 0, 0);	//종합 잡은 수
+
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -131,15 +179,15 @@ void TotalScene::Render(HDC hdc)
 		{
 			scoreNumber->Render(hdc, WIN_SIZE_X / 2 - 90, 68, (prevTotalScore / 100000) % 5, ((prevTotalScore / 100000) / 5));
 			scoreNumber->Render(hdc, WIN_SIZE_X / 2 - 81, 68, ((prevTotalScore % 100000) / 10000) % 5, (((prevTotalScore / 100000) / 10000) / 5));
-			scoreNumber->Render(hdc, WIN_SIZE_X / 2 - 72, 68, (((prevTotalScore % 100000) % 10000) / 1000) % 5, (((prevTotalScore % 100000) % 10000) / 1000) / 5);
-			scoreNumber->Render(hdc, WIN_SIZE_X / 2 - 63, 68, ((((prevTotalScore % 100000) % 10000) % 1000) / 100) % 5, ((((prevTotalScore % 100000) % 10000) % 1000) / 100) / 5);
+			scoreNumber->Render(hdc, WIN_SIZE_X / 2 - 72, 68, ((prevTotalScore % 10000) / 1000) % 5, ((prevTotalScore % 10000) / 1000) / 5);
+			scoreNumber->Render(hdc, WIN_SIZE_X / 2 - 63, 68, ((prevTotalScore % 1000) / 100) % 5, ((prevTotalScore % 1000) / 100) / 5);
 		}
 
 		else if (99999 > prevTotalScore && prevTotalScore > 9999)
 		{
 			scoreNumber->Render(hdc, WIN_SIZE_X / 2 - 81, 68, (prevTotalScore / 10000) % 5, ((prevTotalScore / 10000) / 5));
 			scoreNumber->Render(hdc, WIN_SIZE_X / 2 - 72, 68, ((prevTotalScore % 10000) / 1000) % 5, ((prevTotalScore % 10000) / 1000) / 5);
-			scoreNumber->Render(hdc, WIN_SIZE_X / 2 - 63, 68, (((prevTotalScore % 10000) % 1000) / 100) % 5, (((prevTotalScore % 10000) % 1000) / 100) / 5);
+			scoreNumber->Render(hdc, WIN_SIZE_X / 2 - 63, 68, ((prevTotalScore % 1000) / 100) % 5, ((prevTotalScore % 1000) / 100) / 5);
 		}
 		else if (9999 > prevTotalScore && prevTotalScore > 999)
 		{
@@ -168,87 +216,114 @@ void TotalScene::ScoreRender(HDC hdc, int i)
 		wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 + 31, 36, 0, 0);
 		break;
 	case 1:
-		if (totalNormal > 9)
+		if (normalScoreRender)
 		{
-			wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 29, 92, (totalNormal / 10) % 5, ((totalNormal / 10) / 5));
+			if ((normal > 9))
+			{
+				wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 29, 92, (normal / 10) % 5, ((normal / 10) / 5));
+			}
+			wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 21, 92, (normal % 10) % 5, ((normal % 10) / 5));
 		}
-		wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 21, 92, (totalNormal % 10) % 5, ((totalNormal % 10) / 5));
 		break;
 	case 2:
-		if (totalFastMove > 9)
+		if (fastMoveScoreRender)
 		{
-			wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 29, 116, (totalFastMove / 10) % 5, ((totalFastMove / 10) / 5));
+			if (fastMove > 9)
+			{
+				wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 29, 116, (fastMove / 10) % 5, ((fastMove / 10) / 5));
+			}
+			wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 21, 116, (fastMove % 10) % 5, ((fastMove % 10) / 5));
 		}
-		wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 21, 116, (totalFastMove % 10) % 5, ((totalFastMove % 10) / 5));
 		break;
 	case 3:
-		if (totalFastShoot > 9)
+		if (fastShootScoreRender)
 		{
-			wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 29, 140, (totalFastShoot / 10) % 5, ((totalFastShoot / 10) / 5));
+			if (fastShoot > 9)
+			{
+				wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 29, 140, (fastShoot / 10) % 5, ((fastShoot / 10) / 5));
+			}
+			wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 21, 140, (fastShoot % 10) % 5, ((fastShoot % 10) / 5));
 		}
-		wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 21, 140, (totalFastShoot % 10) % 5, ((totalFastShoot % 10) / 5));
 		break;
 	case 4:
-		if (totalBigTank > 9)
+		if (bigTankScoreRender)
 		{
-			wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 29, 164, (totalBigTank / 10) % 5, ((totalBigTank / 10) / 5));
+			if (bigTank > 9)
+			{
+				wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 29, 164, (bigTank / 10) % 5, ((bigTank / 10) / 5));
+			}
+			wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 21, 164, (bigTank % 10) % 5, ((bigTank % 10) / 5));
 		}
-		wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 21, 164, (totalBigTank % 10) % 5, ((totalBigTank % 10) / 5));
 		break;
 	case 5:
-		if (totalNormal > 9)
+		if (normalScoreRender)
 		{
-			wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 103, 92, (totalNormal / 10) % 5, ((totalNormal / 10) / 5));
-		}
-		wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 94, 92, (totalNormal % 10) % 5, ((totalNormal % 10) / 5));
-		if (totalNormal > 0);
-		{
-			wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 85, 92, 0, 0);
-			wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 76, 92, 0, 0);
+			if (normal > 9)
+			{
+				wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 103, 92, (normal / 10) % 5, ((normal / 10) / 5));
+			}
+			if (normal > 0)
+			{
+				wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 94, 92, (normal % 10) % 5, ((normal % 10) / 5));
+				wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 85, 92, 0, 0);
+			}
+				wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 76, 92, 0, 0);
 		}
 		break;
 	case 6:
-		if (totalFastMove * 2 > 9)
+		if (fastMoveScoreRender)
 		{
-			wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 103, 116, (totalFastMove * 2 / 10) % 5, ((totalFastMove * 2 / 10) / 5));
-		}
-		wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 94, 116, (totalFastMove * 2 % 10) % 5, ((totalFastMove * 2 % 10) / 5));
-		if (totalFastMove > 0);
-		{
-			wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 85, 116, 0, 0);
-			wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 76, 116, 0, 0);
+			if (fastMove * 2 > 9)
+			{
+				wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 103, 116, (fastMove * 2 / 10) % 5, ((fastMove * 2 / 10) / 5));
+			}
+			if (fastMove > 0)
+			{
+				wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 94, 116, (fastMove * 2 % 10) % 5, ((fastMove * 2 % 10) / 5));
+				wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 85, 116, 0, 0);
+			}
+				wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 76, 116, 0, 0);
 		}
 		break;
 	case 7:
-		if (totalFastShoot * 3 > 9)
+		if (fastShootScoreRender)
 		{
-			wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 103, 140, (totalFastShoot * 3 / 10) % 5, ((totalFastShoot * 3 / 10) / 5));
-		}
-		wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 94, 140, (totalFastShoot * 3 % 10) % 5, ((totalFastShoot * 3 % 10) / 5));
-		if (totalFastShoot > 0);
-		{
-			wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 85, 140, 0, 0);
-			wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 76, 140, 0, 0);
+			if (fastShoot * 3 > 9)
+			{
+				wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 103, 140, (fastShoot * 3 / 10) % 5, ((fastShoot * 3 / 10) / 5));
+			}
+			if (fastShoot > 0)
+			{
+				wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 94, 140, (fastShoot * 3 % 10) % 5, ((fastShoot * 3 % 10) / 5));
+				wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 85, 140, 0, 0);
+			}
+				wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 76, 140, 0, 0);
 		}
 		break;
 	case 8:
-		if (totalBigTank * 4 > 9)
+		if (bigTankScoreRender)
 		{
-			wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 103, 164, (totalBigTank * 4 / 10) % 5, ((totalBigTank * 4 / 10) / 5));
-		}
-		wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 94, 164, (totalBigTank * 4 % 10) % 5, ((totalBigTank * 4 % 10) / 5));
-		if (totalBigTank > 0);
-		{
-			wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 85, 164, 0, 0);
-			wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 76, 164, 0, 0);
+			if (bigTank * 4 > 9)
+			{
+				wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 103, 164, (bigTank * 4 / 10) % 5, ((bigTank * 4 / 10) / 5));
+			}
+			if (bigTank > 0)
+			{
+				wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 94, 164, (bigTank * 4 % 10) % 5, ((bigTank * 4 % 10) / 5));
+				wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 85, 164, 0, 0);
+			}
+				wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 76, 164, 0, 0);
 		}
 		break;
 	case 9:
-		if (totalDestroy > 9)
+		if (totalDestroyScoreRender)
 		{
-			wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 29, 178, (totalDestroy / 10) % 5, ((totalDestroy / 10) / 5));
+			if (totalDestroy > 9)
+			{
+				wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 29, 178, (totalDestroy / 10) % 5, ((totalDestroy / 10) / 5));
+			}
+			wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 21, 178, (totalDestroy % 10) % 5, ((totalDestroy % 10) / 5));
 		}
-		wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 - 21, 178, (totalDestroy % 10) % 5, ((totalDestroy % 10) / 5));
 		break;
 	}
 }

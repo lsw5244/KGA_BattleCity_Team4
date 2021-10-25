@@ -40,6 +40,20 @@ private:
 	int totalScore;
 	int prevTotalScore;
 
+	int normal;
+	int fastMove;
+	int fastShoot;
+	int bigTank;
+	bool textAnimateEnd;
+
+	bool normalScoreRender;
+	bool fastMoveScoreRender;
+	bool fastShootScoreRender;
+	bool bigTankScoreRender;
+	bool totalDestroyScoreRender;
+
+	float scoreTextTic1;
+	float scoreTextTic2;
 	float nextSceneTime;
 	float sceneChangeTime;
 

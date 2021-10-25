@@ -24,6 +24,9 @@ private:
 	int totalFastShoot;
 	int totalBigTank;
 	int itemBonusPoint;
+
+	int returnScore;
+	bool checkScore = false;
 protected:
 public:
 	void NewEnemyTank(EnemyTanks* enemyTank, int posX, bool item = false);
@@ -40,6 +43,10 @@ public:
 	inline int GetTotalFastShoot() { return totalFastShoot; }
 	inline int GetTotalBigTank() { return totalBigTank; }
 	inline int GetItemBonusPoint() { return itemBonusPoint; }
+	inline int GetReturnScore() { return this->returnScore; }
+	inline bool GetCheckScore() { return this->checkScore; }
+
+	inline void SetCheckScore(bool checkScore) { this->checkScore = checkScore; }
 
 	HRESULT Init();
 	void Update();
