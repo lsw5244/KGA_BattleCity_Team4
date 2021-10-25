@@ -17,7 +17,6 @@ class BattleScene : public GameEntity
 private:
 	// 플레이어 로켓
 	Tank* enemyTank;
-	EnemyTankFactory* enemyTankFactory[4];
 	PlayerTank* playerTank;
 
 	// 타일 샘플정보

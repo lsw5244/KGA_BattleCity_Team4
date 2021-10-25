@@ -310,12 +310,6 @@ void BattleScene::Release()
     SAFE_RELEASE(itemManager);
     SAFE_RELEASE(stageManager);
     SAFE_RELEASE(uIManager);
-
-    SAFE_DELETE(enemyTankFactory[0]);
-    SAFE_DELETE(enemyTankFactory[1]);
-    SAFE_DELETE(enemyTankFactory[2]);
-    SAFE_DELETE(enemyTankFactory[3]);
-
 }
 
 int BattleScene::Load(int num)
