@@ -113,7 +113,6 @@ void ItemManager::Release()
 	{
 		SAFE_RELEASE((*it));
 		it = vecItems.erase(it);
-		it++;
 	}
 	vecItems.clear();
 }

@@ -346,7 +346,7 @@ void StageManager::Update()
 	}
 
 
-	if (spawnNum >= 20 && enemyTankManager->GetEnemyTankVecSize() == 0 && winCheck) {
+	if (spawnNum >= 1 && enemyTankManager->GetEnemyTankVecSize() == 0 && winCheck) {
 		deadCheck = false;
 		for (int y = 0; y < TILE_COUNT; y++) {
 			for (int x = 0; x < TILE_COUNT; x++) {
@@ -358,6 +358,7 @@ void StageManager::Update()
 		ScoreManager::GetSingleton()->SetPlayerLevel(playerTank->GetLevel());
 		ScoreManager::GetSingleton()->SetPlayerLife(playerTank->GetLife());
 		SceneManager::GetSingleton()->ChangeScene("TotalScene");
+		return;
 	}
 	if (playerTank->GetLife() == 0 || tileInfo[25][12].terrain == Terrain::BaseDes && deadCheck) {
 		winCheck = false;
@@ -376,6 +377,8 @@ void StageManager::Update()
 
 			ScoreManager::GetSingleton()->SetPlayerIsDead(true);
 			SceneManager::GetSingleton()->ChangeScene("TotalScene");
+			return;
+
 		}
 	}
 }
