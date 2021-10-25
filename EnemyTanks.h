@@ -76,7 +76,6 @@ public:
 	virtual void Release() = 0;
 	virtual void AutoFire() = 0;
 	
-	EnemyTanks() {}
 	virtual ~EnemyTanks();
 };
 

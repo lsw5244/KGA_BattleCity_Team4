@@ -18,7 +18,7 @@ HRESULT AmmoManager::Init()
 	}
 
 	vecEnemyAmmos.resize(enemyMaxAmmoCount);
-	for (it = vecEnemyAmmos.begin(); it != vecEnemyAmmos.end(); it++)
+	for (vector<Ammo*>::iterator it = vecEnemyAmmos.begin(); it != vecEnemyAmmos.end(); it++)
 	{
 		(*it) = new Ammo;
 		(*it)->Init();
@@ -34,7 +34,7 @@ HRESULT AmmoManager::Init()
 
 void AmmoManager::Update()
 {
-	for (it = vecEnemyAmmos.begin(); it != vecEnemyAmmos.end(); it++)
+	for (vector<Ammo*>::iterator it = vecEnemyAmmos.begin(); it != vecEnemyAmmos.end(); it++)
 	{
 		(*it)->Update();
 	}
@@ -47,7 +47,7 @@ void AmmoManager::Update()
 
 void AmmoManager::Render(HDC hdc)
 {
-	for (it = vecEnemyAmmos.begin(); it != vecEnemyAmmos.end(); it++)
+	for (vector<Ammo*>::iterator it = vecEnemyAmmos.begin(); it != vecEnemyAmmos.end(); it++)
 	{
 		(*it)->Render(hdc);
 	}
@@ -60,7 +60,7 @@ void AmmoManager::Render(HDC hdc)
 
 void AmmoManager::Release()
 {
-	for (it = vecEnemyAmmos.begin(); it != vecEnemyAmmos.end(); it++)
+	for (vector<Ammo*>::iterator it = vecEnemyAmmos.begin(); it != vecEnemyAmmos.end(); it++)
 	{
 		SAFE_RELEASE((*it));
 	}
@@ -70,11 +70,6 @@ void AmmoManager::Release()
 	{
 		SAFE_RELEASE(playerAmmos[i]);
 	}
-}
-
-void AmmoManager::AmmoImageInit()
-{
-
 }
 
 void AmmoManager::Fire(MoveDir dir, POINTFLOAT pos, TankType type, bool isFastAmmo, int maxAmmo)
@@ -92,7 +87,7 @@ void AmmoManager::Fire(MoveDir dir, POINTFLOAT pos, TankType type, bool isFastAm
 		}
 		break;
 	case TankType::Enemy:
-		for (it = vecEnemyAmmos.begin(); it != vecEnemyAmmos.end(); it++)
+		for (vector<Ammo*>::iterator it = vecEnemyAmmos.begin(); it != vecEnemyAmmos.end(); it++)
 		{
 			if ((*it)->GetIsAlive() == false && (*it)->GetRenderBoomEffect() == false)
 			{

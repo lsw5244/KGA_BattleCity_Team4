@@ -108,6 +108,13 @@ void ItemManager::Render(HDC hdc)
 
 void ItemManager::Release()
 {
+	for (vector<Item*>::iterator it = vecItems.begin();
+		it != vecItems.end();)
+	{
+		SAFE_RELEASE((*it));
+		it = vecItems.erase(it);
+	}
+	vecItems.clear();
 }
 
 void ItemManager::Setdata(PlayerTank& playerTank, EnemyTankManager& enemyTankManager, TILE_INFO(*tileInfo)[TILE_COUNT])

@@ -33,7 +33,6 @@ private:
 
 	PlayerTank* playerTank;
 	vector<EnemyTanks*> vecEnemys;
-	vector<EnemyTanks*>::iterator it;
 
 	Ammo** playerAmmos;
 
@@ -54,7 +53,6 @@ public:
 	void SetPlayerAmmos(Ammo** ammos) { playerAmmos = ammos; }
 
 	void AmmoHitCheck();
-	void DestroyWall(int i, int j);
 	void DestroyWall(TILE_INFO* tileInfo);
 	void DestroyWall(TILE_INFO* tileInfo1, TILE_INFO* tileinfo2);
 	void PowerAmmoDestroyWall(TILE_INFO* tileInfo1, TILE_INFO* tileinfo2);

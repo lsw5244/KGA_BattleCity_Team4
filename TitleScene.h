@@ -8,11 +8,10 @@ class Image;
 class TitleScene : public GameEntity
 {
 private:
-	Button* btnGotoBattle;
-	Button* btnQuitProgram;
+	//Button* btnGotoBattle;
+	//Button* btnQuitProgram;
 
-	ButtonFunction* btnFunction;
-	LPARGUMENT_PTR arg;
+	//LPARGUMENT_PTR arg;
 
 	Image* backGround;
 	Image* titleBackGround;

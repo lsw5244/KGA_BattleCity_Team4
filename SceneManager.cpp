@@ -24,6 +24,25 @@ void SceneManager::Init()
 
 void SceneManager::Release()
 {
+	for (map<string, GameEntity*>::iterator it = mapScenes.begin();
+		it != mapScenes.end();)
+	{
+		SAFE_RELEASE(it->second);
+		it = mapScenes.erase(it);
+	}
+	mapScenes.clear();
+
+	for (map<string, GameEntity*>::iterator it = mapLoadingScenes.begin();
+		it != mapLoadingScenes.end();)
+	{
+		SAFE_RELEASE(it->second);
+		it = mapLoadingScenes.erase(it);
+	}
+	mapLoadingScenes.clear();
+
+	//SAFE_RELEASE(currScene);
+	SAFE_RELEASE(readyScene);
+	SAFE_RELEASE(loadingScene);
 }
 
 void SceneManager::Update()

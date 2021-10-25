@@ -10,7 +10,6 @@ class AmmoManager : public GameEntity
 {
 private:
 	vector<Ammo*> vecEnemyAmmos;
-	vector<Ammo*>::iterator it;
 	vector<EnemyTanks*> vecEnemys;
 
 	int enemyMaxAmmoCount = 30;
@@ -27,7 +26,6 @@ public:
 	void Render(HDC hdc);
 	void Release();
 
-	void AmmoImageInit();
 	void Fire(MoveDir dir, POINTFLOAT pos, TankType type, bool isFastAmmo = false, int maxAmmo = 1);
 	void SetTileInfoAndEnemyVec();
 

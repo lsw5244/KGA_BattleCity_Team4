@@ -54,11 +54,11 @@ void Ammo::Update()
 
 	if (CollisionEnter(*(playerTank->GetRect()), shape) && type != TankType::Player)
 	{
-		playerTank->Setisdead(true);
+		playerTank->SetIsDead(true);
 		DestroyAmmo();
 	}
 
-	for (it = vecEnemys.begin(); it != vecEnemys.end(); it++)
+	for (vector<EnemyTanks*>::iterator it = vecEnemys.begin(); it != vecEnemys.end(); it++)
 	{
 		if (CollisionEnter((*it)->GetRect(), shape) && type != TankType::Enemy && isAlive == true && (*it)->GetHp() > 0)
 		{
@@ -149,6 +149,7 @@ void Ammo::Render(HDC hdc)
 
 void Ammo::Release()
 {
+
 }
 
 void Ammo::Fire(MoveDir dir, POINTFLOAT pos, bool isFastAmmo)
@@ -378,71 +379,6 @@ void Ammo::AmmoHitCheck()
 
 }
 
-void Ammo::DestroyWall(int i, int j)
-{
-	if (isAlive == false)	return;
-
-	DestroyAmmo();
-
-	switch (dir)
-	{
-	case MoveDir::Down:
-		if (tileInfo[i][j].isDes[0][0] == false && tileInfo[i][j].isDes[0][1] == false)
-		{
-			tileInfo[i][j].isDes[1][0] = false;
-			tileInfo[i][j].isDes[1][1] = false;
-		}
-		else
-		{
-			tileInfo[i][j].isDes[0][0] = false;
-			tileInfo[i][j].isDes[0][1] = false;
-		}
-		break;
-
-	case MoveDir::Up:
-		if (tileInfo[i][j].isDes[1][0] == false && tileInfo[i][j].isDes[1][1] == false)
-		{
-			tileInfo[i][j].isDes[0][0] = false;
-			tileInfo[i][j].isDes[0][1] = false;
-		}
-		else
-		{
-			tileInfo[i][j].isDes[1][0] = false;
-			tileInfo[i][j].isDes[1][1] = false;
-		}
-		break;
-
-	case MoveDir::Left:
-		if (tileInfo[i][j].isDes[0][1] == false && tileInfo[i][j].isDes[1][1] == false)
-		{
-			tileInfo[i][j].isDes[0][0] = false;
-			tileInfo[i][j].isDes[1][0] = false;
-		}
-		else
-		{
-			tileInfo[i][j].isDes[0][1] = false;
-			tileInfo[i][j].isDes[1][1] = false;
-		}
-		break;
-
-	case MoveDir::Right:
-		if (tileInfo[i][j].isDes[0][0] == false && tileInfo[i][j].isDes[1][0] == false)
-		{
-			tileInfo[i][j].isDes[0][1] = false;
-			tileInfo[i][j].isDes[1][1] = false;
-		}
-		else
-		{
-			tileInfo[i][j].isDes[0][0] = false;
-			tileInfo[i][j].isDes[1][0] = false;
-		}
-		break;
-	}
-
-	hitTile1 = nullptr;
-	hitTile2 = nullptr;
-
-}
 
 void Ammo::DestroyWall(TILE_INFO* tileInfo)
 {

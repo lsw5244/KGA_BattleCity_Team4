@@ -125,4 +125,11 @@ void EnemyTankManager::Render(HDC hdc)
 
 void EnemyTankManager::Release()
 {
+	for (vector<EnemyTanks*>::iterator it = vecEnemyTank.begin();
+		it != vecEnemyTank.end(); )
+	{
+		SAFE_RELEASE((*it));
+		it = vecEnemyTank.erase(it);
+	}
+	vecEnemyTank.clear();
 }

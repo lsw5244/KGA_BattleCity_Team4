@@ -5,8 +5,8 @@
 #include "BattleScene.h"
 #include "LoadingScene.h"
 #include "TilemapToolScene.h"
-#include "AmmoDebugScene.h"
 #include "TotalScene.h"
+#include "ScoreManager.h"
 
 HRESULT MainGame::Init()
 {
@@ -58,7 +58,6 @@ HRESULT MainGame::Init()
 	SceneManager::GetSingleton()->AddScene("TitleScene", new TitleScene());
 	SceneManager::GetSingleton()->AddScene("BattleScene", new BattleScene());
 	SceneManager::GetSingleton()->AddScene("TilemapToolScene", new TilemapToolScene());
-	SceneManager::GetSingleton()->AddScene("AmmoDebugScene", new AmmoDebugScene());
 	SceneManager::GetSingleton()->AddScene("TotalScene", new TotalScene());
 
 	//SceneManager::GetSingleton()->AddLoadingScene("LoadingScene", new LoadingScene());
@@ -129,8 +128,10 @@ void MainGame::Release()
 	SceneManager::GetSingleton()->Release();
 	SceneManager::GetSingleton()->ReleaseSingleton();
 
-	SceneManager::GetSingleton()->Release();
-	SceneManager::GetSingleton()->ReleaseSingleton();
+	ScoreManager::GetSingleton()->Release();
+	ScoreManager::GetSingleton()->ReleaseSingleton();
+	//SceneManager::GetSingleton()->Release();
+	//SceneManager::GetSingleton()->ReleaseSingleton();
 
 	// 타이머 객체 삭제
 	KillTimer(g_hWnd, 0);
