@@ -26,7 +26,7 @@ HRESULT Item::Init(PlayerTank& playerTank, EnemyTankManager& enemyTankManager, I
 	} while ((10 > posX < 15) && posY > 22);
 	pos.x = 16 + ((posX + 1) * 8);
 	pos.y = 8 + ((posY + 1) * 8);
-
+	
 	switch (itemNum) {
 	case 0:
 		itemState = ItemState::Barrier;
@@ -57,6 +57,11 @@ HRESULT Item::Init(PlayerTank& playerTank, EnemyTankManager& enemyTankManager, I
 
 bool Item::ItemUpdate()
 {
+	if (collCheck)
+	{
+		Release();
+		return true;
+	}
 	aliveTime += TimerManager::GetSingleton()->GetDeltaTime();
 	renderTime += TimerManager::GetSingleton()->GetDeltaTime();
 	RECT rc;
@@ -83,7 +88,6 @@ bool Item::ItemUpdate()
 			break;
 		}
 		collCheck = true;
-
 	}
 	if (aliveTime >= 20 || collCheck) {
 		pointImageRender = true;

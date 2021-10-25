@@ -8,7 +8,6 @@ class ItemManager : public  GameEntity
 {
 private:
 	vector<Item*> vecItems;
-	vector<Item*>::iterator it;
 	ItemManager* itemManager;
 	int eraseCount;
 
