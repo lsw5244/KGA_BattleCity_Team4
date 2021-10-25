@@ -48,6 +48,7 @@ HRESULT MainGame::Init()
 		ImageManager::GetSingleton()->AddImage("Image/Title/BattleGameOver.bmp", 32, 15, true, RGB(255, 0, 255));
 		ImageManager::GetSingleton()->AddImage("Image/Title/GrayBackGround.bmp", 256, 112, true, RGB(255, 0, 255));
 		ImageManager::GetSingleton()->AddImage("Image/Title/ScoreGameOver.bmp", 124, 80, true, RGB(255, 0, 255));
+		ImageManager::GetSingleton()->AddImage("Image/Title/GameClear.bmp", 150, 80, true, RGB(255, 0, 255));
 		ImageManager::GetSingleton()->AddImage("Image/Enemy/Enemy.bmp", 128, 96, 8, 6, true, RGB(255, 0, 255));
 	}
 	// 이미지 초기화

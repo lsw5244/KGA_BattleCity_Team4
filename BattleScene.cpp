@@ -13,10 +13,6 @@
 #include "ScoreManager.h"
 
 #define POS 8
-#define NormalTank enemyTankFactory[0]->CreateEnemyTank()
-#define FastTank enemyTankFactory[1]->CreateEnemyTank()
-#define ShootTank enemyTankFactory[2]->CreateEnemyTank()
-#define BigTank enemyTankFactory[3]->CreateEnemyTank()
 
 HRESULT BattleScene::Init()
 {
@@ -40,6 +36,9 @@ HRESULT BattleScene::Init()
     stageTime = 0.0f;
     grayPosY1 = ( 0 - (grayBackGround1->GetHeight() / 2));
     grayPosY2 = (WIN_SIZE_Y) + (grayBackGround2->GetHeight() / 2);
+
+    waterCheck = false;
+    waterTime = 0.0f;
 
     stageNum = ScoreManager::GetSingleton()->GetIsStage();
     Load(stageNum);
@@ -129,6 +128,12 @@ void BattleScene::Update()
         return;
     }
 
+    waterTime += TimerManager::GetSingleton()->GetDeltaTime();
+    if (waterTime >= 0.4f) {
+        waterTime = 0.0f;
+        waterCheck = !waterCheck;
+    }
+    
     enemyTankManager->Update();
     playerTank->Update();
     ammoManager->Update();
@@ -169,10 +174,13 @@ void BattleScene::Render(HDC hdc)
                 grayBackGround1->Render(hdc, WIN_SIZE_X / 2, grayPosY1);
                 grayBackGround2->Render(hdc, WIN_SIZE_X / 2, grayPosY2);
                 stage->Render(hdc, (WIN_SIZE_X / 2) - 10, (WIN_SIZE_Y / 2));
-                if (stageNum < 4) {
+                if (stageNum < 5) {
                     stageNumImage->Render(hdc, (WIN_SIZE_X / 2) + 17, (WIN_SIZE_Y / 2), stageNum, 0);
-                } else {
+                } else if(stageNum < 10){
                     stageNumImage->Render(hdc, (WIN_SIZE_X / 2) + 17, (WIN_SIZE_Y / 2), stageNum - 5, 1);
+                } else {
+                    stageNumImage->Render(hdc, (WIN_SIZE_X / 2) + 17, (WIN_SIZE_Y / 2), 1, 0);
+                    stageNumImage->Render(hdc, (WIN_SIZE_X / 2) + 24, (WIN_SIZE_Y / 2), 0, 0);
                 }
             }
             else {
@@ -213,11 +221,21 @@ void BattleScene::Render(HDC hdc)
                 for (int tileNumX = 0; tileNumX < 2; tileNumX++) {
                     if (tileInfo[i][j].isDes[tileNumY][tileNumX]) {
                         if (tileInfo[i][j].terrain != Terrain::Forest)
-                        sampleImage->Render(hdc,
-                            tileInfo[i][j].rc[tileNumY][tileNumX].left + (TILE_SIZE / 2),
-                            tileInfo[i][j].rc[tileNumY][tileNumX].top + (TILE_SIZE / 2),
-                            tileInfo[i][j].frameX[tileNumX],
-                            tileInfo[i][j].frameY[tileNumY]);
+                            sampleImage->Render(hdc,
+                                tileInfo[i][j].rc[tileNumY][tileNumX].left + (TILE_SIZE / 2),
+                                tileInfo[i][j].rc[tileNumY][tileNumX].top + (TILE_SIZE / 2),
+                                tileInfo[i][j].frameX[tileNumX],
+                                tileInfo[i][j].frameY[tileNumY]);
+                        if (tileInfo[i][j].terrain == Terrain::Water) {
+                            if (waterCheck) {
+                                tileInfo[i][j].frameX[tileNumX] = 0 + tileNumX;
+                                tileInfo[i][j].frameY[tileNumY] = 12 + tileNumY;
+                            }
+                            else {
+                                tileInfo[i][j].frameX[tileNumX] = 4 + tileNumX;
+                                tileInfo[i][j].frameY[tileNumY] = 12 + tileNumY;
+                            }
+                        }
                         if (KeyManager::GetSingleton()->IsStayKeyDown('0') && tileInfo[i][j].terrain != Terrain::Empty) {
                             Rectangle(hdc,
                                 tileInfo[i][j].selectRc.left,
