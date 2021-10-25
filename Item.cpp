@@ -13,11 +13,13 @@ HRESULT Item::Init(PlayerTank& playerTank, EnemyTankManager& enemyTankManager, I
 	SetEnemyTankManager(enemyTankManager);
 	SetItemManager(itemManager);
 	srand((unsigned int)time(nullptr));
-	pointImageRender = 0;
+	pointImageRender = false;
 	collCheck = false;
 	aliveTime = renderTime = 0.0f;
-	itemNum = rand() % 6;
 	pointImageTime = 0.0f;
+	getItemCheck = false;
+
+	itemNum = rand() % 6;
 	int posX;
 	int posY;
 	do {
@@ -51,18 +53,19 @@ HRESULT Item::Init(PlayerTank& playerTank, EnemyTankManager& enemyTankManager, I
 	shape.top = pos.y - 7;
 	shape.right = pos.x + 7;
 	shape.bottom = pos.y + 7;
-
 	return S_OK;
 }
 
 bool Item::ItemUpdate()
 {
-	if (collCheck)
-	{
+	if (aliveTime >= 20) {
 		Release();
 		return true;
 	}
-	aliveTime += TimerManager::GetSingleton()->GetDeltaTime();
+	if (pointImageTime >= 0.4f) {
+		Release();
+		return true;
+	}
 	renderTime += TimerManager::GetSingleton()->GetDeltaTime();
 	RECT rc;
 	if (IntersectRect(&rc, &shape, playerRect))
@@ -95,13 +98,20 @@ bool Item::ItemUpdate()
 		}
 		collCheck = true;
 	}
-	if (aliveTime >= 20 || collCheck) {
+
+
+	if (collCheck) {
 		pointImageRender = true;
-		pointImageTime += TimerManager::GetSingleton()->GetDeltaTime();
-		if (pointImageTime >= 0.4f) {
-			Release();
-			return true;
-		}
+	} else if (aliveTime >= 20) {
+		Release();
+		return true;
+	} else {
+		aliveTime += TimerManager::GetSingleton()->GetDeltaTime();
+	}
+	if (pointImageRender) pointImageTime += TimerManager::GetSingleton()->GetDeltaTime();
+	if (pointImageTime >= 0.4f) {
+		Release();
+		return true;
 	}
 	return false;
 }
@@ -117,7 +127,6 @@ void Item::Render(HDC hdc)
 			pointImage->Render(hdc, pos.x, pos.y, 4, 0);
 		}
 	}
-
 }
 
 void Item::Release()
