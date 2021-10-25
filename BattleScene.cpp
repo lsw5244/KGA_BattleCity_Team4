@@ -56,16 +56,10 @@ HRESULT BattleScene::Init()
     playerTank = new PlayerTank;
     playerTank->Init();
 
-    enemyTankFactory[0] = new NormalTankFactory;
-    enemyTankFactory[1] = new FastShootTankFactory;
-    enemyTankFactory[2] = new FastMoveTankFactory;
-    enemyTankFactory[3] = new BigTankFactory;
-
     enemyTankManager = new EnemyTankManager;
     enemyTankManager->Init();
 
     ammoManager = new AmmoManager;
-    ammoManager->AmmoImageInit();
     ammoManager->SetTileInfo(tileInfo);
     ammoManager->SetPlayerTank(playerTank);
     ammoManager->SetVecEnemyTank(enemyTankManager->GetVecEnemyTanks());
@@ -310,6 +304,18 @@ void BattleScene::Render(HDC hdc)
 void BattleScene::Release()
 {
     SAFE_RELEASE(ammoManager);
+    SAFE_RELEASE(playerTank);
+
+    SAFE_RELEASE(enemyTankManager);
+    SAFE_RELEASE(itemManager);
+    SAFE_RELEASE(stageManager);
+    SAFE_RELEASE(uIManager);
+
+    SAFE_DELETE(enemyTankFactory[0]);
+    SAFE_DELETE(enemyTankFactory[1]);
+    SAFE_DELETE(enemyTankFactory[2]);
+    SAFE_DELETE(enemyTankFactory[3]);
+
 }
 
 int BattleScene::Load(int num)

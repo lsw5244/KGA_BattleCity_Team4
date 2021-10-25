@@ -140,7 +140,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Ammo.cpp" />
-    <ClCompile Include="AmmoDebugScene.cpp" />
     <ClCompile Include="AmmoManager.cpp" />
     <ClCompile Include="BattleScene.cpp" />
     <ClCompile Include="BigEnemyTank.cpp" />
@@ -175,7 +174,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ammo.h" />
-    <ClInclude Include="AmmoDebugScene.h" />
     <ClInclude Include="AmmoManager.h" />
     <ClInclude Include="BattleScene.h" />
     <ClInclude Include="BigEnemyTank.h" />
