@@ -4,6 +4,7 @@
 
 class PlayerTank;
 class EnemyTankManager;
+class EnemyTanks;
 class ScoreManager : public Singleton<ScoreManager>
 {
 private:
@@ -18,6 +19,7 @@ private:
 	int itemBonusPoint;
 	int totalScore;
 	int prevTotalScore;
+	bool isDestruction;
 
 
 	bool playerIsDead;		// 플레이어가 패배했을 경우
@@ -59,6 +61,7 @@ public:
 	inline int GetTotalDestroy() { return totalDestroy; }
 	inline int GetTotalScore() { return totalScore; }
 	inline int GetPrevTotalScore() { return prevTotalScore; }
+	inline bool GetisDestruction() { return this->isDestruction; }
 
 };
 

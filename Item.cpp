@@ -70,21 +70,27 @@ bool Item::ItemUpdate()
 		switch (itemState) {
 		case ItemState::Barrier:
 			playerTank->ActiveBarrier();
+			playerTank->SetGetItem(true);
 			break;
 		case ItemState::TimeStop:
 			enemyTankManager->TimeItemUse();
+			playerTank->SetGetItem(true);
 			break;
 		case ItemState::Shovel:
 			itemManager->ActiveShove();
+			playerTank->SetGetItem(true);
 			break;
 		case ItemState::Star:
 			playerTank->LevelUp();
+			playerTank->SetGetItem(true);
 			break;
 		case ItemState::Boom:
 			enemyTankManager->BoomItemUse();
+			playerTank->SetGetItem(true);
 			break;
 		case ItemState::Life:
 			playerTank->LifeUp();
+			playerTank->SetGetItem(true);
 			break;
 		}
 		collCheck = true;

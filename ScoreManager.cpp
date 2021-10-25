@@ -1,6 +1,8 @@
 #include "ScoreManager.h"
 #include "EnemyTankManager.h"
+#include "PlayerTank.h"
 #include "Config.h"
+
 void ScoreManager::Init()
 {
 	totalNormal = 0;
@@ -25,36 +27,37 @@ void ScoreManager::Update(PlayerTank& playerTank, EnemyTankManager& enemyTank)
 	totalBigTank = enemyTank.GetTotalBigTank();
 	itemBonusPoint = enemyTank.GetItemBonusPoint();
 
-	if (KeyManager::GetSingleton()->IsOnceKeyDown('M'))
+	if (enemyTank.GetCheckScore())
 	{
-		totalNormal++;
-		totalScore += 100;	
-		prevTotalScore += 100;
+		switch (enemyTank.GetReturnScore())
+		{
+		case 100:
+			totalScore += 100;
+			prevTotalScore += 100;
+		
+			break;
+		case 200:
+			totalScore += 200;
+			prevTotalScore += 200;
+			break;
+		case 300:
+			totalScore += 300;
+			prevTotalScore += 300;
+			break;
+		case 400:
+			totalScore += 400;
+			prevTotalScore += 400;
+			break;
+		}
+		enemyTank.SetCheckScore(false);
 	}
-	else if (KeyManager::GetSingleton()->IsOnceKeyDown('N'))
+	if (playerTank.GetGetItem() == true)
 	{
-		totalFastMove++;
-		totalScore += 200;
-		prevTotalScore += 200;
-	}
-	else if (KeyManager::GetSingleton()->IsOnceKeyDown('B'))
-	{
-		totalFastShoot++;
-		totalScore += 300;
-		prevTotalScore += 300;
-	}
-	else if (KeyManager::GetSingleton()->IsOnceKeyDown('V'))
-	{
-		totalBigTank++;
-		totalScore += 400;
-		prevTotalScore += 400;
-	}
-	else if (KeyManager::GetSingleton()->IsOnceKeyDown('C'))
-	{
-		itemBonusPoint++;
 		totalScore += 500;
 		prevTotalScore += 500;
+		playerTank.SetGetItem(false);
 	}
+	
 	totalDestroy = totalNormal + totalFastMove + totalFastShoot + totalBigTank;
 
 	if (totalScore > 20000)		totalScore = totalScore - 20000;
@@ -63,6 +66,7 @@ void ScoreManager::Update(PlayerTank& playerTank, EnemyTankManager& enemyTank)
 	//cout << totalNormal << " / " << totalFastMove << " / " << totalFastShoot << " / " 
 	//	<< totalBigTank << " / " << totalDestroy << " / "  << itemBonusPoint << " / " 
 	//	<< totalScore << " / " << prevTotalScore << endl;
+	//cout << enemyTank.GetCheckScore() << " // " << enemyTank.GetReturnScore() << endl;
 
 }
 

@@ -49,6 +49,8 @@ private:
 	bool SpawnEffect();
 	bool ShieldEffect();
 
+	bool getItem;
+
 	bool SuperPlayerMode;
 	TankType type;
 public:
@@ -72,6 +74,9 @@ public:
 	inline void SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank) { this->vecEnemyTank = vecEnemyTank; }
 	inline RECT* GetRect() { return &shape; }
 	inline void SetFastAmmoReady(bool ready) { fastAmmoReady = ready; }
+
+	inline void SetGetItem(bool getItem) { this->getItem = getItem; }
+	inline bool GetGetItem() { return getItem; }
 
 };
 
