@@ -329,10 +329,9 @@ void PlayerTank::Render(HDC hdc)
             shape.bottom);
     }
     if (SpawnEffect() == false)
-
-          {
+         {
                playerTank->Render(hdc, pos.x, pos.y, elapsedCount, Level);
-          }
+         }
    else
         {
               spawnEffect->Render(hdc, pos.x, pos.y, spawnEffect->GetCurrFrameX(), 0);
