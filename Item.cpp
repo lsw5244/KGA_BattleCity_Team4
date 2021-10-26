@@ -28,7 +28,7 @@ HRESULT Item::Init(PlayerTank& playerTank, EnemyTankManager& enemyTankManager, I
 	} while ((10 > posX < 15) && posY > 22);
 	pos.x = 16 + ((posX + 1) * 8);
 	pos.y = 8 + ((posY + 1) * 8);
-	
+	itemNum = 3;
 	switch (itemNum) {
 	case 0:
 		itemState = ItemState::Barrier;
@@ -66,9 +66,10 @@ bool Item::ItemUpdate()
 		Release();
 		return true;
 	}
+
 	renderTime += TimerManager::GetSingleton()->GetDeltaTime();
 	RECT rc;
-	if (IntersectRect(&rc, &shape, playerRect))
+	if (IntersectRect(&rc, &shape, playerRect) && !collCheck)
 	{
 		switch (itemState) {
 		case ItemState::Barrier:
