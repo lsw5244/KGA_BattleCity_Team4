@@ -8,6 +8,7 @@ private:
 
 	bool playerIsDead;		// 플레이어가 패배했을 경우
 	int isStage = 1;		// 현재 스테이지
+	int isScoreStage = 1;	// 토탈씬에서 표시해줄 스테이지 넘버
 	int playerLife = 2;		// 플레이어 라이프
 	int playerLevel = 0;	// 플레이어 레벨
 public:
@@ -26,6 +27,9 @@ public:
 	inline void SetStage(int stageNum) { this->isStage = stageNum; }
 	inline void AddIsStage() { if (isStage < 11)this->isStage++; }
 	inline int GetIsStage() { return isStage; }
+
+	inline void SetScoreStage(int stageNum) { this->isScoreStage = stageNum; }
+	inline int GetScoreStage() { return isScoreStage; }
 
 	inline void SetTileInfo(TILE_INFO tileInfo, int y, int x) { this->tileInfo[y][x] = tileInfo; }
 	inline TILE_INFO GetTileInfo(int y, int x) { return tileInfo[y][x]; }

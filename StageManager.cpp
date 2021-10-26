@@ -375,8 +375,7 @@ void StageManager::Update()
 		if (gameOverCheck) {
 			GameDataManager::GetSingleton()->SetPlayerLevel(0);
 			GameDataManager::GetSingleton()->SetPlayerLife(2);
-			GameDataManager::GetSingleton()->SetStage(1);
-
+			GameDataManager::GetSingleton()->AddIsStage();
 			GameDataManager::GetSingleton()->SetPlayerIsDead(true);
 			SceneManager::GetSingleton()->ChangeScene("TotalScene");
 			return;
