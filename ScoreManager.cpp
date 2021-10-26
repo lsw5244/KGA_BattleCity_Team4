@@ -11,7 +11,6 @@ void ScoreManager::Init()
 	totalBigTank = 0;
 	totalDestroy = 0;
 	itemBonusPoint = 0;
-	playerIsDead = false;
 }
 
 void ScoreManager::Release()

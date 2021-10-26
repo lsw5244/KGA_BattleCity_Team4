@@ -6,6 +6,7 @@
 #include "CommonFunction.h"
 #include "ItemManager.h"
 #include "ScoreManager.h"
+#include "GameDataManager.h"
 
 void PlayerTank::SetFrame()
 {
@@ -38,16 +39,16 @@ void PlayerTank::CollisionAndMove(MoveDir movedir)
     bufferRc = shape;
     bufferPos = pos;
 
-    if (movedir == MoveDir::Left) {
+    if (movedir == MoveDir::Left && isdead == false) {
         pos.x -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
     }
-    else if (movedir == MoveDir::Right) {
+    else if (movedir == MoveDir::Right && isdead == false) {
         pos.x += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
     }
-    else if (movedir == MoveDir::Up) {
+    else if (movedir == MoveDir::Up && isdead == false) {
         pos.y -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
     }
-    else if (movedir == MoveDir::Down) {
+    else if (movedir == MoveDir::Down && isdead == false) {
         pos.y += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
     }
 
@@ -251,10 +252,8 @@ void PlayerTank::Update()
     }
 
     RECT rc;
-    SpawnEffect();
     if (SpawnEffect() == false)
     {
-        // time += TimerManager::GetSingleton()->GetDeltaTime();
         if (KeyManager::GetSingleton()->IsStayKeyDown(VK_UP))
         {
             moveDir = MoveDir::Up;
@@ -390,8 +389,8 @@ void PlayerTank::PlayerTankReset()
 
 void PlayerTank::LoadData()
 {
-    life = ScoreManager::GetSingleton()->GetPlayerLife();
-    for (int i = 0; i < ScoreManager::GetSingleton()->GetPlayerLevel(); i++) LevelUp();
+    life = GameDataManager::GetSingleton()->GetPlayerLife();
+    for (int i = 0; i < GameDataManager::GetSingleton()->GetPlayerLevel(); i++) LevelUp();
 }
 
 void PlayerTank::SetData(TILE_INFO(*tileInfo)[TILE_COUNT], AmmoManager* ammoManager, ItemManager* itemManager)

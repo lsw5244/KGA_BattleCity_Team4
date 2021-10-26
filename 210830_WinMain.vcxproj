@@ -185,6 +185,7 @@
     <ClInclude Include="EnemyTanks.h" />
     <ClInclude Include="FastMoveEnemyTank.h" />
     <ClInclude Include="FastShootEnemyTank.h" />
+    <ClInclude Include="GameDataManager.h" />
     <ClInclude Include="GameEntity.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Image.h" />
