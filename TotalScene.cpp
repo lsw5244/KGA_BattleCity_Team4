@@ -210,7 +210,11 @@ void TotalScene::ScoreRender(HDC hdc, int i)
 	switch (i)
 	{
 	case 0:
-		wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 + 31, 36, 0, 0);
+		if (((stageNum-1) > 9))
+		{
+			wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 + 23, 36, ((stageNum - 1) / 10) % 5, (((stageNum - 1) / 10) / 5));
+		}
+		wNumberImage[i]->Render(hdc, WIN_SIZE_X / 2 + 31, 36, ((stageNum - 1) % 10) % 5, (((stageNum - 1) % 10) / 5));
 		break;
 	case 1:
 		if (normalScoreRender)
