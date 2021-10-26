@@ -11,6 +11,9 @@ private:
 	int playerLife = 2;		// 플레이어 라이프
 	int playerLevel = 0;	// 플레이어 레벨
 public:
+
+	inline void Release() {  }
+
 	inline void SetPlayerLife(int playerLife) { this->playerLife = playerLife; }
 	inline int GetPlayerLife() { return playerLife; }
 

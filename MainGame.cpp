@@ -3,10 +3,10 @@
 #include "ImageManager.h"
 #include "TitleScene.h"
 #include "BattleScene.h"
-#include "LoadingScene.h"
 #include "TilemapToolScene.h"
 #include "TotalScene.h"
 #include "ScoreManager.h"
+#include "GameDataManager.h"
 
 HRESULT MainGame::Init()
 {
@@ -130,8 +130,9 @@ void MainGame::Release()
 
 	ScoreManager::GetSingleton()->Release();
 	ScoreManager::GetSingleton()->ReleaseSingleton();
-	//SceneManager::GetSingleton()->Release();
-	//SceneManager::GetSingleton()->ReleaseSingleton();
+
+	GameDataManager::GetSingleton()->Release();
+	GameDataManager::GetSingleton()->ReleaseSingleton();
 
 	// 타이머 객체 삭제
 	KillTimer(g_hWnd, 0);
