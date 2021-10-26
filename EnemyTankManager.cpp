@@ -42,7 +42,6 @@ void EnemyTankManager::BoomItemUse()
 		it++)
 	{
 		(*it)->BoomItem();
-		//(*it)->SetItemDes(true);
 	}
 }
 
@@ -65,7 +64,7 @@ void EnemyTankManager::Update()
 		{
 			if (stopTimeCheck) {
 				(*it)->SetTimeStop(true);
-				if (stopTime > 5) {
+				if (stopTime > 10) {
 					stopTime = 0;
 					stopTimeCheck = false;
 					for (vector<EnemyTanks*>::iterator iT = vecEnemyTank.begin();
