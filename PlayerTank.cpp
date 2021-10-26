@@ -307,7 +307,7 @@ void PlayerTank::Update()
         {
             deadEffectfreamX++;
             deadEffecttime = 0.0f;
-            if (deadEffectfreamX >= 5)
+            if (deadEffectfreamX >= 8)
             {
                 if (life > 0)
                 {
@@ -320,6 +320,14 @@ void PlayerTank::Update()
 
 void PlayerTank::Render(HDC hdc)
 {
+    if (isdead == true)
+    {
+        if (deadEffectfreamX < 5)deadEffect->Render(hdc, pos.x, pos.y, deadEffectfreamX, 0);
+        if (deadEffectfreamX == 5) deadEffect->Render(hdc, pos.x, pos.y, 3, 0);
+        if (deadEffectfreamX == 6) deadEffect->Render(hdc, pos.x, pos.y, 2, 0);
+        if (deadEffectfreamX == 7) deadEffect->Render(hdc, pos.x, pos.y, 1, 0);
+        return;
+    }
     if (life == 0) return;
     if (KeyManager::GetSingleton()->IsStayKeyDown(TANK_COLLIDER_DEBUG)) {
         Rectangle(hdc,
@@ -329,10 +337,9 @@ void PlayerTank::Render(HDC hdc)
             shape.bottom);
     }
     if (SpawnEffect() == false)
-
-          {
+         {
                playerTank->Render(hdc, pos.x, pos.y, elapsedCount, Level);
-          }
+         }
    else
         {
               spawnEffect->Render(hdc, pos.x, pos.y, spawnEffect->GetCurrFrameX(), 0);
@@ -342,11 +349,6 @@ void PlayerTank::Render(HDC hdc)
        shieldEffect->Render(hdc, pos.x, pos.y, shieldEffect->GetCurrFrameX(), 0);
     }
 
-    if (isdead == true)
-    {
-        deadEffect->Render(hdc, pos.x, pos.y, deadEffectfreamX, 0);
-    }
-    
 }
 
 void PlayerTank::Release()

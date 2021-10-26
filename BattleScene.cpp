@@ -284,7 +284,6 @@ void BattleScene::Render(HDC hdc)
     playerTank->Render(hdc);
     ammoManager->Render(hdc);
 
-    itemManager->Render(hdc);
     uIManager->Render(hdc);
     for (int i = 0; i < TILE_COUNT; i++) {
         for (int j = 0; j < TILE_COUNT; j++) {
@@ -300,6 +299,7 @@ void BattleScene::Render(HDC hdc)
             }
         }
     }
+    itemManager->Render(hdc);
     stageManager->Render(hdc);
     // 숲타일 렌더
 }
