@@ -4,6 +4,7 @@
 #include "ScoreManager.h"
 #include "TimerManager.h"
 #include "SceneManager.h"
+#include "GameDataManager.h"
 
 HRESULT TotalScene::Init()
 {
@@ -30,7 +31,7 @@ HRESULT TotalScene::Init()
 	gameClearPos = WIN_SIZE_Y + (gameClear->GetHeight() / 2);
 	nextSceneTime = 0;
 	sceneChangeTime = 3;
-	stageNum = ScoreManager::GetSingleton()->GetIsStage();
+	stageNum = GameDataManager::GetSingleton()->GetIsStage();
 
 	normal = 0;
 	fastMove = 0;
@@ -107,23 +108,23 @@ void TotalScene::Update()
 	if (textAnimateEnd == true)
 	{
 		nextSceneTime += TimerManager::GetSingleton()->GetDeltaTime();
-		if (ScoreManager::GetSingleton()->GetPlayerIsDead()) {	// 플레이어 사망시
+		if (GameDataManager::GetSingleton()->GetPlayerIsDead()) {	// 플레이어 사망시
 			if (nextSceneTime > sceneChangeTime) {
 				if (gameOverPos > WIN_SIZE_Y / 2) {
 					gameOverPos -= 80 * TimerManager::GetSingleton()->GetDeltaTime();
 				}
 			}
 			if (nextSceneTime > sceneChangeTime + 3) {
-				if (ScoreManager::GetSingleton()->GetPlayerIsDead()) {
-					ScoreManager::GetSingleton()->SetStage(1);
+				if (GameDataManager::GetSingleton()->GetPlayerIsDead()) {
+					GameDataManager::GetSingleton()->SetStage(1);
 					SceneManager::GetSingleton()->ChangeScene("TitleScene");
 				}
 			}
 		}
-		else if (!ScoreManager::GetSingleton()->GetPlayerIsDead()) {
+		else if (!GameDataManager::GetSingleton()->GetPlayerIsDead()) {
 			if (stageNum != 11) {
 				if (nextSceneTime > sceneChangeTime) {		// 스테이지 클리어후 다음스테이지 전환
-					if (!ScoreManager::GetSingleton()->GetPlayerIsDead()) {
+					if (!GameDataManager::GetSingleton()->GetPlayerIsDead()) {
 						SceneManager::GetSingleton()->ChangeScene("BattleScene");
 					}
 				}
@@ -135,7 +136,7 @@ void TotalScene::Update()
 					}
 				}
 				if (nextSceneTime > sceneChangeTime + 4) {	
-					ScoreManager::GetSingleton()->SetStage(1);
+					GameDataManager::GetSingleton()->SetStage(1);
 					SceneManager::GetSingleton()->ChangeScene("TitleScene");
 				}
 			}

@@ -8,6 +8,7 @@
 #include "ImageManager.h"
 #include "SceneManager.h"
 #include "ScoreManager.h"
+#include "GameDataManager.h"
 
 #define NormalTank		enemyTankFactory[0]->CreateEnemyTank()
 #define FastTank		enemyTankFactory[1]->CreateEnemyTank()
@@ -20,7 +21,7 @@ void StageManager::SetData(EnemyTankManager* enemyTankManager, PlayerTank* playe
 	this->ammoManager = ammoManager;
 	this->enemyTankManager = enemyTankManager;
 	this->playerTank = playerTank;
-	stageNum = ScoreManager::GetSingleton()->GetIsStage();
+	stageNum = GameDataManager::GetSingleton()->GetIsStage();
 }
 
 void StageManager::Init()
@@ -346,17 +347,18 @@ void StageManager::Update()
 	}
 
 
-	if (spawnNum >= 20 && enemyTankManager->GetEnemyTankVecSize() == 0 && winCheck) {
+	if (spawnNum >= 20 && enemyTankManager->GetEnemyTankVecSize() == 0 && winCheck
+		|| KeyManager::GetSingleton()->IsOnceKeyDown('2')) {
 		deadCheck = false;
 		for (int y = 0; y < TILE_COUNT; y++) {
 			for (int x = 0; x < TILE_COUNT; x++) {
-				ScoreManager::GetSingleton()->SetTileInfo(tileInfo[y][x], y, x);
+				GameDataManager::GetSingleton()->SetTileInfo(tileInfo[y][x], y, x);
 			}
 		}
-		ScoreManager::GetSingleton()->SetPlayerIsDead(false);
-		ScoreManager::GetSingleton()->AddIsStage();
-		ScoreManager::GetSingleton()->SetPlayerLevel(playerTank->GetLevel());
-		ScoreManager::GetSingleton()->SetPlayerLife(playerTank->GetLife());
+		GameDataManager::GetSingleton()->SetPlayerIsDead(false);
+		GameDataManager::GetSingleton()->AddIsStage();
+		GameDataManager::GetSingleton()->SetPlayerLevel(playerTank->GetLevel());
+		GameDataManager::GetSingleton()->SetPlayerLife(playerTank->GetLife());
 		SceneManager::GetSingleton()->ChangeScene("TotalScene");
 		return;
 	}
@@ -371,11 +373,11 @@ void StageManager::Update()
 
 		}
 		if (gameOverCheck) {
-			ScoreManager::GetSingleton()->SetPlayerLevel(0);
-			ScoreManager::GetSingleton()->SetPlayerLife(2);
-			ScoreManager::GetSingleton()->SetStage(1);
+			GameDataManager::GetSingleton()->SetPlayerLevel(0);
+			GameDataManager::GetSingleton()->SetPlayerLife(2);
+			GameDataManager::GetSingleton()->SetStage(1);
 
-			ScoreManager::GetSingleton()->SetPlayerIsDead(true);
+			GameDataManager::GetSingleton()->SetPlayerIsDead(true);
 			SceneManager::GetSingleton()->ChangeScene("TotalScene");
 			return;
 
@@ -402,7 +404,7 @@ void StageManager::Release()
 
 void StageManager::SpawnEffect()
 {
-	if (spawnEffectTime >= 0.1) {
+	if (spawnEffectTime >= 0.05) {
 		if (spawnEffectUpDown)spawnEffectFrame++;
 		else spawnEffectFrame--;
 		if (spawnEffectFrame == 0) spawnEffectUpDown = true;

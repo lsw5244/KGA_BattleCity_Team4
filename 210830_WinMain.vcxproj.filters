@@ -254,5 +254,8 @@
     <ClInclude Include="TotalScene.h">
       <Filter>MainGame\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="GameDataManager.h">
+      <Filter>2D Framework\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

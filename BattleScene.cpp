@@ -11,6 +11,8 @@
 #include "UIManager.h"
 #include "StageManager.h"
 #include "ScoreManager.h"
+#include "GameDataManager.h"
+
 
 #define POS 8
 
@@ -40,18 +42,19 @@ HRESULT BattleScene::Init()
     waterCheck = false;
     waterTime = 0.0f;
 
-    stageNum = ScoreManager::GetSingleton()->GetIsStage();
+    stageNum = GameDataManager::GetSingleton()->GetIsStage();
     Load(stageNum);
     
-    if (ScoreManager::GetSingleton()->GetIsStage() != 1) {
+    if (GameDataManager::GetSingleton()->GetIsStage() != 1) {
         for (int y = 0; y < TILE_COUNT; y++) {
             for (int x = 0; x < TILE_COUNT; x++) {
-                bufferTileInfo[y][x] = ScoreManager::GetSingleton()->GetTileInfo(y,x);
+                bufferTileInfo[y][x] = GameDataManager::GetSingleton()->GetTileInfo(y,x);
             }
         }
     }
 
     ScoreManager::GetSingleton()->Init();
+    GameDataManager::GetSingleton()->SetPlayerIsDead(false);
 
     playerTank = new PlayerTank;
     playerTank->Init();
