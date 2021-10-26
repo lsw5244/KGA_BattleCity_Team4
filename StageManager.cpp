@@ -346,7 +346,7 @@ void StageManager::Update()
 	}
 
 
-	if (spawnNum >= 1 && enemyTankManager->GetEnemyTankVecSize() == 0 && winCheck) {
+	if (spawnNum >= 20 && enemyTankManager->GetEnemyTankVecSize() == 0 && winCheck) {
 		deadCheck = false;
 		for (int y = 0; y < TILE_COUNT; y++) {
 			for (int x = 0; x < TILE_COUNT; x++) {

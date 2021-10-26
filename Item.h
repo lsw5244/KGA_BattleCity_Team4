@@ -20,6 +20,7 @@ private:
 	bool collCheck; 
 
 	Image* pointImage;
+	bool getItemCheck;
 	float pointImageTime;
 	bool pointImageRender;
 
