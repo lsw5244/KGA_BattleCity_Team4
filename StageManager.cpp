@@ -320,7 +320,7 @@ void StageManager::Update()
 	if (spawnCheck) {
 		switch (enemyTankSpawnInfo[stageNum-1][spawnNum]) {
 		case EnemyTankSpawnInfo::NormalTankSpawm:
-			if (spawnNum == 0 || spawnNum == 11 || spawnNum == 17) enemyTankManager->NewEnemyTank(NormalTank, spawnPos, true);
+			if (spawnNum == 3 || spawnNum == 11 || spawnNum == 17) enemyTankManager->NewEnemyTank(NormalTank, spawnPos, true);
 			else enemyTankManager->NewEnemyTank(NormalTank, spawnPos, false);
 			break;
 		case EnemyTankSpawnInfo::FastTankSpawm:
