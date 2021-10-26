@@ -36,6 +36,7 @@ public:
 	inline int GetEnemyTankVecSize() { return vecEnemyTank.size(); }
 	void BoomItemUse();
 	inline void TimeItemUse() { this->stopTimeCheck = true; }
+
 	vector<EnemyTanks*> GetVecEnemyTanks() { return vecEnemyTank; }
 	inline int GetTotalEnemyNum() { return totalEnemyNum; }
 	inline int GetTotalNormal() { return totalNormal; }

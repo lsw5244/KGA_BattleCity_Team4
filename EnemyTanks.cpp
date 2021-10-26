@@ -409,7 +409,7 @@ HRESULT EnemyTanks::TankInit(int posX, bool item)
     movedir = MoveDir::Down;
     elapsedCount = 0;
     elapsedWay = 0;
-
+    boomItemCheck = false;
 
     if (posX == 1) {
         pos.x = 16 + (8);

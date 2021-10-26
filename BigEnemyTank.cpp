@@ -101,7 +101,7 @@ void BigEnemyTank::Render(HDC hdc)
 		if (destructionEffectNum == 5) destructionEffect1->Render(hdc, pos.x, pos.y, 3, 0);
 		if (destructionEffectNum == 6) destructionEffect1->Render(hdc, pos.x, pos.y, 2, 0);
 		if (destructionEffectNum == 7) destructionEffect1->Render(hdc, pos.x, pos.y, 1, 0);
-		if (destructionEffectNum >= 8) pointImage->Render(hdc, pos.x, pos.y, 3, 0);
+		if (destructionEffectNum >= 8 && !boomItemCheck) pointImage->Render(hdc, pos.x, pos.y, 3, 0);
 	}
 }
 
