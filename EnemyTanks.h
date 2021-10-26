@@ -21,6 +21,7 @@ protected:
 
 	TankInfo tankinfo;
 	bool isItemDes;
+	bool boomItemCheck;
 	
 	void CollisionAndMove(MoveDir moveDir);
 	void PosReset(MoveDir moveDir);
@@ -63,6 +64,8 @@ public:
 	inline void SetItemDes(bool des) { this->isItemDes = des; }
 	inline bool GetItemDes() { return isItemDes; }
 	inline void isHit() { this->hp = hp-1; if (hp <= 0) isDestructionEffect = true; }
+	inline void BoomItem() { this->hp = 0, isDestructionEffect = true, boomItemCheck = true; }
+
 	inline void SetVecEnemyTank(vector<EnemyTanks*> vecEnemyTank) { this->vecEnemyTanks = vecEnemyTank; }
 	inline bool GetisDestruction() {return this->isDestruction;}
 	inline void SetTimeStop(bool timeStop) {this->timeStop = timeStop;}

@@ -41,8 +41,8 @@ void EnemyTankManager::BoomItemUse()
 		it != vecEnemyTank.end();
 		it++)
 	{
-		for (int i = 0; i < 4; i++)(*it)->isHit();
-		(*it)->SetItemDes(true);
+		(*it)->BoomItem();
+		//(*it)->SetItemDes(true);
 	}
 }
 
