@@ -36,7 +36,6 @@ public:
 	inline void SetMoveSpeed(float speed) { this->moveSpeed = speed; }
 	inline int GetBodySize() { return this->bodySize; }
 
-	GameObject();
-	~GameObject();
+	virtual ~GameObject() = default;
 };
 

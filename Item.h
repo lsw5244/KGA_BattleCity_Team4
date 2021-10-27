@@ -31,9 +31,10 @@ private:
 
 protected:
 public:
-	HRESULT Init(PlayerTank& playerTank, EnemyTankManager& enemyTankManager, ItemManager& itemManager);
 	bool ItemUpdate();
-	void Render(HDC hdc);
-	void Release();
+	HRESULT Init(PlayerTank& playerTank, EnemyTankManager& enemyTankManager, ItemManager& itemManager);
+	virtual void Render(HDC hdc) override;
+	virtual void Release() override;
+	virtual ~Item() = default;
 };
 

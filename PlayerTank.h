@@ -54,10 +54,11 @@ private:
 	bool SuperPlayerMode;
 	TankType type;
 public:
-	HRESULT Init();
-	void Update();
-	void Render(HDC hdc);
-	void Release();
+	virtual HRESULT Init() override;
+	virtual void Update() override;
+	virtual void Render(HDC hdc) override;
+	virtual void Release() override;
+	virtual ~PlayerTank() = default;
 
 	void LevelUp();
 	inline int GetLevel() { return this->Level; }

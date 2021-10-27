@@ -2,6 +2,7 @@
 #include "EnemyTankManager.h"
 #include "PlayerTank.h"
 #include "Config.h"
+#include "GameDataManager.h"
 
 void ScoreManager::Init()
 {
@@ -59,14 +60,11 @@ void ScoreManager::Update(PlayerTank& playerTank, EnemyTankManager& enemyTank)
 	
 	totalDestroy = totalNormal + totalFastMove + totalFastShoot + totalBigTank;
 
-	if (totalScore > 20000)		totalScore = totalScore - 20000;
+	if (totalScore > 20000) {
+		GameDataManager::GetSingleton()->SetPlayerLife(GameDataManager::GetSingleton()->GetPlayerLife() + 1);
+		totalScore = totalScore - 20000;
+	}
 	if (prevTotalScore > 1000000) prevTotalScore = prevTotalScore - 1000000;
-
-	//cout << totalNormal << " / " << totalFastMove << " / " << totalFastShoot << " / " 
-	//	<< totalBigTank << " / " << totalDestroy << " / "  << itemBonusPoint << " / " 
-	//	<< totalScore << " / " << prevTotalScore << endl;
-	//cout << enemyTank.GetCheckScore() << " // " << enemyTank.GetReturnScore() << endl;
-
 }
 
 void ScoreManager::Render(HDC hdc)

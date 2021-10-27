@@ -2,9 +2,8 @@
 #include "EnemyTanks.h"
 
 class Image;
-class EnemyTankManager;
 class StageManager;
-class EnemyStatus
+class EnemyStatus : public GameEntity
 {
 private:
 	Image* enemyNumIcon;
@@ -13,9 +12,10 @@ private:
 	int totalEnmey;
 public:
 	inline void SetData(StageManager* stageManager) { this->stageManager = stageManager; }
-	HRESULT Init();
-	void Update();
-	void Render(HDC hdc);
-	void Release();
+	virtual HRESULT Init();
+	virtual void Update();
+	virtual void Render(HDC hdc);
+	virtual void Release();
+	virtual ~EnemyStatus() = default;
 };
 

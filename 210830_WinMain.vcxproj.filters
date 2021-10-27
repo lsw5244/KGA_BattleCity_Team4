@@ -93,9 +93,6 @@
     <ClCompile Include="TitleScene.cpp">
       <Filter>MainGame\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="LoadingScene.cpp">
-      <Filter>MainGame\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="TilemapToolScene.cpp">
       <Filter>MainGame\Scene</Filter>
     </ClCompile>
@@ -195,9 +192,6 @@
       <Filter>MainGame\Scene</Filter>
     </ClInclude>
     <ClInclude Include="TitleScene.h">
-      <Filter>MainGame\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="LoadingScene.h">
       <Filter>MainGame\Scene</Filter>
     </ClInclude>
     <ClInclude Include="TilemapToolScene.h">

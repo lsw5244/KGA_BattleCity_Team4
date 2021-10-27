@@ -1,22 +1,24 @@
 #pragma once
 #include "Config.h"
+#include "GameEntity.h"
 
 class PlayerStatus;
 class PlayerTank;
 class EnemyStatus;
-class EnemyTankManager;
 class StageManager;
-class UIManager
+class UIManager : public GameEntity
 {
 private:
 	PlayerStatus* playerStatus;
 	EnemyStatus* enmeyStatus;
 
 public:
-	HRESULT Init();
 	void SetData(PlayerTank* playerTank, StageManager* stageManager);
-	void Update();
-	void Render(HDC hdc);
-	void Release();
+	virtual HRESULT Init() override;
+	virtual void Update() override;
+	virtual void Render(HDC hdc) override;
+	virtual void Release() override;
+	virtual ~UIManager() = default;
+
 };
 

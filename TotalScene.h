@@ -58,7 +58,7 @@ public:
 	virtual void Update();
 	virtual void Render(HDC hdc);
 	virtual void Release();
-
+	virtual ~TotalScene() = default;
 	void ScoreRender(HDC hdc, int i);
 };
 

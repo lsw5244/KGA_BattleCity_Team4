@@ -51,10 +51,10 @@ protected:
 	bool timeStop;
 
 	Image* pointImage;
-
 	float attackDelayTime = 0.0f;
 	int attackDelay = 1;
 	TankType type = TankType::Enemy;
+
 public:
 	inline TankInfo GetTankInfo() { return this->tankinfo; }
 	inline void SetItemManager(ItemManager* itemManager) { this->itemManager = itemManager; }
@@ -76,8 +76,7 @@ public:
 	virtual void Update() = 0;
 	virtual void Render(HDC hdc) = 0;
 	virtual void Release() = 0;
+	virtual ~EnemyTanks() = default;
 	virtual void AutoFire() = 0;
-	
-	virtual ~EnemyTanks();
 };
 
