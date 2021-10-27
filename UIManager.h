@@ -10,7 +10,7 @@ class UIManager : public GameEntity
 {
 private:
 	PlayerStatus* playerStatus;
-	EnemyStatus* enmeyStatus;
+	EnemyStatus* enemyStatus;
 
 public:
 	void SetData(PlayerTank* playerTank, StageManager* stageManager);

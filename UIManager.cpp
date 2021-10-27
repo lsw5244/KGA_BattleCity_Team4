@@ -7,31 +7,31 @@ HRESULT UIManager::Init()
 {
     playerStatus = new PlayerStatus;
     playerStatus->Init();
-    enmeyStatus = new EnemyStatus;
-    enmeyStatus->Init();
+    enemyStatus = new EnemyStatus;
+    enemyStatus->Init();
     return S_OK;
 }
 
 void UIManager::SetData(PlayerTank* playerTank, StageManager* stageManager)
 {
     playerStatus->SetData(playerTank);
-    enmeyStatus->SetData(stageManager);
+    enemyStatus->SetData(stageManager);
 }
 
 void UIManager::Update()
 {
     playerStatus->Update();
-    enmeyStatus->Update();
+    enemyStatus->Update();
 }
 
 void UIManager::Render(HDC hdc)
 {
     playerStatus->Render(hdc);
-    enmeyStatus->Render(hdc);
+    enemyStatus->Render(hdc);
 }
 
 void UIManager::Release()
 {
     SAFE_DELETE(playerStatus);
-    SAFE_DELETE(enmeyStatus);
+    SAFE_DELETE(enemyStatus);
 }
