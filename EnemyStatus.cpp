@@ -1,6 +1,5 @@
 #include "EnemyStatus.h"
 #include "Image.h"
-#include "EnemyTankManager.h"
 #include "StageManager.h"
 
 HRESULT EnemyStatus::Init()

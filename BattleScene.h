@@ -56,11 +56,11 @@ private:
 
 	int stageNum;
 public:
-	HRESULT Init();
-	void Update();
-	void Render(HDC hdc);	// 오버로딩
-	void Release();
-
+	virtual HRESULT Init() override;
+	virtual void Update() override;
+	virtual void Render(HDC hdc) override;	// 오버로딩
+	virtual void Release() override;
+	virtual ~BattleScene() = default;
 	int Load(int num);
 };
 

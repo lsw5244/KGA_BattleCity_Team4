@@ -276,6 +276,7 @@ void TilemapToolScene::Render(HDC hdc)
                             tileInfo[i][j].frameX[tileNumX],
                             tileInfo[i][j].frameY[tileNumY]);
                         if (KeyManager::GetSingleton()->IsStayKeyDown('O')) {
+                            if (tileInfo[i][j].terrain  != Terrain::Empty && tileInfo[i][j].terrain != Terrain::Forest)
                             Rectangle(hdc,
                                 tileInfo[i][j].selectRc.left,
                                 tileInfo[i][j].selectRc.top,

@@ -1,13 +1,13 @@
 #pragma once
 #include "Config.h"
-
+#include "GameEntity.h"
 
 class EnemyTankManager;
 class EnemyTankFactory;
 class AmmoManager;
 class PlayerTank;
 class Image;
-class StageManager
+class StageManager : public GameEntity
 {
 private:
 	AmmoManager* ammoManager;
@@ -47,10 +47,11 @@ private:
 public:
 	void SetData(EnemyTankManager* enemyTankManager, PlayerTank* playerTank, AmmoManager* ammoManager, TILE_INFO(*tileInfo)[TILE_COUNT]);
 	int GetSpawnNum() { return spawnNum; }
-	void Init();
-	void Update();
-	void Render(HDC hdc);
-	void Release();
+	virtual HRESULT Init() override;
+	virtual void Update() override;
+	virtual void Render(HDC hdc) override;
+	virtual void Release() override;
+	virtual ~StageManager() = default;
 
 	void SpawnEffect();
 };

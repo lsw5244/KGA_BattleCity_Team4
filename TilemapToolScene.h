@@ -35,7 +35,7 @@ public:
 	virtual void Update() override;
 	virtual void Render(HDC hdc) override;
 	virtual void Release() override;
-
+	virtual ~TilemapToolScene() = default;
 	void Save();
 	void Load();
 

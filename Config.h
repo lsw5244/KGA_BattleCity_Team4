@@ -59,12 +59,12 @@ enum class Terrain {
 
 typedef struct tagTile
 {
-	Terrain terrain;
-	RECT selectRc;
-	RECT rc[2][2];
-	int frameX[2];
-	int frameY[2];
-	bool isDes[2][2];
+	Terrain terrain;	// 타일의 타입
+	RECT selectRc;		// 탱크 충돌 범위
+	RECT rc[2][2];		// 블럭이 부숴지는 단위
+	int frameX[2];		// 출력할 X프레임 
+	int frameY[2];		// 출력할 Y프레임
+	bool isDes[2][2];	// 블럭의 파괴 유무
 } TILE_INFO;
 
 enum class TankInfo { Normal, FastMove, FastShoot, BigTank };

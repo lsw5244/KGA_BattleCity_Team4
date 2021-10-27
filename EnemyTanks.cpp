@@ -433,7 +433,3 @@ HRESULT EnemyTanks::TankInit(int posX, bool item)
     hp = 1;
     return S_OK;
 }
-
-EnemyTanks::~EnemyTanks()
-{
-}

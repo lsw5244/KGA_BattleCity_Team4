@@ -26,9 +26,10 @@ public:
 	void newItem();
 	void Setdata(PlayerTank& playerTank, EnemyTankManager& enemyTankManager, TILE_INFO(*tileInfo)[TILE_COUNT]);
 	void ActiveShove() { shovelUse = true, shovelTime = 0.0f; }
-	HRESULT Init();
-	void Update();
-	void Render(HDC hdc);
-	void Release();
+	virtual HRESULT Init() override;
+	virtual void Update() override;
+	virtual void Render(HDC hdc) override;
+	virtual void Release() override;
+	virtual ~ItemManager() = default;
 };
 

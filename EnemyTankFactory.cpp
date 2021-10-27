@@ -1,10 +1,8 @@
 #include "EnemyTankFactory.h"
-#include "EnemyTanks.h"
 #include "NormalEnemyTank.h"
 #include "FastMoveEnemyTank.h"
 #include "FastShootEnemyTank.h"
 #include "BigEnemyTank.h"
-#include "AmmoManager.h"
 
 EnemyTanks* NormalTankFactory::CreateEnemyTank()
 {

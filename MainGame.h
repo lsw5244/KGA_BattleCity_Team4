@@ -20,12 +20,11 @@ private:
 	Image* backBuffer;
 
 public:
-	HRESULT Init();
-	void Update();
-	//void Render();			// 오버라이딩 : 상속 관계에서 부모클래스의 함수를 재정의
-	void Render(HDC hdc);	// 오버로딩
-	void Release();
-
+	virtual HRESULT Init() override;
+	virtual void Update() override;
+	virtual void Render(HDC hdc) override;	// 오버로딩
+	virtual void Release() override;
+	virtual ~MainGame() = default;
 	LRESULT MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
 };
 

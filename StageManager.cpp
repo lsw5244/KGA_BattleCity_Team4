@@ -24,7 +24,7 @@ void StageManager::SetData(EnemyTankManager* enemyTankManager, PlayerTank* playe
 	stageNum = GameDataManager::GetSingleton()->GetIsStage();
 }
 
-void StageManager::Init()
+HRESULT StageManager::Init()
 {
 	enemyTankFactory[0] = new NormalTankFactory;
 	enemyTankFactory[1] = new FastMoveTankFactory;
@@ -292,6 +292,8 @@ void StageManager::Init()
 		enemyTankSpawnInfo[9][19] = EnemyTankSpawnInfo::BigTankSpawm;
 	}
 	// 10스테이지 초기화
+
+	return S_OK;
 }
 
 void StageManager::Update()
